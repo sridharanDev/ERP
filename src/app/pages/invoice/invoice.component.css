@@ -1,0 +1,268 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;400;900&display=swap');
+
+:root {
+  --primary: #3B7DDD;
+  --secondary: #3d3d3d; 
+  --white: #fff;
+}
+
+ *{
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: 'Lato', sans-serif;
+}
+
+body{
+	background: #3d3d3d;
+	padding: 50px;
+	color: #3d3d3d;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 14px;
+} 
+
+.bold{
+	font-weight: 700;
+}
+
+.light{
+	font-weight: 100;
+}
+
+.wrapper{
+	background: #fff;
+	/* box-sizing: border-box; */
+	padding: 30px;
+}
+
+.invoice_wrapper{
+	border: 2px solid #3B7DDD;
+	width: 100%;
+	height: 100%;
+	max-width: 100%;
+}
+
+.invoice_wrapper .header .logo_invoice_wrap,
+.invoice_wrapper .header .bill_total_wrap{
+	display: flex;
+	justify-content: space-between;
+	padding: 30px;
+}
+
+.invoice_wrapper .header .logo_sec{
+	display: flex;
+	align-items: center;
+}
+
+.invoice_wrapper .header .logo_sec .title_wrap{
+	margin-left: 5px;
+}
+
+.invoice_wrapper .header .logo_sec .title_wrap .img{
+	margin-top: -10px;
+	padding-bottom: 4px;
+	
+}
+
+.invoice_wrapper .header .logo_sec .title_wrap .title{
+	/* text-transform: uppercase; */
+	/* margin-top: 9px; */
+	font-size: 15px;
+	color: #525252;
+	font-weight: 600;
+}
+
+.invoice_wrapper .header .logo_sec .title_wrap .sub_title{
+	font-size: 12px;
+}
+
+.invoice_wrapper .header .invoice_sec,
+.invoice_wrapper .header .bill_total_wrap .total_wrap{
+	text-align: right;
+}
+
+.invoice_wrapper .header .invoice_sec .invoice{
+	
+	font-size: 28px;
+	color: #3B7DDD;
+}
+
+.invoice_wrapper .header .invoice_sec .invoice_no{
+	margin-top: 10px;
+	display: flex;
+	width: 100%;
+}
+
+.invoice_wrapper .header .invoice_sec .date{
+	display: flex;
+	width: 100%;
+}
+
+.invoice_wrapper .header .invoice_sec .invoice_no span:first-child,
+.invoice_wrapper .header .invoice_sec .date span:first-child{
+	width: 70px;
+	text-align: left;
+}
+
+.invoice_wrapper .header .invoice_sec .invoice_no span:last-child,
+.invoice_wrapper .header .invoice_sec .date span:last-child{
+	width: calc(100% - 70px);
+}
+
+.invoice_wrapper .header .bill_total_wrap .total_wrap .price,
+.invoice_wrapper .header .bill_total_wrap .bill_sec .name{
+	color: #3B7DDD;
+	font-size: 20px;
+}
+
+.main_table
+{
+    min-height: 350px;
+}
+
+.invoice_wrapper .body .main_table .table_header{
+	/* padding-left: 2px; */
+	/* padding-right: 2px; */
+	background: #3B7DDD;
+}
+
+.invoice_wrapper .body .main_table .table_header .row{
+	color: #fff;
+	font-size: 16px;
+	/* border: 3px solid #3B7DDD; */
+	/* border-bottom: 0px;	 */
+}
+
+.table_body .row{
+	display: flex;
+	border-bottom: 1px solid #c2c2c2;
+}
+
+.invoice_wrapper .body .main_table .row .col{
+	padding: 10px;
+}
+.invoice_wrapper .body .main_table .row .col_no{width: 5%;}
+.invoice_wrapper .body .main_table .row .col_des{width: 45%;font-size: 12px;}
+.invoice_wrapper .body .main_table .row .col_price{width: 20%; text-align: center;}
+.invoice_wrapper .body .main_table .row .col_qty{width: 10%; text-align: center;}
+.invoice_wrapper .body .main_table .row .col_total{width: 20%; text-align: right;}
+
+.invoice_wrapper .body .paymethod_grandtotal_wrap{
+	display: flex;
+	justify-content: space-between;
+	padding: 15px 0 35px;
+	align-items: flex-end;
+}
+
+.invoice_wrapper .body .paymethod_grandtotal_wrap .paymethod_sec{
+	padding-left: 30px;
+	
+}
+
+.invoice_wrapper .body .paymethod_grandtotal_wrap .grandtotal_sec{
+	/* margin-top:-650px ; */
+	width: 30%;
+	/* border: 1px solid #3B7DDD; */
+}
+
+.invoice_wrapper .body .paymethod_grandtotal_wrap .grandtotal_sec p{
+	display: flex;
+	width: 100%;
+	padding-bottom: 5px;
+}
+
+.invoice_wrapper .body .paymethod_grandtotal_wrap .grandtotal_sec p span{
+	padding: 0 10px;
+}
+
+.invoice_wrapper .body .paymethod_grandtotal_wrap .grandtotal_sec p span:first-child{
+	width: 60%;
+}
+
+
+.invoice_wrapper .body .paymethod_grandtotal_wrap .grandtotal_sec p span:last-child{
+	width: 40%;
+	text-align: right;
+}
+
+.invoice_wrapper .body .paymethod_grandtotal_wrap .grandtotal_sec p:nth-last-child(2) span{
+	background: #3B7DDD;
+	padding: 10px;
+	color: #fff;
+}
+
+
+
+
+
+
+.invoice_wrapper .body .quotes{
+	display: flex;
+	justify-content: space-between;
+	padding: 25px 0 30px;
+	align-items: flex-end;
+}
+
+.invoice_wrapper .body .quotes .sec1{
+	padding-left: 30px;
+}
+
+.invoice_wrapper .body .quotes .sec2{
+	width: 30%;
+}
+
+.invoice_wrapper .body .quotes .sec2 p{
+	display: flex;
+	width: 100%;
+	padding-bottom: 5px;
+}
+
+.invoice_wrapper .body .quotes .sec2 p span{
+	padding: 0 10px;
+}
+
+.invoice_wrapper .body .quotes .sec2 p span:first-child{
+	width: 60%;
+}
+
+.invoice_wrapper .body .quotes .sec2 p span:last-child{
+	width: 40%;
+	text-align: right;
+}
+
+/* .invoice_wrapper .body .quotes .sec2 p:last-child span{
+	background: #3B7DDD;
+	padding: 10px;
+	color: #fff;
+} */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.invoice_wrapper .footer{
+	padding: 30px;
+}
+
+.invoice_wrapper .footer > p{
+	color: #3B7DDD;
+	text-decoration: underline;
+	font-size: 18px;
+	padding-bottom: 5px;
+}
+
+.invoice_wrapper .footer .terms .tc{
+	font-size: 16px;
+}

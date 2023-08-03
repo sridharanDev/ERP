@@ -1,0 +1,111 @@
+<div class="card">
+    <div class="card-body">
+        <div class="d-flex justify-content-between mb-3">
+            <h5 class="card-title">Staff roles</h5>
+            <button type="button" class="btn btn-success btn-sm" (click)="openModal(createRoleModel,null)">Create role</button>
+        </div>
+        <div class="">
+            <table id="zero_config" class="table table-striped table-bordered">
+                <thead class="">
+                    <tr>
+                        <th>S.No</th>
+                        <th>Name</th>
+                        <th>Salary</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let role of allRoles;index as i;">
+                        <td>{{i + 1}}</td>
+                        <td>{{role.name}}</td>
+                        <td>{{role.salery | currency: 'INR' : 'symbol-narrow': '1.0-0'}}</td>
+                        <td style="width: 50px; text-align: center;">
+                            <button type="button" class="btn btn-primary btn-sm me-2" data-bs-toggle="dropdown">Action</button>     
+                            <div class="dropdown">
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <a class="dropdown-item" href="#" routerLink="/dummy" (click)="openModal(editRoleModel,role._id)">Edit</a>
+                                    <a class="dropdown-item" href="#" routerLink="/dummy" (click)="openModal(deleteRoleModel,role._id)">Delete</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                </tbody>
+                
+            </table>
+        </div>
+
+    </div>
+</div>
+
+<ng-template #createRoleModel let-modal>
+    <div class="modal-header">
+        <h3 class="modal-title">Create staff role</h3>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+        <form [formGroup]="roleForm" (ngSubmit)="CreateFromSubmit()">
+            <div class="modal-body">
+
+                <div class="form-group m-t-20">
+                    <label>Role name</label>
+                    <input type="text" class="form-control"  placeholder="Role name" formControlName="name" [ngClass]="{'is-invalid': isInvalidField(roleForm.get('name'))}">
+                </div>
+                <div class="form-group m-t-20">
+                    <label>Salary</label>
+                    <input type="number" min="0" class="form-control"  placeholder="Salary" formControlName="salery" [ngClass]="{'is-invalid': isInvalidField(roleForm.get('salery'))}">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary " (click)="modal.dismiss()" >Cancel</button>
+                <button type="submit" class="btn btn-success " >Create</button>
+                
+            </div>
+        </form>
+</ng-template>
+
+<ng-template #editRoleModel let-modal>
+    <div class="modal-header">
+        <h3 class="modal-title">Edit staff role</h3>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form [formGroup]="roleForm" (ngSubmit)="EditFromSubmit()">
+        <div class="modal-body">
+
+            <div class="form-group m-t-20">
+                <label>Role name</label>
+                <input type="text" class="form-control"  placeholder="Role name" formControlName="name" [ngClass]="{'is-invalid': isInvalidField(roleForm.get('name'))}">
+            </div>
+            <div class="form-group m-t-20">
+                <label>Salary</label>
+                <input type="number" min="0" class="form-control"  placeholder="Salary" formControlName="salery" [ngClass]="{'is-invalid': isInvalidField(roleForm.get('salery'))}">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary " (click)="modal.dismiss()" >Cancel</button>
+            <button type="submit" class="btn btn-warning " >Update</button>
+        </div>
+    </form>
+</ng-template>
+
+<ng-template #deleteRoleModel let-modal>
+    <div class="modal-header">
+        <h3 class="modal-title">Delete staff role</h3>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+        <div class="modal-body">
+            <p>Do you want to delete this role.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary " (click)="modal.dismiss()" >Cancel</button>
+          <button type="button" class="btn btn-danger " (click)="DeleteSubmit()" >Delete</button>
+
+        </div>
+</ng-template>
+
+<app-loading *ngIf="isLoading"></app-loading>

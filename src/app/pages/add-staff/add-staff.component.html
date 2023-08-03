@@ -1,0 +1,100 @@
+<app-breadcrumb></app-breadcrumb>
+<div class="card">
+    <div class="card-header">
+        <h5 class="card-title mb-0">Add new staff</h5>
+    </div>
+    <div class="card-body">
+        <form [formGroup]="staffForm" (ngSubmit)="OnFormSubmit()">
+            <div class="row">
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label for="" class="form-label">Staff ID</label>
+                        <input type="text" class="form-control" placeholder="Staff ID" formControlName="staff_id" [ngClass]="{'is-invalid': isInvalidField(staffForm.get('staff_id'))}">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label for="" class="form-label">Name</label>
+                        <input type="text" class="form-control" placeholder="Name" formControlName="name" [ngClass]="{'is-invalid': isInvalidField(staffForm.get('name'))}">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label for="" class="form-label">Father name</label>
+                        <input type="text" class="form-control" placeholder="Father name" formControlName="father_name" [ngClass]="{'is-invalid': isInvalidField(staffForm.get('father_name'))}">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label for="" class="form-label">Email</label>
+                        <input type="email" class="form-control" placeholder="Email" formControlName="email" [ngClass]="{'is-invalid': isInvalidField(staffForm.get('email'))}">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label for="" class="form-label">Mobile</label>
+                        <input type="text" class="form-control" placeholder="Mobile" formControlName="mobile" [ngClass]="{'is-invalid': isInvalidField(staffForm.get('mobile'))}">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label for="" class="form-label">Date of birth</label>
+                        <input type="date" class="form-control" placeholder="DOB" formControlName="dob" [ngClass]="{'is-invalid': isInvalidField(staffForm.get('dob'))}">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label for="" class="form-label">Interview date</label>
+                        <input type="date" class="form-control" placeholder="date" formControlName="interview_date" [ngClass]="{'is-invalid': isInvalidField(staffForm.get('interview_date'))}">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label for="" class="form-label">Join date</label>
+                        <input type="date" class="form-control" placeholder="date" formControlName="join_date" [ngClass]="{'is-invalid': isInvalidField(staffForm.get('join_date'))}">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label for="" class="form-label">Address</label>
+                        <textarea name="" class="form-control" cols="30" rows="5" formControlName="address" [ngClass]="{'is-invalid': isInvalidField(staffForm.get('address'))}"></textarea>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label for="" class="form-label">Qualififcation</label>
+                        <textarea name="" class="form-control" cols="30" rows="5" formControlName="qualification" [ngClass]="{'is-invalid': isInvalidField(staffForm.get('qualification'))}"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label for="" class="form-label">Designation</label>
+                        <input type="text" class="form-control" placeholder="Designation" formControlName="designation" [ngClass]="{'is-invalid': isInvalidField(staffForm.get('designation'))}">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label for="" class="form-label">Role</label>
+                        <select class="form-select" formControlName="role" [ngClass]="{'is-invalid': isInvalidField(staffForm.get('role'))}">
+                            <option value="NA">-- Select role --</option>
+                            <option value="{{role._id}}" *ngFor="let role of staffRoles;">{{role.name}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-success" type="submit">Submit</button>
+        </form>
+    </div>
+</div>
+
+<app-loading *ngIf="isLoading"></app-loading>

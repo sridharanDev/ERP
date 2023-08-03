@@ -1,0 +1,127 @@
+
+<div class="wrapper">
+    <div class="invoice_wrapper">
+        <div class="header">
+            <div class="logo_invoice_wrap">
+                <div class="logo_sec">
+                    <div class="title_wrap">
+                       <img src="assets/img/logo.jpg" class="img" alt="code logo">
+                       <p class="title bold">7/257c Lakshmi complex, Advaitha ashram road,</p>
+                       <p class="title bold">Fairlands, Salem, Tamil Nadu 636016</p>
+                    </div>
+                 </div>
+                 <div class="invoice_sec">
+                    <p class="invoice bold">INVOICE</p>
+                    <p class="invoice_no">
+                       <span class="bold">Invoice :</span>
+                       <span>{{billingData.invoice_no}}</span>
+                    </p>
+                    <p class="date">
+                       <span class="bold">Date :</span>
+                       <span>{{billingData.date}}</span>
+                    </p>
+                 </div>
+              </div>
+              <div class="bill_total_wrap">
+                 <div class="bill_sec">
+                    <p>Bill To</p>
+                    <p class="bold name">{{billingData.customer_name}}</p>
+                    <span>
+                    {{billingData.customer_email}}<br/>
+                    {{billingData.customer_mobile}}<br/>
+                    </span>
+                 </div>
+                 <div class="total_wrap">
+                 </div>
+              </div>
+           </div>
+           <div class="body">
+              <div class="main_table">
+                 <div class="table_header">
+                    <div class="row">
+                       <div class="col col_no">S.NO</div>
+                       <div class="col col_no">DESCRIPTION</div>
+                       <div class="col col_qty">PRICE</div>
+                       <div class="col col_total">AMOUNT</div>
+                    </div>
+                 </div>
+                 <div class="table_body">
+                    
+                    <div class="row" *ngFor="let item of billingData.items;index as i;">
+                       <div class="col col_no">
+                          <p>{{i + 1}}</p>
+                       </div>
+                       <div class="col col_des">
+                          <p class="bold">{{item.name}}</p>
+                          <p>{{item.desc}}</p>
+                       </div>
+                       <div class="col col_price">
+                          <p>{{item.price | currency: 'INR' : 'symbol-narrow': '1.0-0'}}</p>
+                       </div>
+                       <div class="col col_total">
+                          <p>{{item.amount | currency: 'INR' : 'symbol-narrow': '1.0-0'}}</p>
+                       </div>
+                    </div>
+
+                 </div>
+              </div>
+              <div class="paymethod_grandtotal_wrap">
+                 <div class="paymethod_sec">
+                    <p class="bold" >Amount in words</p>
+                    {{convertPriceToWords(billingData.paid)}}
+                    <p class="tc bold">Terms & Coditions</p>
+                    Lorem ipsum dolor sit amet consectetur adipisicing  <br>
+                    Quaerat vero iure itaque odio numquam, debitis illo <br>
+                    Quaerat vero iure itaque odio numquam, debitis illo <br>
+                    Quaerat vero iure itaque odio numquam, debitis illo <br>
+                 </div>
+                 <div class="grandtotal_sec"  >
+                    <p class="bold">
+                       <span>SUB TOTAL</span>
+                       <span>{{billingData.sub_total | currency: 'INR' : 'symbol-narrow': '1.0-0'}}</span>
+                    </p>
+                    <p>
+                       <span>Tax</span>
+                       <span>{{billingData.tax_amount | currency: 'INR' : 'symbol-narrow': '1.0-0'}}</span>
+                    </p>
+                    <p>
+                       <span>Discount</span>
+                       <span>{{billingData.tax_amount | currency: 'INR' : 'symbol-narrow': '1.0-0'}}</span>
+                    </p>
+                    <p>
+                       <span>Net Tax</span>
+                       <span>{{billingData.net_total | currency: 'INR' : 'symbol-narrow': '1.0-0'}}</span>
+                    </p>
+                    <p>
+                       <span>Payment Type</span>
+                       <span>{{billingData.pay_type}}</span>
+                    </p>
+                    <p class="bold">
+                       <span>Paid</span>
+                       <span>{{billingData.paid | currency: 'INR' : 'symbol-narrow': '1.0-0'}}</span>
+                     </p>
+                     <p>
+                        <span>Balance</span>
+                        <span>{{billingData.balance | currency: 'INR' : 'symbol-narrow': '1.0-0'}}</span>
+                     </p>
+                 </div>
+              </div>
+              <div class="quotes">
+                 <div class="sec1">
+                    <p class="bold">Quotes</p>
+                    <p>"The secret to success is to know something nobody else knows.</p>
+                 </div>
+                 <div class="sec1">
+                    <p class="bold" style="margin-right: 17px; margin-top: 10px;">
+                       For Aalan info tech
+                    </p>
+                    <br>
+                    <p class="bold">
+                       <span></span>
+                       <span>Authorized Sign</span>
+                    </p>
+                 </div>
+              </div>
+           </div>
+        </div>
+     </div>

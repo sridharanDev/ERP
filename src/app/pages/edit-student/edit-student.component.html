@@ -1,0 +1,116 @@
+<app-breadcrumb></app-breadcrumb>
+<div class="card">
+    <div class="card-header">
+        <h5 class="card-title mb-0">Edit student</h5>
+    </div>
+    <div class="card-body">
+        <form [formGroup]="studentForm" (ngSubmit)="OnFormSubmit()">
+            <div class="row">
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label for="" class="form-label">Name</label>
+                        <input type="text" class="form-control" placeholder="Name" formControlName="name" [ngClass]="{'is-invalid': isInvalidField(studentForm.get('name'))}">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label for="" class="form-label">Mobile</label>
+                        <input type="number" class="form-control" placeholder="Mobile" formControlName="mobile" [ngClass]="{'is-invalid': isInvalidField(studentForm.get('mobile'))}">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label for="" class="form-label">Email</label>
+                        <input type="email" class="form-control" placeholder="Email" formControlName="email" [ngClass]="{'is-invalid': isInvalidField(studentForm.get('email'))}">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label for="" class="form-label">Gender</label>
+                        <select class="form-select" formControlName="gender" [ngClass]="{'is-invalid': isInvalidField(studentForm.get('gender'))}">
+                            <option value="NA">-- Select Gender --</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label for="" class="form-label">Date of birth</label>
+                        <input type="date" class="form-control" placeholder="DOB" formControlName="dob" [ngClass]="{'is-invalid': isInvalidField(studentForm.get('dob'))}">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label for="" class="form-label">Qualification</label>
+                        <input type="text" class="form-control" placeholder="Qualification" formControlName="qualification" [ngClass]="{'is-invalid': isInvalidField(studentForm.get('qualification'))}">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label for="" class="form-label">Passed out year</label>
+                        <input type="number" class="form-control" placeholder="passed out year" formControlName="passed_out_year" [ngClass]="{'is-invalid': isInvalidField(studentForm.get('passed_out_year'))}">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="row">
+                        <div class="col-5">
+                            <div class="mb-3">
+                                <label for="" class="form-label">Current status</label>
+                                <select class="form-select" formControlName="current_status" [ngClass]="{'is-invalid': isInvalidField(studentForm.get('current_status'))}">
+                                    <!-- <option value="NA">-- Select Status --</option> -->
+                                    <option value="studying">Studying</option>
+                                    <option value="working">Working</option>
+                                    <option value="job seeking">Job Seeking</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-7">
+                            <div class="mb-3">
+                                <label for="" class="form-label">Institute / Company</label>
+                                <input type="text" class="form-control" placeholder="Institute / Company" formControlName="institute_or_company" [ngClass]="{'is-invalid': isInvalidField(studentForm.get('institute_or_company'))}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label for="" class="form-label">Courses</label>
+                                <select class="form-select" #selected_course formControlName="courses" [ngClass]="{'is-invalid': isInvalidField(studentForm.get('courses'))}">
+                                    <option value="NA">-- Select Curses --</option>
+                                    <option value="{{course._id}}" *ngFor="let course of allCourses">{{course.title}} ({{course.description}})</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label for="" class="form-label">Fees</label>
+                                <input type="text" class="form-control" placeholder="fees" [value]="GetFees(selected_course.value)" disabled>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label for="" class="form-label">Note</label>
+                        <textarea name="" class="form-control" cols="30" rows="5" formControlName="note" [ngClass]="{'is-invalid': isInvalidField(studentForm.get('note'))}"></textarea>
+                    </div>
+                </div>
+                
+            </div>
+            <button class="btn btn-success" type="submit">Update</button>
+        </form>
+    </div>
+</div>
+
+<app-loading *ngIf="isLoading"></app-loading>
