@@ -27,8 +27,8 @@
                             <button type="button" class="btn btn-primary btn-sm me-2" data-bs-toggle="dropdown">Action</button>     
                             <div class="dropdown">
                                 <div class="dropdown-menu dropdown-menu-end">
-                                    <a class="dropdown-item" href="#" routerLink="/dummy" (click)="openModal(editRoleModel,course._id)">Edit</a>
-                                    <a class="dropdown-item" href="#" routerLink="/dummy" (click)="openModal(deleteRoleModel,course._id)">Delete</a>
+                                    <a class="dropdown-item" (click)="openModal(editRoleModel,course._id)">Edit</a>
+                                    <a class="dropdown-item" (click)="openModal(deleteRoleModel,course._id)">Delete</a>
                                 </div>
                             </div>
                         </td>
