@@ -4,6 +4,7 @@ import { FormControl, FormGroup,Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { StaffService } from '../../services/staff.service';
 import { FormValidatorService } from '../../utils/form-validator.service';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-staff-role',
@@ -26,8 +27,27 @@ export class StaffRoleComponent implements OnInit
 
   isLoading:boolean = false;
 
+  dtOptions: DataTables.Settings = {};
+  dtTrigger: Subject<any> = new Subject<any>();
+
   ngOnInit(): void 
   {
+    this.dtOptions = {
+      pagingType: 'full_numbers',
+      pageLength: 10,
+      columnDefs :[
+        {
+          targets:[0],
+          width:'10px'
+        },
+        {
+          targets:[3],
+          width:'10px',
+          orderable: false,
+          searchable: false,
+        },
+      ]
+    };
     this.GetAllRoles();
   }
   
@@ -59,8 +79,10 @@ export class StaffRoleComponent implements OnInit
   GetAllRoles()
   {
     this.isLoading = true;
+    $('#datatable').DataTable().destroy();
     this.staffService.GetRoles().subscribe((res)=>{
       this.allRoles = res;
+      this.dtTrigger.next(null);
       this.isLoading = false;
     },(error)=>{
       this.toastr.error(error.message, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);

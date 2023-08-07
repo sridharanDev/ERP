@@ -1,4 +1,9 @@
-import { Component } from '@angular/core';
+import { Component,OnInit } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ProjectService } from 'src/app/services/project.service';
+import { ToastrService } from 'ngx-toastr';
+import { FormControl, FormGroup,Validators } from '@angular/forms';
+import { FormValidatorService } from '../../utils/form-validator.service';
 
 @Component({
   selector: 'app-completed-projects',
@@ -7,4 +12,94 @@ import { Component } from '@angular/core';
 })
 export class CompletedProjectsComponent {
 
+  projectId:any = null;
+  allProjects:any = [];
+  isLoading:boolean = false;
+
+  constructor(private projectService:ProjectService,private modalService: NgbModal,
+    private formValidatorService:FormValidatorService,private toastr: ToastrService){}
+
+
+
+  statusForm = new FormGroup({
+    status :new FormControl('',Validators.required),
+  });
+
+
+
+  ngOnInit(): void 
+  {
+    this.GetAllProjects();
+  }
+
+  openModal(component:any,projectId:any)
+  {
+    this.projectId = projectId;
+    const modalRef = this.modalService.open(component,{
+      size: 'md',
+      windowClass: 'modal',
+      centered: false,
+      backdrop: 'static',
+      keyboard: false,
+    });
+  }
+
+  GetAllProjects()
+  {
+    this.isLoading = true;
+    this.projectService.GetProjects("completed").subscribe((res:any)=>{
+      this.allProjects = res;
+      this.isLoading = false;
+    },(error)=>{
+      this.toastr.error(error.message, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
+      this.isLoading = false;
+    });
+  }
+
+
+  EditFormSubmit()
+  {
+    if(this.statusForm.invalid)
+    {
+      this.formValidatorService.markFormGroupTouched(this.statusForm);
+      return;
+    }
+    const formData = this.statusForm.value;
+    this.isLoading = true;
+    this.projectService.EditProject(this.projectId,formData).subscribe((res)=>{
+      this.modalService.dismissAll();
+      this.statusForm.reset();
+      this.isLoading = false;
+      this.GetAllProjects();
+      this.toastr.warning('Project updated successfully.', 'Update Project',{timeOut: 3000,closeButton: true,progressBar: true,},);
+    },(error)=>{
+      this.toastr.error(error.message, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
+      this.isLoading = false;
+    });
+    
+  }
+
+  DeleteSubmit()
+  {
+    if(!this.projectId)
+    {
+      return;
+    }
+    this.isLoading = true;
+    this.projectService.DeleteProject(this.projectId).subscribe((res)=>{
+      this.isLoading = false;
+      this.GetAllProjects();
+      this.modalService.dismissAll();
+      this.toastr.error('Project deleted successfully.', 'Delete project',{timeOut: 3000,closeButton: true,progressBar: true,},);
+    },(error)=>{
+      this.toastr.error(error.message, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
+      this.isLoading = false;
+    });
+  }
+  
+  isInvalidField(control: any) {
+    return control.invalid && control.touched;
+  }
 }
+
+

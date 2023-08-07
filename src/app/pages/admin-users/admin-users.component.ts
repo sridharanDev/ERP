@@ -5,7 +5,6 @@ import { ToastrService } from 'ngx-toastr';
 import { FormValidatorService } from '../../utils/form-validator.service';
 import { CustomValidatorService } from '../../utils/custom-validator.service';
 import { AdminService } from 'src/app/services/admin.service';
-import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
 
 @Component({
@@ -21,9 +20,8 @@ export class AdminUsersComponent implements OnInit
   userId:any = null;
   isLoading:boolean = false;
 
-  @ViewChild(DataTableDirective, { static: false }) datatableElement!: DataTableDirective;
-  dtOptions: DataTables.Settings = {}
-  dtTrigger: Subject<any> = new Subject();
+  dtOptions: DataTables.Settings = {};
+  dtTrigger: Subject<any> = new Subject<any>();
 
 
   userForm = new FormGroup({
@@ -37,6 +35,22 @@ export class AdminUsersComponent implements OnInit
 
   ngOnInit(): void 
   {
+    this.dtOptions = {
+      pagingType: 'full_numbers',
+      pageLength: 10,
+      columnDefs :[
+        {
+          targets:[0],
+          width:'10px'
+        },
+        {
+          targets:[3],
+          width:'10px',
+          orderable: false,
+          searchable: false,
+        },
+      ]
+    };
     this.GetAllRoles();
     this.GetAllUsers();
   }
@@ -76,6 +90,7 @@ export class AdminUsersComponent implements OnInit
   GetAllUsers()
   {
     this.isLoading = true;
+    $('#datatable').DataTable().destroy();
     this.adminService.GetUsers().subscribe((res:any)=>{
       this.allUsers = res;
       this.dtTrigger.next(null);

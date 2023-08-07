@@ -6,6 +6,7 @@ import { StaffService } from '../../services/staff.service';
 import { SalaryService } from '../../services/salary.service';
 import { FormValidatorService } from '../../utils/form-validator.service';
 import { CustomValidatorService } from '../../utils/custom-validator.service';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-salary',
@@ -34,12 +35,31 @@ export class SalaryComponent implements OnInit
 
   selectedCSV:File | null = null;
 
+  dtOptions: DataTables.Settings = {};
+  dtTrigger: Subject<any> = new Subject<any>();
+
   constructor(private modalService: NgbModal,private staffService:StaffService,
     private formValidatorService:FormValidatorService,private CustomValidators:CustomValidatorService,
     private salaryService:SalaryService,private toastr: ToastrService) {}
 
   ngOnInit(): void 
   {
+    this.dtOptions = {
+      pagingType: 'full_numbers',
+      pageLength: 10,
+      columnDefs :[
+        {
+          targets:[0],
+          width:'50px'
+        },
+        {
+          targets:[7],
+          width:'10px',
+          orderable: false,
+          searchable: false,
+        },
+      ]
+    };
     this.GetAllStaffs();
     this.GetAllSalary();
   }
@@ -93,8 +113,10 @@ export class SalaryComponent implements OnInit
   GetAllSalary()
   {
     this.isLoading = true;
+    $('#datatable').DataTable().destroy();
     this.salaryService.GetSalarys().subscribe((res:any)=>{
       this.salaries = res;
+      this.dtTrigger.next(null);
       this.isLoading = false;
     },(error)=>{
       this.toastr.error(error.error, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
