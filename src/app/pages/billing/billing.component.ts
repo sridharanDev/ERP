@@ -122,6 +122,7 @@ export class BillingComponent implements OnInit
       this.form3.get("pay_type")?.setValue(res.pay_type); 
       this.form3.get("paid")?.setValue(res.paid); 
       const items = res.items;
+      this.billList.splice(0,this.billList.length);
       for (let i = 0; i < items.length; i++) {
         const item = {name:items[i].name,desc:items[i].desc,price:items[i].price,amount:items[i].amount};
         this.AddToBill(item);        
@@ -247,7 +248,6 @@ export class BillingComponent implements OnInit
     if(!this.invoiceDetails)
     {
       this.invoiceService.CreateInvoice(formData).subscribe((res:any)=>{
-        // this.router.navigate(['/invoice',res.invoice_no]);
         const routePath = '/invoice/'+res.invoice_no;
         window.open(this.router.createUrlTree([routePath]).toString(), '_blank');
       },(error)=>{
@@ -256,7 +256,12 @@ export class BillingComponent implements OnInit
     }
     else
     {
-      alert("Update and print bill");
+      this.invoiceService.EditInvoice(this.invoiceDetails.invoice_no,formData).subscribe((res:any)=>{
+        const routePath = '/invoice/'+res.invoice_no;
+        window.open(this.router.createUrlTree([routePath]).toString(), '_blank');
+      },(error)=>{
+        this.toastr.error(error.error, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
+      });
     }
   }
   OnSaveSubmit()
@@ -269,6 +274,7 @@ export class BillingComponent implements OnInit
     {
 
       this.invoiceService.CreateInvoice(formData).subscribe((res:any)=>{
+        this.GetInvoice(res.invoice_no);
         this.toastr.success('Invoice saved successfully.', 'Save Invoice',{timeOut: 3000,closeButton: true,progressBar: true,},);
       },(error)=>{
         this.toastr.error(error.error, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
@@ -276,7 +282,11 @@ export class BillingComponent implements OnInit
     }
     else
     {
-      alert("Update bill");
+      this.invoiceService.EditInvoice(this.invoiceDetails.invoice_no,formData).subscribe((res:any)=>{
+        this.toastr.warning('Invoice updated successfully.', 'Update Invoice',{timeOut: 3000,closeButton: true,progressBar: true,},);
+      },(error)=>{
+        this.toastr.error(error.error, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
+      });
     }
   }
 
