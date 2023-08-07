@@ -19,12 +19,14 @@ export class BillingComponent implements OnInit
     private courseService:CourseService,private router: Router){}
 
   studentId:any;
-  
   allCourses:any  = [];
+
+  invoiceDetails:any = null;
 
   ngOnInit(): void 
   {
     const studentId = this.route.snapshot.queryParamMap.get("studentId");
+    const invoiceNo = this.route.snapshot.queryParamMap.get("invoiceno");
     this.GetInvoiceNumber();
     const currentDate:any = new Date();
     this.form1.get("date")?.setValue(this.DateFormate(currentDate));
@@ -32,6 +34,10 @@ export class BillingComponent implements OnInit
     {
       this.studentId = studentId;
       this.GetStudentData(studentId);
+    }
+    else if(invoiceNo)
+    {
+      this.GetInvoice(invoiceNo);
     }
     this.GetCourses();
   }
@@ -99,6 +105,30 @@ export class BillingComponent implements OnInit
       this.allCourses = res;      
     },(error)=>{
       this.toastr.error(error.error, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
+    });
+  }
+
+  GetInvoice(invoiceNo:any)
+  {
+    this.invoiceService.GetInvoice(invoiceNo).subscribe((res:any)=>{
+      this.invoiceDetails = res;
+      this.form1.get("invoice_no")?.setValue(res.invoice_no);   
+      this.form1.get("date")?.setValue(res.date);   
+      this.form1.get("customer_name")?.setValue(res.customer_name);   
+      this.form1.get("customer_email")?.setValue(res.customer_email);   
+      this.form1.get("customer_mobile")?.setValue(res.customer_mobile); 
+      this.form3.get("tax")?.setValue(res.tax); 
+      this.form3.get("discount_percent")?.setValue(res.discount_percent); 
+      this.form3.get("pay_type")?.setValue(res.pay_type); 
+      this.form3.get("paid")?.setValue(res.paid); 
+      const items = res.items;
+      for (let i = 0; i < items.length; i++) {
+        const item = {name:items[i].name,desc:items[i].desc,price:items[i].price,amount:items[i].amount};
+        this.AddToBill(item);        
+      }
+      this.OnChange();
+    },(error)=>{
+
     });
   }
   
@@ -214,14 +244,20 @@ export class BillingComponent implements OnInit
     const items = {items:this.billList};
     const formData = Object.assign({},items,type,this.form1.value,this.form3.value);
     
-    this.invoiceService.CreateInvoice(formData).subscribe((res:any)=>{
-      // this.router.navigate(['/invoice',res.invoice_no]);
-      const routePath = '/invoice/'+res.invoice_no;
-      window.open(this.router.createUrlTree([routePath]).toString(), '_blank');
-    },(error)=>{
-      this.toastr.error(error.error, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
-    });
-    
+    if(!this.invoiceDetails)
+    {
+      this.invoiceService.CreateInvoice(formData).subscribe((res:any)=>{
+        // this.router.navigate(['/invoice',res.invoice_no]);
+        const routePath = '/invoice/'+res.invoice_no;
+        window.open(this.router.createUrlTree([routePath]).toString(), '_blank');
+      },(error)=>{
+        this.toastr.error(error.error, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
+      });
+    }
+    else
+    {
+      alert("Update and print bill");
+    }
   }
   OnSaveSubmit()
   {
@@ -229,11 +265,19 @@ export class BillingComponent implements OnInit
     const items = {items:this.billList};
     const formData = Object.assign({},items,type,this.form1.value,this.form3.value);
     
-    this.invoiceService.CreateInvoice(formData).subscribe((res:any)=>{
-      this.toastr.success('Invoice saved successfully.', 'Save Invoice',{timeOut: 3000,closeButton: true,progressBar: true,},);
-    },(error)=>{
-      this.toastr.error(error.error, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
-    });
+    if(!this.invoiceDetails)
+    {
+
+      this.invoiceService.CreateInvoice(formData).subscribe((res:any)=>{
+        this.toastr.success('Invoice saved successfully.', 'Save Invoice',{timeOut: 3000,closeButton: true,progressBar: true,},);
+      },(error)=>{
+        this.toastr.error(error.error, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
+      });
+    }
+    else
+    {
+      alert("Update bill");
+    }
   }
 
 

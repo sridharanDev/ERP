@@ -100,6 +100,15 @@
                               <span class="align-middle">Students</span>
                            </a>
                         </li>
+                        <li class="sidebar-header" *ngIf="hasModules(['billing'])">
+                           Billing & Invoices
+                        </li>
+                        <li class="sidebar-item " routerLinkActive="active" *ngIf="hasModules(['billing'])">
+                           <a class="sidebar-link" href="#" routerLink="/admin/invoices/course">
+                              <i class="fa-solid fa-receipt"></i>
+                              <span class="align-middle">Courses invoices</span>
+                           </a>
+                        </li>
                       </ul>
                       
                    </div>

@@ -200,7 +200,7 @@
                         <button class=" btn btn-danger w-100" (click)="OnPrintSubmit()"><i class="fa-solid fa-print"></i> Print</button>
                     </div>
                     <div class="col-6">
-                        <button class=" btn btn-success w-100" (click)="OnSaveSubmit()"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+                        <button class=" btn btn-success w-100" (click)="OnSaveSubmit()"><i class="fa-solid fa-floppy-disk"></i> {{invoiceDetails? "Update" :"Save"}}</button>
                     </div>
                 </div>
             </div>

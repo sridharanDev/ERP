@@ -37,6 +37,8 @@ import { EditAdminRoleComponent } from './pages/edit-admin-role/edit-admin-role.
 import { LoginComponent } from './pages/login/login.component';
 import { StaffLoginComponent } from './pages/staff-login/staff-login.component';
 import { ErrorPageComponent } from './pages/error-page/error-page.component';
+import { StudentProfileComponent } from './pages/student-profile/student-profile.component';
+import { InvoicesComponent } from './pages/invoices/invoices.component';
 
 
 @NgModule({
@@ -70,6 +72,8 @@ import { ErrorPageComponent } from './pages/error-page/error-page.component';
     LoginComponent,
     StaffLoginComponent,
     ErrorPageComponent,
+    StudentProfileComponent,
+    InvoicesComponent,
   ],
   imports: [
     BrowserModule,

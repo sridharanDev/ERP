@@ -26,6 +26,8 @@ import { EditAdminRoleComponent } from './pages/edit-admin-role/edit-admin-role.
 import { LoginComponent } from './pages/login/login.component';
 import { StaffLoginComponent } from './pages/staff-login/staff-login.component';
 import { ErrorPageComponent } from './pages/error-page/error-page.component';
+import { StudentProfileComponent } from './pages/student-profile/student-profile.component';
+import { InvoicesComponent } from './pages/invoices/invoices.component';
 
 
 
@@ -41,7 +43,9 @@ const routes: Routes = [
       { path: 'completed-projects', component: CompletedProjectsComponent ,canActivate: [AuthGuardService],data: { module: ['project']}},
       { path: 'courses', component: CoursesComponent ,canActivate: [AuthGuardService],data: { module: ['course']}},
       { path: 'students', component: StudentsComponent ,canActivate: [AuthGuardService],data: { module: ['course']}},
+      { path: 'students/profile/:id', component: StudentProfileComponent ,canActivate: [AuthGuardService],data: { module: ['course']}},
       { path: 'billing', component: BillingComponent ,canActivate: [AuthGuardService],data: { module: ['course','project']}},
+      { path: 'invoices/:type', component: InvoicesComponent ,canActivate: [AuthGuardService],data: { module: ['course']}},
       
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       {

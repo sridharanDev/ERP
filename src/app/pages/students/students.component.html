@@ -38,6 +38,7 @@
                             <div class="dropdown">
                                 <div class="dropdown-menu dropdown-menu-end">
                                     <a class="dropdown-item" href="#" routerLink="/admin/billing" [queryParams]="{studentId:student._id}">Billing</a>
+                                    <a class="dropdown-item" href="#" routerLink="/admin/students/profile/{{student._id}}">Profile</a>
                                     <a class="dropdown-item"  (click)="openModal(editStatusModel,student._id)">Staus</a>
                                     <a class="dropdown-item" href="#" routerLink="/admin/enquiry/edit-student/{{student._id}}">Edit</a>
                                     <a class="dropdown-item"  (click)="openModal(deleteStaffModel,student._id)">Delete</a>

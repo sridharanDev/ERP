@@ -1,0 +1,44 @@
+<div class="card">
+    <div class="card-body">
+        <div class="d-flex justify-content-between mb-3">
+            <h5 class="card-title">{{invoiceType}} invoices</h5>
+            <div>
+            </div>
+        </div>
+        <div class="">
+            <table id="datatable" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"  class="table table-striped table-bordered">
+                <thead class="">
+                    <tr>
+                        <th>S.No</th>
+                        <th>Invoice No</th>
+                        <th>Customer name</th>
+                        <th>Mobile</th>
+                        <th>Date</th>
+                        <th>Paid</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let invoice of allInvoices;index as i;">
+                        <td>{{i+1}}</td>
+                        <td>{{invoice.invoice_no}}</td>
+                        <td>{{invoice.customer_name}}</td>
+                        <td>{{invoice.customer_mobile}}</td>
+                        <td>{{invoice.createdAt | date:'yyyy-MM-dd'}}</td>
+                        <td>{{invoice.paid | currency: 'INR' : 'symbol-narrow': '1.0-0'}}</td>
+                        <td>
+                            <button type="button" class="btn btn-primary btn-sm me-2" data-bs-toggle="dropdown">Action</button>     
+                            <div class="dropdown">
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <a class="dropdown-item" href="#" routerLink="/admin/billing" [queryParams]="{invoiceno:invoice.invoice_no}">Edit</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+                
+            </table>
+        </div>
+
+    </div>
+</div>
