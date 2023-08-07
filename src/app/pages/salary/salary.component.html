@@ -29,7 +29,7 @@
                         <td>{{salery.credited_date}}</td>
                         <td>{{salery.actual_salary | currency: 'INR' : 'symbol-narrow': '1.0-0'}}</td>
                         <td>{{salery.paid | currency: 'INR' : 'symbol-narrow': '1.0-0'}}</td>
-                        <td>{{salery.status}}</td>
+                        <td><div class="badge " [ngClass]="GetStatusColor(salery.status)">{{salery.status}}</div></td>
                         <td style="width: 50px; text-align: center;">
                             <button type="button" class="btn btn-primary btn-sm me-2" data-bs-toggle="dropdown">Action</button>     
                             <div class="dropdown">

@@ -53,6 +53,11 @@ export class SalaryComponent implements OnInit
           width:'50px'
         },
         {
+          targets:[6],
+          width:'50px',
+          className: 'text-center',
+        },
+        {
           targets:[7],
           width:'10px',
           orderable: false,
@@ -224,6 +229,19 @@ export class SalaryComponent implements OnInit
 
   isInvalidField(control: any) {
     return control.invalid && control.touched;
+  }
+
+  GetStatusColor(status:String):any
+  {
+    if(status == "unpaid")
+    {
+      return "bg-danger"
+    }
+
+    else if(status == "paid")
+    {
+      return "bg-success"
+    }
   }
 }
 

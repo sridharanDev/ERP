@@ -33,6 +33,11 @@ export class StaffListComponent implements OnInit
           width:'10px'
         },
         {
+          targets:[3],
+          width:'50px',
+          className: 'text-center',
+        },
+        {
           targets:[4],
           width:'10px',
           orderable: false,

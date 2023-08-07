@@ -41,6 +41,10 @@ export class StaffRoleComponent implements OnInit
           width:'10px'
         },
         {
+          targets:[2],
+          width:'50px'
+        },
+        {
           targets:[3],
           width:'10px',
           orderable: false,

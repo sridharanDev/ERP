@@ -3,6 +3,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { StudentService } from 'src/app/services/student.service';
 import { StaffService } from 'src/app/services/staff.service';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-enquiry',
@@ -19,11 +20,35 @@ export class EnquiryComponent implements OnInit
   statsuField:any = 'NA';
   staffField:any = 'NA';
 
+  dtOptions: DataTables.Settings = {};
+  dtTrigger: Subject<any> = new Subject<any>();
+
   constructor(private modalService: NgbModal,private studentService:StudentService,
     private staffService:StaffService,private toastr: ToastrService) {}
 
   ngOnInit(): void 
   {
+    this.dtOptions = {
+      pagingType: 'full_numbers',
+      pageLength: 10,
+      columnDefs :[
+        {
+          targets:[0],
+          width:'10px'
+        },
+        {
+          targets:[5],
+          width:'30px',
+          className: 'text-center',
+        },
+        {
+          targets:[6],
+          width:'10px',
+          orderable: false,
+          searchable: false,
+        },
+      ]
+    };
     this.GetAllStudents();
   }
 
@@ -54,8 +79,10 @@ export class EnquiryComponent implements OnInit
   GetAllStudents()
   {
     this.isLoading = true;
+    $('#datatable').DataTable().destroy();
     this.studentService.GetStudents().subscribe((res:any)=>{
       this.allStudents = res;
+      this.dtTrigger.next(null);
       this.isLoading = false;
     },(error)=>{
       this.isLoading = false;
