@@ -11,14 +11,20 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="m-sm-3">
-                                <form >
+                                <form [formGroup]="loginForm" (ngSubmit)="OnLoginSubmit()">
                                     <div class="mb-3">
                                         <label class="form-label">Staff ID</label>
-                                        <input class="form-control form-control-lg" type="text" placeholder="staff ID">
+                                        <input class="form-control form-control-lg" type="text" formControlName="staff_id" placeholder="Enter Staff ID" [ngClass]="{'is-invalid': isInvalidField(loginForm.get('staff_id'))}">
+                                        <div class="error-text" *ngIf="loginErrors && loginErrors.field == 'username'">
+                                            <p>{{loginErrors.error}}</p>
+                                        </div>
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label">Password</label>
-                                        <input class="form-control form-control-lg" type="password" placeholder="password">
+                                        <input class="form-control form-control-lg" type="password" formControlName="password" placeholder="Enter your password" [ngClass]="{'is-invalid': isInvalidField(loginForm.get('password'))}">
+                                        <div class="error-text" *ngIf="loginErrors && loginErrors.field == 'password'">
+                                            <p>{{loginErrors.error}}</p>
+                                        </div>
                                     </div>
                                     <div class="d-grid gap-2 mt-3">
                                         <button type="submit" class="btn btn-lg btn-primary">Sign in</button>

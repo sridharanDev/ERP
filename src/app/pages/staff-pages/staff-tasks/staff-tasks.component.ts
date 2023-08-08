@@ -2,6 +2,7 @@ import { Component,OnInit } from '@angular/core';
 import { TaskService } from 'src/app/services/task.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
+import { StaffService } from 'src/app/services/staff.service';
 
 @Component({
   selector: 'app-staff-tasks',
@@ -13,18 +14,26 @@ export class StaffTasksComponent implements OnInit
 
   allTasks:any = [];
   query:String = "";
-  userId:String = "64c0cd83fe618a0a6d0f1a12"
+  userId:String = ""
   taskId:any;
   isLoading:boolean = false;
 
   statusInput:String = "pending";
 
-  constructor(private taskService:TaskService,private modalService: NgbModal,private toastr: ToastrService){}
+  constructor(private taskService:TaskService,private modalService: NgbModal,
+    private toastr: ToastrService,private staffService:StaffService){}
 
   ngOnInit(): void 
   {
-    this.query = "staff="+this.userId;
-    this.GetAllTasks();
+    
+    if(this.staffService.isAuthenticated())
+    {
+      this.staffService.ValidateJWT(this.staffService.getUserData().token).subscribe((res:any)=>{
+        this.userId = res._id;
+        this.query = "staff="+this.userId;
+        this.GetAllTasks();
+      });
+    } 
   }
 
   openModal(component:any,taskId:any)

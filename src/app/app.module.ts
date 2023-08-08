@@ -45,6 +45,7 @@ import { StaffDashboardComponent } from './pages/staff-pages/staff-dashboard/sta
 import { StaffSidebarComponent } from './components/staff-sidebar/staff-sidebar.component';
 import { StaffTasksComponent } from './pages/staff-pages/staff-tasks/staff-tasks.component';
 import { ManageTasksComponent } from './pages/manage-tasks/manage-tasks.component';
+import { StaffNavbarComponent } from './components/staff-navbar/staff-navbar.component';
 
 @NgModule({
   declarations: [
@@ -85,6 +86,7 @@ import { ManageTasksComponent } from './pages/manage-tasks/manage-tasks.componen
     StaffSidebarComponent,
     StaffTasksComponent,
     ManageTasksComponent,
+    StaffNavbarComponent,
   ],
   imports: [
     BrowserModule,

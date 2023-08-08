@@ -33,6 +33,7 @@ import { StaffRootComponent } from './pages/staff-pages/staff-root/staff-root.co
 import { StaffDashboardComponent } from './pages/staff-pages/staff-dashboard/staff-dashboard.component';
 import { StaffTasksComponent } from './pages/staff-pages/staff-tasks/staff-tasks.component';
 import { ManageTasksComponent } from './pages/manage-tasks/manage-tasks.component';
+import { StaffAuthGuard } from './utils/staff-auth.guard';
 
 
 
@@ -91,7 +92,7 @@ const routes: Routes = [
     { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     {path:'dashboard',component:StaffDashboardComponent},
     {path:'tasks',component:StaffTasksComponent},
-  ]},
+  ],canActivate: [StaffAuthGuard]},
   {path:'**',component:ErrorPageComponent},
 ];
 

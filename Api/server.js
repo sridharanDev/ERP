@@ -32,6 +32,7 @@ app.use("/api/admin",require("./routes/admin.route"));
 app.use("/api/tasks",require("./routes/task.route"));
 
 
+app.use("/api/validate-token",require("./routes/validate.route"));
 app.get("/api/invoice-no",invoiceConreoller.GenerateInvoiceNumberController);
 
 mongoose.connect(process.env.MONGODB_URL, {
