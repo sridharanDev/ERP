@@ -29,6 +29,7 @@ app.use("/api/incomes",require("./routes/income.route"));
 app.use("/api/invoices",require("./routes/invoice.route"));
 app.use("/api/salaries",require("./routes/saleryDetails.route"));
 app.use("/api/admin",require("./routes/admin.route"));
+app.use("/api/tasks",require("./routes/task.route"));
 
 
 app.get("/api/invoice-no",invoiceConreoller.GenerateInvoiceNumberController);

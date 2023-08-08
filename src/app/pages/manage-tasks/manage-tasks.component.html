@@ -18,16 +18,19 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let role of allTasks;index as i;">
+                    <tr *ngFor="let task of allTasks;index as i;">
                         <td>{{i + 1}}</td>
-                        <td></td>
-                        <td></td>
+                        <td>{{task.title}}</td>
+                        <td>{{task.description}}</td>
+                        <td>{{task.staff.staff_id}}</td>
+                        <td>{{task.createdAt | date:'yyyy-MM-dd'}} <br> {{task.createdAt | date:'H;mm a'}}</td>
+                        <td><span class="badge " [ngClass]="GetStatusColor(task.status)">{{task.status}}</span></td>
                         <td style="width: 50px; text-align: center;">
                             <button type="button" class="btn btn-primary btn-sm me-2" data-bs-toggle="dropdown">Action</button>     
                             <div class="dropdown">
                                 <div class="dropdown-menu dropdown-menu-end">
-                                    <a class="dropdown-item">Edit</a>
-                                    <a class="dropdown-item">Delete</a>
+                                    <a class="dropdown-item" (click)="openModal(editModel,task._id)">Edit</a>
+                                    <a class="dropdown-item" (click)="openModal(deleteModel,task._id)">Delete</a>
                                 </div>
                             </div>
                         </td>
@@ -48,27 +51,27 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-        <form >
+        <form [formGroup]="taskForm" (ngSubmit)="OnAddFormSubmit()">
             <div class="modal-body">
 
                 <div class="form-group m-t-20 mb-2">
                     <label>Task title</label>
-                    <input type="text" class="form-control"  placeholder="task title">
+                    <input type="text" class="form-control"  placeholder="task title" formControlName="title" [ngClass]="{'is-invalid': isInvalidField(taskForm.get('title'))}">
                 </div>
                 <div class="form-group m-t-20 mb-2">
                     <label>Description</label>
-                    <textarea class="form-control" cols="30" rows="5"></textarea>
+                    <textarea class="form-control" cols="30" rows="5" formControlName="description" [ngClass]="{'is-invalid': isInvalidField(taskForm.get('description'))}"></textarea>
                 </div>
                 <div class="form-group m-t-20 mb-2">
                     <label>Project</label>
-                    <select class="form-select">
+                    <select class="form-select" formControlName="project" [ngClass]="{'is-invalid': isInvalidField(taskForm.get('project'))}">
                         <option value="NA">-- Select Project --</option>
                         <option value="{{project._id}}" *ngFor="let project of allProjects">{{project.project_name}}</option>
                     </select>
                 </div>
                 <div class="form-group m-t-20 mb-2">
                     <label>Staff</label>
-                    <select class="form-select">
+                    <select class="form-select" formControlName="staff" [ngClass]="{'is-invalid': isInvalidField(taskForm.get('staff'))}">
                         <option value="NA">-- Select Staff --</option>
                         <option value="{{staff._id}}" *ngFor="let staff of allStaffs">{{staff.staff_id}} - {{staff.name}}</option>
                     </select>
@@ -81,3 +84,63 @@
             </div>
         </form>
 </ng-template>
+
+<ng-template #editModel let-modal>
+    <div class="modal-header">
+        <h3 class="modal-title">Edit Task</h3>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+        <form [formGroup]="taskForm" (ngSubmit)="OnAddFormSubmit()">
+            <div class="modal-body">
+
+                <div class="form-group m-t-20 mb-2">
+                    <label>Task title</label>
+                    <input type="text" class="form-control"  placeholder="task title" formControlName="title" [ngClass]="{'is-invalid': isInvalidField(taskForm.get('title'))}">
+                </div>
+                <div class="form-group m-t-20 mb-2">
+                    <label>Description</label>
+                    <textarea class="form-control" cols="30" rows="5" formControlName="description" [ngClass]="{'is-invalid': isInvalidField(taskForm.get('description'))}"></textarea>
+                </div>
+                <div class="form-group m-t-20 mb-2">
+                    <label>Project</label>
+                    <select class="form-select" formControlName="project" [ngClass]="{'is-invalid': isInvalidField(taskForm.get('project'))}">
+                        <option value="NA">-- Select Project --</option>
+                        <option value="{{project._id}}" *ngFor="let project of allProjects">{{project.project_name}}</option>
+                    </select>
+                </div>
+                <div class="form-group m-t-20 mb-2">
+                    <label>Staff</label>
+                    <select class="form-select" formControlName="staff" [ngClass]="{'is-invalid': isInvalidField(taskForm.get('staff'))}">
+                        <option value="NA">-- Select Staff --</option>
+                        <option value="{{staff._id}}" *ngFor="let staff of allStaffs">{{staff.staff_id}} - {{staff.name}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary " (click)="modal.dismiss()" >Cancel</button>
+                <button type="submit" class="btn btn-warning " >Update</button>
+                
+            </div>
+        </form>
+</ng-template>
+
+<ng-template #deleteModel let-modal>
+    <div class="modal-header">
+        <h3 class="modal-title">Delete Task</h3>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+        <div class="modal-body">
+            <p>Do you want to delete this task.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary " (click)="modal.dismiss()" >Cancel</button>
+          <button type="button" class="btn btn-danger " (click)="OnDeleteFormSubmit()">Delete</button>
+
+        </div>
+</ng-template>
+
+<app-loading *ngIf="isLoading"></app-loading>
