@@ -85,7 +85,7 @@ export class AdminService {
 
   isAuthenticated()
   {    
-    if(this.retrieveDataFromLocalStorage())
+    if(this.retrieveDataFromLocalStorage() != null)
     {
         return true;
     }
@@ -105,7 +105,7 @@ export class AdminService {
 
   setUserData(value:any)
   {
-    const data = { value: value, expiration: Date.now() + 1 * 60 * 60 * 1000 };
+    const data = { value: value, expiration: Date.now() + 8 * 60 * 60 * 1000 };
     const json = JSON.stringify(data);
     localStorage.setItem('usersession', json);
   }

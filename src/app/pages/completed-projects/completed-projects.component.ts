@@ -4,6 +4,7 @@ import { ProjectService } from 'src/app/services/project.service';
 import { ToastrService } from 'ngx-toastr';
 import { FormControl, FormGroup,Validators } from '@angular/forms';
 import { FormValidatorService } from '../../utils/form-validator.service';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-completed-projects',
@@ -15,6 +16,9 @@ export class CompletedProjectsComponent {
   projectId:any = null;
   allProjects:any = [];
   isLoading:boolean = false;
+
+  dtOptions: DataTables.Settings = {};
+  dtTrigger: Subject<any> = new Subject<any>();
 
   constructor(private projectService:ProjectService,private modalService: NgbModal,
     private formValidatorService:FormValidatorService,private toastr: ToastrService){}
@@ -29,6 +33,26 @@ export class CompletedProjectsComponent {
 
   ngOnInit(): void 
   {
+    this.dtOptions = {
+      pagingType: 'full_numbers',
+      pageLength: 10,
+      columnDefs :[
+        {
+          targets:[0],
+          width:'10px'
+        },
+        {
+          targets:[4],
+          width:'50px'
+        },
+        {
+          targets:[5],
+          width:'10px',
+          orderable: false,
+          searchable: false,
+        },
+      ]
+    };
     this.GetAllProjects();
   }
 
@@ -47,8 +71,10 @@ export class CompletedProjectsComponent {
   GetAllProjects()
   {
     this.isLoading = true;
+    $('#datatable').DataTable().destroy();
     this.projectService.GetProjects("completed").subscribe((res:any)=>{
       this.allProjects = res;
+      this.dtTrigger.next(null);
       this.isLoading = false;
     },(error)=>{
       this.toastr.error(error.message, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);

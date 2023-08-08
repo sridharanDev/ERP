@@ -1,10 +1,11 @@
 import { Component,OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ProjectService } from 'src/app/services/project.service';
+import { ProjectService } from '../../services/project.service';
 import { StaffService } from '../../services/staff.service';
 import { ToastrService } from 'ngx-toastr';
 import { FormControl, FormGroup,Validators } from '@angular/forms';
 import { FormValidatorService } from '../../utils/form-validator.service';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-upcomming-projects',
@@ -18,6 +19,8 @@ export class UpcommingProjectsComponent implements OnInit
   allStaffs:any = [];
   isLoading:boolean = false;
 
+  dtOptions: DataTables.Settings = {};
+  dtTrigger: Subject<any> = new Subject<any>();
 
   showSecondLabel: boolean = false;
 
@@ -36,6 +39,26 @@ export class UpcommingProjectsComponent implements OnInit
 
   ngOnInit(): void 
   {
+    this.dtOptions = {
+      pagingType: 'full_numbers',
+      pageLength: 10,
+      columnDefs :[
+        {
+          targets:[0],
+          width:'10px'
+        },
+        {
+          targets:[4],
+          width:'50px'
+        },
+        {
+          targets:[5],
+          width:'10px',
+          orderable: false,
+          searchable: false,
+        },
+      ]
+    };
     this.GetAllProjects();
     this.GetAllStaffRoles();
   }
@@ -80,8 +103,10 @@ export class UpcommingProjectsComponent implements OnInit
   GetAllProjects()
   {
     this.isLoading = true;
+    $('#datatable').DataTable().destroy();
     this.projectService.GetProjects("upcomming").subscribe((res:any)=>{
       this.allProjects = res;
+      this.dtTrigger.next(null);
       this.isLoading = false;
     },(error)=>{
       this.toastr.error(error.message, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);

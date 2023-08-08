@@ -39,7 +39,12 @@ import { StaffLoginComponent } from './pages/staff-login/staff-login.component';
 import { ErrorPageComponent } from './pages/error-page/error-page.component';
 import { StudentProfileComponent } from './pages/student-profile/student-profile.component';
 import { InvoicesComponent } from './pages/invoices/invoices.component';
-
+import { StaffAttendanceComponent } from './pages/staff-attendance/staff-attendance.component';
+import { StaffRootComponent } from './pages/staff-pages/staff-root/staff-root.component';
+import { StaffDashboardComponent } from './pages/staff-pages/staff-dashboard/staff-dashboard.component';
+import { StaffSidebarComponent } from './components/staff-sidebar/staff-sidebar.component';
+import { StaffTasksComponent } from './pages/staff-pages/staff-tasks/staff-tasks.component';
+import { ManageTasksComponent } from './pages/manage-tasks/manage-tasks.component';
 
 @NgModule({
   declarations: [
@@ -74,6 +79,12 @@ import { InvoicesComponent } from './pages/invoices/invoices.component';
     ErrorPageComponent,
     StudentProfileComponent,
     InvoicesComponent,
+    StaffAttendanceComponent,
+    StaffRootComponent,
+    StaffDashboardComponent,
+    StaffSidebarComponent,
+    StaffTasksComponent,
+    ManageTasksComponent,
   ],
   imports: [
     BrowserModule,

@@ -48,6 +48,12 @@
                                <span class="align-middle">Staff list</span>
                             </a>
                          </li>
+                         <li class="sidebar-item" routerLinkActive="active" *ngIf="hasModules(['staff'])">
+                            <a class="sidebar-link" href="#" routerLink="/admin/attendance">
+                              <i class="fa-solid fa-calendar-check"></i>
+                               <span class="align-middle">Attendance</span>
+                            </a>
+                         </li>
                          <li class="sidebar-header" *ngIf="hasModules(['staff'])">
                             Salary Details
                          </li>
@@ -77,6 +83,12 @@
                            <a class="sidebar-link" href="#" routerLink="/admin/completed-projects">
                               <i class="fa-solid fa-file-circle-check"></i>
                               <span class="align-middle">Completed</span>
+                           </a>
+                        </li>
+                        <li class="sidebar-item " routerLinkActive="active" *ngIf="hasModules(['project'])">
+                           <a class="sidebar-link" href="#" routerLink="/admin/manage-tasks">
+                              <i class="fa-solid fa-list-check"></i>
+                              <span class="align-middle">Manage Tasks</span>
                            </a>
                         </li>
                         <li class="sidebar-header" *ngIf="hasModules(['course'])">

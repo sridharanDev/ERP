@@ -28,6 +28,11 @@ import { StaffLoginComponent } from './pages/staff-login/staff-login.component';
 import { ErrorPageComponent } from './pages/error-page/error-page.component';
 import { StudentProfileComponent } from './pages/student-profile/student-profile.component';
 import { InvoicesComponent } from './pages/invoices/invoices.component';
+import { StaffAttendanceComponent } from './pages/staff-attendance/staff-attendance.component';
+import { StaffRootComponent } from './pages/staff-pages/staff-root/staff-root.component';
+import { StaffDashboardComponent } from './pages/staff-pages/staff-dashboard/staff-dashboard.component';
+import { StaffTasksComponent } from './pages/staff-pages/staff-tasks/staff-tasks.component';
+import { ManageTasksComponent } from './pages/manage-tasks/manage-tasks.component';
 
 
 
@@ -46,6 +51,7 @@ const routes: Routes = [
       { path: 'students/profile/:id', component: StudentProfileComponent ,canActivate: [AuthGuardService],data: { module: ['course']}},
       { path: 'billing', component: BillingComponent ,canActivate: [AuthGuardService],data: { module: ['course','project']}},
       { path: 'invoices/:type', component: InvoicesComponent ,canActivate: [AuthGuardService],data: { module: ['course']}},
+      { path: 'manage-tasks', component: ManageTasksComponent ,canActivate: [AuthGuardService],data: { module: ['project']}},
       
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       {
@@ -57,6 +63,7 @@ const routes: Routes = [
         ]
         ,canActivate: [AuthGuardService],data: { module: ['staff']}
       },
+      { path: 'attendance', component:StaffAttendanceComponent,canActivate: [AuthGuardService],data: { module: ['staff']} },
       // Make enquiry a child route
       {
         path: 'enquiry',
@@ -80,6 +87,11 @@ const routes: Routes = [
   // Standalone route for the invoice
   { path: 'invoice/:invoice_no', component: InvoiceComponent ,canActivate: [AuthGuardService],data: { module: ['course','project']}},
   {path:'',component:StaffLoginComponent},
+  {path:'profile',component:StaffRootComponent,children:[
+    { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+    {path:'dashboard',component:StaffDashboardComponent},
+    {path:'tasks',component:StaffTasksComponent},
+  ]},
   {path:'**',component:ErrorPageComponent},
 ];
 
