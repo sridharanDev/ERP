@@ -28,7 +28,7 @@ const EditTaskController = async (req,res,next)=>{
         if(description) task.description = description;
         if(project) task.project = project;
         if(staff) task.staff = staff;
-        if(status) task.staff = status;
+        if(status) task.status = status;
         const updatedTask = await task.save();
         res.status(200).json(updatedTask);
     }

@@ -1,32 +1,69 @@
 <div class="d-flex justify-content-between mb-3">
     <h3 class="page-title">Manage Tasks</h3>
     <div class="input-form">
-        <select class="form-select">
-            <option value="today tasks">Today tasks</option>
+        <select class="form-select" (change)="onSelectFilter($event)">
             <option value="all tasks">All Tasks</option>
+            <option value="today tasks">Today tasks</option>
             <option value="pending tasks">Pending Tasks</option>
+            <option value="inProgres tasks">inProgres Tasks</option>
             <option value="completed tasks">Completed Tasks</option>
         </select>
     </div>
 </div>
 <div class="row g-3">
-    <div class="col-6" *ngFor="let item of allTasks">
+    <div class="col-6 task-card" *ngFor="let task of allTasks">
         <div class="card">
             <div class="card-body">
-                <h4>task title</h4>
-                <hr>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque totam veritatis esse magni quibusdam ducimus sint facilis voluptates, saepe cupiditate tenetur velit! Ea nesciunt, temporibus eaque deserunt quis eligendi expedita.</p>
-                <p>Project: <a href="">project name</a></p>
-                <div class="d-flex justify-content-between">
-                    <div>
-                        <span class="badge bg-secondary status">Pending</span>
+                <div>
+                    <div class="d-flex justify-content-between">
+                        <h4>{{task.title}}</h4>
+                        <a style="font-size:20px;" class="text-success" (click)="openModal(editModel,task._id)"><i class="fa-solid fa-square-pen"></i></a>
                     </div>
-                    <div>
-                        <div><i class="fa-solid fa-calendar-days"></i> 2023-08-07</div>
-                        <div><i class="fa-solid fa-clock"></i> 04:30 PM</div>
+                    <hr>
+                    <p class="desc">{{task.description}}</p>
+                </div>
+                <div>
+                    <p >Project: <a [routerLink]="['/project',task.project?task.project._id:'null']">{{task.project?task.project.project_name:"Null"}}</a></p>
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <span class="badge status" [ngClass]="GetStatusColor(task.status)">{{task.status}}</span>
+                        </div>
+                        <div>
+                            <div><i class="fa-solid fa-calendar-days"></i> {{task.createdAt | date:'yyyy-MM-dd'}}</div>
+                            <div><i class="fa-solid fa-clock"></i> {{task.createdAt | date:'H:mm a'}}</div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <div class="col-12 text-center" *ngIf="allTasks.length <= 0">
+        <span style="font-size: 20px;">No task available</span>
+    </div>
 </div>
+
+<ng-template #editModel let-modal>
+    <div class="modal-header">
+        <h3 class="modal-title">Update task status</h3>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+        <div class="modal-body">
+            <div class="input-form">
+                <label for="status">Status</label>
+                <select class="form-select" id="status" name="status" [(ngModel)]="statusInput">
+                    <option value="pending">Pending</option>
+                    <option value="inProgres">inProgres</option>
+                    <option value="completed">Completed</option>
+                </select>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary " (click)="modal.dismiss()" >Cancel</button>
+          <button type="button" class="btn btn-success " (click)="OnStatusEditSumbit()">Save</button>
+
+        </div>
+</ng-template>
+
+<app-loading *ngIf="isLoading"></app-loading>

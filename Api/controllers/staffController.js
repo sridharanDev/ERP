@@ -1,4 +1,5 @@
 const Staff = require("../models/staff");
+const jwt = require("jsonwebtoken");
 
 const CreateStaffController = async (req,res,next) =>{
     try 
@@ -183,10 +184,28 @@ const GetStaffController = async (req,res,next) =>{
     }
 };
 
+const StaffLoginController = async (req,res,next) =>{
+    try
+    {
+        const { staff_id, password } = req.body;   
+        const staff = await Staff.findOne({ staff_id });
+        if (!staff) {
+            return res.status(401).json({ field: "staff_id", error: "Invalid staff ID" });
+        }
+        const token = jwt.sign({ _id: staff._id }, process.env.JWT_SECRET);
+        res.status(200).json({ token:token });
+    }
+    catch(error)
+    {
+        res.status(500).json(error.message); 
+    }
+};
+
 module.exports = {
     CreateStaffController,
     EditStaffController,
     DeleteStaffController,
     GetStaffsController,
     GetStaffController,
+    StaffLoginController,
 };

@@ -6,5 +6,6 @@ router.put("/:id",staffController.EditStaffController);
 router.delete("/:id",staffController.DeleteStaffController);
 router.get("/",staffController.GetStaffsController);
 router.get("/:id",staffController.GetStaffController);
+router.post("/login",staffController.StaffLoginController);
 
 module.exports = router;
