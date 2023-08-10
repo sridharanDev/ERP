@@ -2,6 +2,8 @@ import { Component,OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { StaffService } from 'src/app/services/staff.service';
 import { Router } from '@angular/router';
+import { AttendanceService } from 'src/app/services/attendance.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-staff-navbar',
@@ -12,7 +14,8 @@ export class StaffNavbarComponent
 {
   userProfile:any;
 
-  constructor(private modalService: NgbModal,private staffService:StaffService,private router:Router){}
+  constructor(private modalService: NgbModal,private staffService:StaffService,
+    private router:Router,private attendanceService:AttendanceService,private toastr: ToastrService){}
 
   ngOnInit(): void 
   {
@@ -42,8 +45,24 @@ export class StaffNavbarComponent
 
   OnLogout()
   {
-    this.staffService.clearUserData();
-    this.modalService.dismissAll();
-    this.router.navigate(['']);
+    this.AddAttendance();
+  }
+  
+  AddAttendance()
+  {
+    const staff_id = this.staffService.getUserData().staff_id;
+    const formData = {staff_id:staff_id,status:"logout"};
+    this.attendanceService.AddAttendances(formData).subscribe((res:any)=>{
+      console.log(res);
+      this.staffService.clearUserData();
+      this.modalService.dismissAll();
+      this.router.navigate(['']);
+    },(error)=>{
+      console.log(error);
+      this.toastr.error(error.error.message,"Attendance",{timeOut: 3000,closeButton: true,progressBar: true,},)
+      this.staffService.clearUserData();
+      this.modalService.dismissAll();
+      this.router.navigate(['']);
+    });
   }
 }

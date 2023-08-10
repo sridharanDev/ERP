@@ -84,7 +84,7 @@ export class OngoingProjectsComponent {
   {
     this.isLoading = true;
     $('#datatable').DataTable().destroy();
-    this.projectService.GetProjects("ongoing").subscribe((res:any)=>{
+    this.projectService.GetProjects("status=ongoing").subscribe((res:any)=>{
       this.allProjects = res;
       this.dtTrigger.next(null);
       this.isLoading = false;

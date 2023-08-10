@@ -72,7 +72,7 @@ export class CompletedProjectsComponent {
   {
     this.isLoading = true;
     $('#datatable').DataTable().destroy();
-    this.projectService.GetProjects("completed").subscribe((res:any)=>{
+    this.projectService.GetProjects("status=completed").subscribe((res:any)=>{
       this.allProjects = res;
       this.dtTrigger.next(null);
       this.isLoading = false;

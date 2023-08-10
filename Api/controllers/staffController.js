@@ -193,7 +193,7 @@ const StaffLoginController = async (req,res,next) =>{
             return res.status(401).json({ field: "staff_id", error: "Invalid staff ID" });
         }
         const token = jwt.sign({ _id: staff._id }, process.env.JWT_SECRET);
-        res.status(200).json({ token:token });
+        res.status(200).json({ token:token,staff_id:staff.staff_id });
     }
     catch(error)
     {
@@ -201,7 +201,23 @@ const StaffLoginController = async (req,res,next) =>{
     }
 };
 
-
+const GetStaffProfileController = async (req,res,next) =>{
+    try
+    {
+        const staff = await Staff.findOne({staff_id:req.params.id})
+        .populate({path:"role",select:"name salery"});
+        if(!staff)
+        {
+            return res.status(404).json({message:"staff not found."});
+        }
+        res.json(staff);
+        next();
+    }
+    catch(error)
+    {
+        res.status(500).json(error.message); 
+    }
+};
 
 module.exports = {
     CreateStaffController,
@@ -210,4 +226,5 @@ module.exports = {
     GetStaffsController,
     GetStaffController,
     StaffLoginController,
+    GetStaffProfileController,
 };

@@ -24,6 +24,7 @@ export class AddAdminRoleComponent implements OnInit
     { name: 'project', permissions: [], selected: false },
     { name: 'course', permissions: [], selected: false },
     { name: 'billing', permissions: [], selected: false },
+    { name: 'others', permissions: [], selected: false },
   ];
 
   roleName:String = '';

@@ -28,7 +28,8 @@
                             <div class="dropdown">
                                 <div class="dropdown-menu dropdown-menu-end">
                                     <a class="dropdown-item" (click)="openModal(editRoleModel,project._id)">Staus</a>
-                                    <a class="dropdown-item"  routerLink="/edit-project/{{project._id}}">Edit</a>
+                                    <a class="dropdown-item"  routerLink="/admin/project/{{project._id}}">View</a>
+                                    <a class="dropdown-item"  routerLink="/admin/edit-project/{{project._id}}">Edit</a>
                                     <a class="dropdown-item"  (click)="openModal(deleteStaffModel,project._id)">Delete</a>
                                 </div>
                             </div>  

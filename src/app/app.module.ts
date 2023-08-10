@@ -6,6 +6,9 @@ import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { DataTablesModule } from 'angular-datatables';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -18,6 +21,7 @@ import { LoadingComponent } from './components/loading/loading.component';
 import { AddStaffComponent } from './pages/add-staff/add-staff.component';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
 import { EditStaffComponent } from './pages/edit-staff/edit-staff.component';
+import { AddProjectComponent } from './pages/add-project/add-project.component';
 import { UpcommingProjectsComponent } from './pages/upcomming-projects/upcomming-projects.component';
 import { OngoingProjectsComponent } from './pages/ongoing-projects/ongoing-projects.component';
 import { CompletedProjectsComponent } from './pages/completed-projects/completed-projects.component';
@@ -46,6 +50,13 @@ import { StaffSidebarComponent } from './components/staff-sidebar/staff-sidebar.
 import { StaffTasksComponent } from './pages/staff-pages/staff-tasks/staff-tasks.component';
 import { ManageTasksComponent } from './pages/manage-tasks/manage-tasks.component';
 import { StaffNavbarComponent } from './components/staff-navbar/staff-navbar.component';
+import { ViewProjectComponent } from './pages/view-project/view-project.component';
+import { AttendanceComponent } from './pages/staff-pages/attendance/attendance.component';
+import { AttendanceCalendarComponent } from './components/attendance-calendar/attendance-calendar.component';
+import { EditProjectComponent } from './pages/edit-project/edit-project.component';
+import { IncomeComponent } from './pages/income/income.component';
+import { AssetsComponent } from './pages/assets/assets.component';
+import { ExpenseComponent } from './pages/expense/expense.component';
 
 @NgModule({
   declarations: [
@@ -59,6 +70,7 @@ import { StaffNavbarComponent } from './components/staff-navbar/staff-navbar.com
     AddStaffComponent,
     BreadcrumbComponent,
     EditStaffComponent,
+    AddProjectComponent,
     UpcommingProjectsComponent,
     OngoingProjectsComponent,
     CompletedProjectsComponent,
@@ -87,6 +99,13 @@ import { StaffNavbarComponent } from './components/staff-navbar/staff-navbar.com
     StaffTasksComponent,
     ManageTasksComponent,
     StaffNavbarComponent,
+    ViewProjectComponent,
+    AttendanceComponent,
+    AttendanceCalendarComponent,
+    EditProjectComponent,
+    IncomeComponent,
+    AssetsComponent,
+    ExpenseComponent,
   ],
   imports: [
     BrowserModule,
@@ -98,6 +117,11 @@ import { StaffNavbarComponent } from './components/staff-navbar/staff-navbar.com
     ToastrModule.forRoot(),
     BrowserAnimationsModule,
     DataTablesModule,
+    CalendarModule.forRoot({
+      provide: DateAdapter,
+      useFactory: adapterFactory,
+    }),
+    NgMultiSelectDropDownModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent]

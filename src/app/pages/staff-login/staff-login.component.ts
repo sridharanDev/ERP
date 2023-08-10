@@ -2,7 +2,9 @@ import { Component,OnInit } from '@angular/core';
 import { FormControl, FormGroup,Validators } from '@angular/forms';
 import { FormValidatorService } from '../../utils/form-validator.service';
 import { StaffService } from 'src/app/services/staff.service';
+import { AttendanceService } from 'src/app/services/attendance.service';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-staff-login',
@@ -19,7 +21,8 @@ export class StaffLoginComponent implements OnInit
     password :new FormControl('',Validators.required),
   });
 
-  constructor(private formValidatorService:FormValidatorService,private staffService:StaffService,private router:Router){}
+  constructor(private formValidatorService:FormValidatorService,private staffService:StaffService,
+    private router:Router,private attendanceService:AttendanceService,private toastr: ToastrService){}
 
   ngOnInit(): void 
   {
@@ -40,9 +43,9 @@ export class StaffLoginComponent implements OnInit
     this.isLoading = true;
     this.staffService.Login(formData).subscribe((res:any)=>{      
       if(res.token)
-      {
-        this.staffService.setUserData(res);
-        this.router.navigate(['profile']);
+      {        
+        this.staffService.setUserData(res);        
+        this.AddAttendance();
       }
       this.isLoading = false;
     },(error)=>{
@@ -52,6 +55,20 @@ export class StaffLoginComponent implements OnInit
       this.isLoading = false;
     });
     
+  }
+
+  AddAttendance()
+  {
+    const staff_id = this.staffService.getUserData().staff_id;
+    const formData = {staff_id:staff_id,status:"login"};
+    this.attendanceService.AddAttendances(formData).subscribe((res:any)=>{
+      console.log(res);
+      this.router.navigate(['profile']);
+    },(error)=>{
+      console.log(error);
+      this.toastr.error(error.error.message,"Attendance",{timeOut: 3000,closeButton: true,progressBar: true,},)
+      this.router.navigate(['profile']);
+    });
   }
 
   isInvalidField(control: any) {

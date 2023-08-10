@@ -1,4 +1,5 @@
 const Project = require("../models/project")
+const Task = require("../models/task");
 
 const CreateProjectCotroller = async(req,res,next) =>
 {
@@ -114,12 +115,20 @@ const GetProjectsController = async (req,res,next)=>{
 const GetProjectController = async (req,res,next)=>{
     try
     {
-        const project = await Project.findById(req.params.id);
+        const project = await Project.findById(req.params.id)
+        .populate({path:"staffs",select:"name staff_id"});
         if(!project)
         {
             return res.status(404).json("project not found.");
         }
-        res.status(200).json(project);
+
+        const tasks = await Task.find({project:project._id});
+        const completedTasks = tasks.filter(task => task.status === "completed");
+        const completionPercentage = ((completedTasks.length / tasks.length) * 100).toFixed(2);
+        const projectObject = project.toObject();
+        projectObject.tasks = tasks;
+        projectObject.completionPercentage = completionPercentage;
+        res.status(200).json(projectObject);
     }
     catch(error)
     {

@@ -1,0 +1,32 @@
+<div class="card">
+    <div class="card-body">
+        <h3 class="page-title">Attendance</h3>
+        <div class="row">
+            <div class="col-6 text-center">
+                <h3>{{ currentTime | date: 'hh:mm:ss a' }}</h3>
+            </div>
+            <div class="col-4">
+                <div class="input-form">
+                    <select name="status" id="status" class="form-select"  [(ngModel)]="selectedAttStatus">
+                        <option value="NA">-- Select Status --</option>
+                        <option value="lunch out">Lunch Out</option>
+                        <option value="lunch in">Lunch In</option>
+                        <option value="break out">Break Out</option>
+                        <option value="break in">Break In</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-2">
+                <button class="btn btn-success" (click)="SubmitAttendance()">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <app-attendance-calendar></app-attendance-calendar>
+    </div>
+      
+</div>
+
+<app-loading *ngIf="isLoading"></app-loading>

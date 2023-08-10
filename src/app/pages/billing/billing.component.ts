@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { InvoiceService } from 'src/app/services/invoice.service';
 import { StudentService } from 'src/app/services/student.service';
 import { CourseService } from 'src/app/services/course.service';
+import { ProjectService } from 'src/app/services/project.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -15,10 +16,11 @@ import { ToastrService } from 'ngx-toastr';
 export class BillingComponent implements OnInit
 {
   constructor(private route:ActivatedRoute,private studentService:StudentService,
-    private invoiceService:InvoiceService,private toastr: ToastrService,
+    private invoiceService:InvoiceService,private toastr: ToastrService,private projectService:ProjectService,
     private courseService:CourseService,private router: Router){}
 
   studentId:any;
+  projectId:any;
   allCourses:any  = [];
 
   invoiceDetails:any = null;
@@ -26,6 +28,7 @@ export class BillingComponent implements OnInit
   ngOnInit(): void 
   {
     const studentId = this.route.snapshot.queryParamMap.get("studentId");
+    const projectId = this.route.snapshot.queryParamMap.get("projectId");
     const invoiceNo = this.route.snapshot.queryParamMap.get("invoiceno");
     this.GetInvoiceNumber();
     const currentDate:any = new Date();
@@ -34,6 +37,11 @@ export class BillingComponent implements OnInit
     {
       this.studentId = studentId;
       this.GetStudentData(studentId);
+    }
+    else if(projectId)
+    {
+      this.projectId = projectId;
+      this.GetProjectData();
     }
     else if(invoiceNo)
     {
@@ -94,6 +102,22 @@ export class BillingComponent implements OnInit
         this.AddToBill(item);        
       }
       this.OnChange();
+    },(error)=>{
+      this.toastr.error(error.error, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
+    });
+  }
+
+  GetProjectData()
+  {
+    this.projectService.GetProject(this.projectId).subscribe((res:any)=>{
+      this.form1.get("customer_name")?.setValue(res.client_name);   
+      this.form1.get("customer_email")?.setValue(res.email);   
+      this.form1.get("customer_mobile")?.setValue(res.mobile);  
+      const courses = res.courses;
+
+      // const item = {name:res.project_name.title,desc:res.note,price:courses[i].fees,amount:courses[i].fees};
+      // this.AddToBill(item);        
+      // this.OnChange();
     },(error)=>{
       this.toastr.error(error.error, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
     });

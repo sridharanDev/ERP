@@ -34,6 +34,13 @@ import { StaffDashboardComponent } from './pages/staff-pages/staff-dashboard/sta
 import { StaffTasksComponent } from './pages/staff-pages/staff-tasks/staff-tasks.component';
 import { ManageTasksComponent } from './pages/manage-tasks/manage-tasks.component';
 import { StaffAuthGuard } from './utils/staff-auth.guard';
+import { ViewProjectComponent } from './pages/view-project/view-project.component';
+import { AttendanceComponent } from './pages/staff-pages/attendance/attendance.component';
+import { AddProjectComponent } from './pages/add-project/add-project.component';
+import { EditProjectComponent } from './pages/edit-project/edit-project.component';
+import { IncomeComponent } from './pages/income/income.component';
+import { AssetsComponent } from './pages/assets/assets.component';
+import { ExpenseComponent } from './pages/expense/expense.component';
 
 
 
@@ -44,15 +51,21 @@ const routes: Routes = [
     children: [
       { path: 'dashboard', component: DashboardComponent ,canActivate: [AuthGuardService],data: { module: ['dashboard']}},
       { path: 'staff-role', component: StaffRoleComponent ,canActivate: [AuthGuardService],data: { module: ['staff']}},
+      { path: 'add-project', component: AddProjectComponent ,canActivate: [AuthGuardService],data: { module: ['staff']}},
+      { path: 'edit-project/:id', component: EditProjectComponent ,canActivate: [AuthGuardService],data: { module: ['staff']}},
       { path: 'upcomming-projects', component: UpcommingProjectsComponent ,canActivate: [AuthGuardService],data: { module: ['staff']}},
       { path: 'ongoing-projects', component: OngoingProjectsComponent ,canActivate: [AuthGuardService],data: { module: ['project']}},
       { path: 'completed-projects', component: CompletedProjectsComponent ,canActivate: [AuthGuardService],data: { module: ['project']}},
+      { path: 'project/:id', component: ViewProjectComponent ,canActivate: [AuthGuardService],data: { module: ['project']}},
       { path: 'courses', component: CoursesComponent ,canActivate: [AuthGuardService],data: { module: ['course']}},
       { path: 'students', component: StudentsComponent ,canActivate: [AuthGuardService],data: { module: ['course']}},
       { path: 'students/profile/:id', component: StudentProfileComponent ,canActivate: [AuthGuardService],data: { module: ['course']}},
       { path: 'billing', component: BillingComponent ,canActivate: [AuthGuardService],data: { module: ['course','project']}},
       { path: 'invoices/:type', component: InvoicesComponent ,canActivate: [AuthGuardService],data: { module: ['course']}},
       { path: 'manage-tasks', component: ManageTasksComponent ,canActivate: [AuthGuardService],data: { module: ['project']}},
+      { path: 'incomes', component: IncomeComponent ,canActivate: [AuthGuardService],data: { module: ['others']}},
+      { path: 'assets', component: AssetsComponent ,canActivate: [AuthGuardService],data: { module: ['others']}},
+      { path: 'expense', component: ExpenseComponent ,canActivate: [AuthGuardService],data: { module: ['others']}},
       
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       {
@@ -92,6 +105,7 @@ const routes: Routes = [
     { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     {path:'dashboard',component:StaffDashboardComponent},
     {path:'tasks',component:StaffTasksComponent},
+    {path:'attendance',component:AttendanceComponent},
   ],canActivate: [StaffAuthGuard]},
   {path:'**',component:ErrorPageComponent},
 ];

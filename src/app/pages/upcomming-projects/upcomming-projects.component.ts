@@ -104,7 +104,7 @@ export class UpcommingProjectsComponent implements OnInit
   {
     this.isLoading = true;
     $('#datatable').DataTable().destroy();
-    this.projectService.GetProjects("upcomming").subscribe((res:any)=>{
+    this.projectService.GetProjects("status=upcomming").subscribe((res:any)=>{
       this.allProjects = res;
       this.dtTrigger.next(null);
       this.isLoading = false;

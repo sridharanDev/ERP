@@ -57,8 +57,8 @@
         </button>
       </div>
         <div class="modal-body">
-            <div class="form-group m-t-20 ">
-                <label>Status</label>mb-3
+            <div class="form-group m-t-20 mb-3">
+                <label>Status</label>
                 <select name="" class="form-select" #status_select [(ngModel)]="statsuField">
                     <option value="NA">-- Select Status --</option>
                     <option value="call back">Call back</option>
@@ -72,8 +72,16 @@
                 <label>Staff</label>
                 <select name="" class="form-select"  [(ngModel)]="staffField">
                     <option value="NA">-- Select Staff --</option>
-                    <option value="{{staff._id}}" *ngFor="let staff of allStaffs;">{{staff.name}}</option>
+                    <option value="{{staff._id}}" *ngFor="let staff of allStaffs;">{{staff.title}}</option>
                 </select>
+                <!-- <ng-multiselect-dropdown
+                [data]="allStaffs"
+                placeholder="Select Staffs"
+                [settings]="dropdownSettings"
+                (onSelect)="onItemSelect($event)"
+                (onDeSelect)="onItemDeSelect($event)"
+                >
+                </ng-multiselect-dropdown> -->
             </div>
         </div>
         <div class="modal-footer">

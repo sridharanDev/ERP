@@ -45,6 +45,10 @@ export class StaffService {
       return this.http.get(environment.apiBaseUrl + 'staffs/'+_id);
     }
 
+    GetProfile(_id:any) {
+      return this.http.get(environment.apiBaseUrl + 'staffs/profile/'+_id);
+    }
+
     CreateStaff(formData:any): Observable<any> {
       return this.http.post(environment.apiBaseUrl + 'staffs',formData); 
     }

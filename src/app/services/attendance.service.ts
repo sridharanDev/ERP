@@ -10,9 +10,19 @@ export class AttendanceService {
 
   constructor(private http: HttpClient) { }
 
+  AddAttendances(formData:any):Observable<any>
+  {
+    return this.http.post(environment.apiBaseUrl + 'attendance',formData); 
+  }
+
   GetAttendances():Observable<any>
   {
     return this.http.get(environment.apiBaseUrl + 'attendance'); 
+  }
+
+  GetStaffAttendances(_id:any):Observable<any>
+  {
+    return this.http.get(environment.apiBaseUrl + 'attendance/staff/'+_id); 
   }
 
   DeleteAttendance(_id:any):Observable<any>

@@ -30,6 +30,7 @@ app.use("/api/invoices",require("./routes/invoice.route"));
 app.use("/api/salaries",require("./routes/saleryDetails.route"));
 app.use("/api/admin",require("./routes/admin.route"));
 app.use("/api/tasks",require("./routes/task.route"));
+app.use("/api/expenses",require("./routes/expense.route"));
 
 
 app.use("/api/validate-token",require("./routes/validate.route"));

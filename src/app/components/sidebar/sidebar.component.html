@@ -121,6 +121,33 @@
                               <span class="align-middle">Courses invoices</span>
                            </a>
                         </li>
+                        <li class="sidebar-header" *ngIf="hasModules(['others'])">
+                           Others
+                        </li>
+                        <li class="sidebar-item " routerLinkActive="active" *ngIf="hasModules(['others'])">
+                           <a class="sidebar-link" href="#" routerLink="/admin/incomes">
+                              <i class="fa-solid fa-money-bill-transfer"></i>
+                              <span class="align-middle">Incomes</span>
+                           </a>
+                        </li>
+                        <li class="sidebar-header" *ngIf="hasModules(['others'])">
+                           Assest
+                        </li>
+                        <li class="sidebar-item " routerLinkActive="active" *ngIf="hasModules(['others'])">
+                           <a class="sidebar-link" href="#" routerLink="/admin/assets">
+                              <i class="fa-solid fa-cubes"></i>
+                              <span class="align-middle">Assets List</span>
+                           </a>
+                        </li>
+                        <li class="sidebar-header" *ngIf="hasModules(['others'])">
+                           Expense
+                        </li>
+                        <li class="sidebar-item " routerLinkActive="active" *ngIf="hasModules(['others'])">
+                           <a class="sidebar-link" href="#" routerLink="/admin/expense">
+                              <i class="fa-solid fa-money-bill-trend-up"></i>
+                              <span class="align-middle">Expense list</span>
+                           </a>
+                        </li>
                       </ul>
                       
                    </div>
