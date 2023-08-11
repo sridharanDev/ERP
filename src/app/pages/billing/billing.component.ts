@@ -22,8 +22,14 @@ export class BillingComponent implements OnInit
   studentId:any;
   projectId:any;
   allCourses:any  = [];
+  allProjects:any  = [];
+
+  oldInvoices:any = [];
+
+  invoiceType:String = "other";
 
   invoiceDetails:any = null;
+  oldTotalPaid:any = 0;
 
   ngOnInit(): void 
   {
@@ -37,17 +43,23 @@ export class BillingComponent implements OnInit
     {
       this.studentId = studentId;
       this.GetStudentData(studentId);
+      this.form1.get("refrenece")?.setValue(studentId);
+      this.invoiceType = "course";
     }
     else if(projectId)
     {
       this.projectId = projectId;
       this.GetProjectData();
+      this.form1.get("refrenece")?.setValue(projectId);
+      this.invoiceType = "project";
     }
     else if(invoiceNo)
     {
       this.GetInvoice(invoiceNo);
     }
     this.GetCourses();
+    this.GetAllProjects();
+    this.GetOldInvoices();
   }
   
   GetInvoiceNumber()
@@ -67,6 +79,7 @@ export class BillingComponent implements OnInit
     customer_name :new FormControl('',Validators.required),
     customer_email :new FormControl(''),
     customer_mobile :new FormControl('',Validators.required),
+    refrenece:new FormControl(),
   });
   form2 = new FormGroup({
     type :new FormControl('NA'),
@@ -83,7 +96,7 @@ export class BillingComponent implements OnInit
     discount :new FormControl(0),
     net_total :new FormControl(0),
     pay_type :new FormControl('NA'),
-    paid :new FormControl(0),
+    paid :new FormControl(0,Validators.required),
     balance :new FormControl(0),
     remider_date :new FormControl(''),
   });
@@ -132,6 +145,15 @@ export class BillingComponent implements OnInit
     });
   }
 
+  GetAllProjects()
+  {
+    this.projectService.GetProjects("").subscribe((res:any)=>{
+      this.allProjects = res;      
+    },(error)=>{
+      this.toastr.error(error.error, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
+    });
+  }
+
   GetInvoice(invoiceNo:any)
   {
     this.invoiceService.GetInvoice(invoiceNo).subscribe((res:any)=>{
@@ -174,7 +196,7 @@ export class BillingComponent implements OnInit
       const item = this.billList[i];
       total += item.price;  
     }
-    return total;
+    return total - this.oldTotalPaid ;
   }
 
   CalculateTax()
@@ -231,41 +253,55 @@ export class BillingComponent implements OnInit
     this.OnChange();
   }
 
-  SelectType(type:any)
-  {
-    if(type == "courses")
-    {
-      return true;
-    }
-    else
-    {
-      return false;
-    }
-  }
 
   AddItemSubmit()
   {
     const _id = this.form2.value.option;
+    const type = this.form2.value.type;
     var selected = null;
-    for (let i = 0; i < this.allCourses.length; i++) 
+    if(type === "course")
     {
-      if(this.allCourses[i]._id == _id)
+      for (let i = 0; i < this.allCourses.length; i++) 
       {
-        selected = this.allCourses[i];
-        break;
+        if(this.allCourses[i]._id == _id)
+        {
+          selected = this.allCourses[i];
+          break;
+        }
       }
+      if(selected)
+      {
+        const item = {name:selected.title,desc:selected.description,price:selected.fees,amount:selected.fees};
+        this.AddToBill(item);
+      }    
     }
-    if(selected)
+    else if(type === "project")
     {
-      const item = {name:selected.title,desc:selected.description,price:selected.fees,amount:selected.fees};
-      this.AddToBill(item);
-    }    
+      for (let i = 0; i < this.allProjects.length; i++) 
+      {
+        if(this.allProjects[i]._id == _id)
+        {
+          selected = this.allProjects[i];
+          break;
+        }
+      }
+      if(selected)
+      {
+        const item = {name:selected.project_name,desc:selected.description,price:0,amount:0};
+        this.AddToBill(item);
+      }    
+    }
+    
     this.OnChange();
   }
 
   OnPrintSubmit()
   {
-    const type = {type:"course",student_id:this.studentId};
+    if(this.form1.invalid || this.form3.invalid)
+    {
+      return;
+    }
+    const type = {type:this.invoiceType,student_id:this.studentId};
     const items = {items:this.billList};
     const formData = Object.assign({},items,type,this.form1.value,this.form3.value);
     
@@ -290,7 +326,14 @@ export class BillingComponent implements OnInit
   }
   OnSaveSubmit()
   {
-    const type = {type:"course",student_id:this.studentId};
+
+    if(this.form1.invalid || this.form3.invalid)
+    {
+    
+      return;
+    }
+
+    const type = {type:this.invoiceType,student_id:this.studentId};
     const items = {items:this.billList};
     const formData = Object.assign({},items,type,this.form1.value,this.form3.value);
     
@@ -314,6 +357,29 @@ export class BillingComponent implements OnInit
     }
   }
 
+  EditPriceInList(index:any,event:any)
+  {
+    const item = this.billList[index];
+    item.price = Number(event.target.value);
+    item.amount = Number(event.target.value);
+    this.OnChange();
+  }
 
+  GetOldInvoices()
+  {
+    const query = "refrenece="+this.form1.value.refrenece;
+    this.invoiceService.GetInvoices(query).subscribe((res:any)=>{
+      this.oldInvoices = res;
+      let totalPaid = 0;
+      for(let invoice of this.oldInvoices)
+      {
+        totalPaid += invoice.paid;
+      }
+      this.oldTotalPaid = totalPaid;
+      this.OnChange();
+    },(error)=>{
+      console.log(error);
+    });
+  }
 
 }

@@ -50,7 +50,8 @@
                         <label for="">Type</label>
                         <select name="" class="form-select" formControlName="type">
                             <option value="NA">-- Select Type --</option>
-                            <option value="courses">Cources</option>
+                            <option value="course">Cources</option>
+                            <option value="project">Projects</option>
                         </select>
                     </div>
                 </div>
@@ -59,8 +60,11 @@
                         <label for="">Option</label>
                         <select name="" id="" class="form-select" formControlName="option">
                             <option value="NA">-- Select Option --</option>
-                            <ng-container *ngIf="SelectType(form2.value.type)">
-                                <option value="{{option._id}}" *ngFor="let option of allCourses;">{{option.title ?? option.name}} ({{option.description}})</option>
+                            <ng-container *ngIf="form2.value.type === 'course'">
+                                <option value="{{option._id}}" *ngFor="let option of allCourses;">{{option.title}} ({{option.description}})</option>
+                            </ng-container>
+                            <ng-container *ngIf="form2.value.type === 'project'">
+                                <option value="{{option._id}}" *ngFor="let option of allProjects;">{{option.project_name}}</option>
                             </ng-container>
                         </select>
                     </div>
@@ -75,7 +79,7 @@
 
 <div class="row g-2">
     <div class="col-7">
-        <div class="card">
+        <div class="card ">
             <div class="card-body">
                 <table id="zero_config" class="table table-striped table-bordered">
                     <thead class="">
@@ -91,8 +95,8 @@
                         <tr *ngFor="let item of billList;index as i;">
                             <td>{{i + 1}}</td>
                             <td><strong>{{item.name}}</strong><br>{{item.desc}}</td>
-                            <td>₹{{item.price}}</td>
-                            <td>₹{{item.amount}}</td>
+                            <td><input type="number" class="form-control form-control-sm" [value]="item.price" (keyup)="EditPriceInList(i,$event)" (change)="EditPriceInList(i,$event)"></td>
+                            <td>{{item.amount | currency: 'INR' : 'symbol-narrow': '1.0-0'}}</td>
                             <td><button class="btn btn-danger btn-sm" (click)="RemoveFromBill(i)"><i class="fa-solid fa-trash"></i></button></td>
                         </tr>                        
                     </tbody>
@@ -203,6 +207,28 @@
                         <button class=" btn btn-success w-100" (click)="OnSaveSubmit()"><i class="fa-solid fa-floppy-disk"></i> {{invoiceDetails? "Update" :"Save"}}</button>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-7" *ngIf="oldInvoices.length > 0">
+        <div class="card">
+            <div class="card-body">
+                <table id="zero_config" class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>S.No</th>
+                            <th>Invoice No</th>
+                            <th>Paid</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let invoice of oldInvoices;index as i;">
+                            <td>{{i+1}}</td>
+                            <td>{{invoice.invoice_no}}</td>
+                            <td>{{invoice.paid | currency: 'INR' : 'symbol-narrow': '1.0-0'}}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

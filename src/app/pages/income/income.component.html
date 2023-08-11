@@ -112,22 +112,26 @@
                             <select class="form-select" name="incomeType" [(ngModel)]="incomeType">
                                 <option value="NA">-- Select Type --</option>
                                 <option value="Project">Projects</option>
-                                <option value="Course">Courses</option>
+                                <option value="Intern">Intern</option>
+                                <option value="Rent">Rent</option>
                             </select>
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="form-group m-t-20">
-                            <label>Entity</label>
-                            <select class="form-select">
-                                <option value="NA">-- Select Entity --</option>
-                                <ng-container *ngIf="incomeType === 'Project'">
-                                    <option value="{{project._id}}" *ngFor="let project of allProjects">{{project.project_name}}</option>
-                                </ng-container>
-                                <ng-container *ngIf="incomeType === 'Course'">
-                                    <option value="{{course._id}}" *ngFor="let course of allCourses">{{course.title}}</option>
-                                </ng-container>
-                            </select>
+                            <ng-container *ngIf="incomeType != 'Intern' && incomeType != 'Rent'">
+                                <label>Entity</label>
+                                <select class="form-select" >
+                                    <option value="NA">-- Select Entity --</option>
+                                    <ng-container *ngIf="incomeType === 'Project'">
+                                        <option value="{{project._id}}" *ngFor="let project of allProjects">{{project.project_name}}</option>
+                                    </ng-container>
+                                </select>
+                            </ng-container>
+                            <ng-container *ngIf="incomeType === 'Intern' || incomeType === 'Rent'">
+                                <label>Name</label>
+                                <input type="text" class="form-control" placeholder="Name">
+                            </ng-container>
                         </div>
                     </div>
                 </div>

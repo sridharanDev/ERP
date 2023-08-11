@@ -4,6 +4,7 @@ import { InvoiceService } from 'src/app/services/invoice.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-invoices',
@@ -24,9 +25,17 @@ export class InvoicesComponent implements OnInit
 
   constructor(private route:ActivatedRoute,private invoiceService:InvoiceService,
     private modalService: NgbModal,private toastr: ToastrService){}
+    
   ngOnInit(): void 
   {
-    this.invoiceType = this.route.snapshot.params["type"];
+    this.route.params.pipe(
+      switchMap(params => {
+        this.invoiceType = params['type'];
+        return this.route.data;
+      })
+    ).subscribe(data => {
+      this.handleRouteLogic();
+    });
     this.dtOptions = {
       pagingType: 'full_numbers',
       pageLength: 10,
@@ -43,10 +52,15 @@ export class InvoicesComponent implements OnInit
         },
       ]
     };
+  }
+  
+  handleRouteLogic()
+  {
     if(this.invoiceType)
     {
       this.GetAllInvoices();
     }
+    
   }
   openModal(component:any,invoiceId:any)
   {

@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
 
 const invoiceSchema  = new mongoose.Schema({
+    refrenece: {
+        type: mongoose.Schema.Types.ObjectId, 
+    },
     type: {
         type: String,
         required: true,

@@ -41,6 +41,9 @@ import { EditProjectComponent } from './pages/edit-project/edit-project.componen
 import { IncomeComponent } from './pages/income/income.component';
 import { AssetsComponent } from './pages/assets/assets.component';
 import { ExpenseComponent } from './pages/expense/expense.component';
+import { ExpenseTypeComponent } from './pages/expense-type/expense-type.component';
+import { AssetsTypeComponent } from './pages/assets-type/assets-type.component';
+import { ScheduleComponent } from './pages/schedule/schedule.component';
 
 
 
@@ -51,6 +54,7 @@ const routes: Routes = [
     children: [
       { path: 'dashboard', component: DashboardComponent ,canActivate: [AuthGuardService],data: { module: ['dashboard']}},
       { path: 'staff-role', component: StaffRoleComponent ,canActivate: [AuthGuardService],data: { module: ['staff']}},
+      { path: 'schedule', component: ScheduleComponent ,canActivate: [AuthGuardService],data: { module: ['staff']}},
       { path: 'add-project', component: AddProjectComponent ,canActivate: [AuthGuardService],data: { module: ['staff']}},
       { path: 'edit-project/:id', component: EditProjectComponent ,canActivate: [AuthGuardService],data: { module: ['staff']}},
       { path: 'upcomming-projects', component: UpcommingProjectsComponent ,canActivate: [AuthGuardService],data: { module: ['staff']}},
@@ -64,8 +68,10 @@ const routes: Routes = [
       { path: 'invoices/:type', component: InvoicesComponent ,canActivate: [AuthGuardService],data: { module: ['course']}},
       { path: 'manage-tasks', component: ManageTasksComponent ,canActivate: [AuthGuardService],data: { module: ['project']}},
       { path: 'incomes', component: IncomeComponent ,canActivate: [AuthGuardService],data: { module: ['others']}},
-      { path: 'assets', component: AssetsComponent ,canActivate: [AuthGuardService],data: { module: ['others']}},
-      { path: 'expense', component: ExpenseComponent ,canActivate: [AuthGuardService],data: { module: ['others']}},
+      { path: 'assets-type', component: AssetsTypeComponent ,canActivate: [AuthGuardService],data: { module: ['assets']}},
+      { path: 'assets', component: AssetsComponent ,canActivate: [AuthGuardService],data: { module: ['assets']}},
+      { path: 'expense-type', component: ExpenseTypeComponent ,canActivate: [AuthGuardService],data: { module: ['expenses']}},
+      { path: 'expense', component: ExpenseComponent ,canActivate: [AuthGuardService],data: { module: ['expenses']}},
       
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       {

@@ -1,1 +1,172 @@
-<p>assets works!</p>
+<div class="card">
+    <div class="card-body">
+        <div class="d-flex justify-content-between mb-3">
+            <h5 class="card-title">Assets</h5>
+            <button class="btn btn-sm btn-success" (click)="openModal(createModel,null)">Create asset</button>
+        </div>
+        <div class="">
+            <table id="datatable" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-striped table-bordered w-100">
+                <thead class="">
+                    <tr>
+                        <th>S.No</th>
+                        <th>Type</th>
+                        <th>Name</th>
+                        <th>Asset ID</th>
+                        <th>To</th>
+                        <th>Note</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let asset of allAssets;index as i;">
+                        <td>{{i + 1}}</td>
+                        <td>{{asset.type.name}}</td>
+                        <td>{{asset.name}}</td>
+                        <td>{{asset.asset_id}}</td>
+                        <td>{{asset.to}}</td>
+                        <td>{{asset.note}}</td>
+                        <td>{{asset.status}}</td>
+                        <td style="width: 50px; text-align: center;">
+                            <button type="button" class="btn btn-primary btn-sm me-2" data-bs-toggle="dropdown">Action</button>     
+                            <div class="dropdown">
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <a class="dropdown-item" (click)="openModal(editModel,asset._id)">Edit</a>
+                                    <a class="dropdown-item" (click)="openModal(deleteModel,asset._id)">Delete</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                </tbody>
+                
+            </table>
+        </div>
+
+    </div>
+</div>
+
+<ng-template #createModel let-modal>
+    <div class="modal-header">
+        <h3 class="modal-title">Create Asset</h3>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form [formGroup]="assetForm" (ngSubmit)="OnCreateSumbit()">
+          <div class="modal-body">
+            <div class="form-input">
+                <label for="">Type</label>
+                <select class="form-select" formControlName="type" [ngClass]="{'is-invalid': isInvalidField(assetForm.get('type'))}">
+                  <option value="{{type._id}}" *ngFor="let type of allTypes">{{type.name}}</option>
+                </select>
+            </div>
+            <div class="form-input">
+                <label for="">Name</label>
+                <input type="text" class="form-control" formControlName="name" [ngClass]="{'is-invalid': isInvalidField(assetForm.get('name'))}">
+            </div>
+            <div class="row g-2">
+                <div class="col-6">
+                    <div class="form-input">
+                        <label for="">Asset ID</label>
+                        <input type="text" class="form-control" formControlName="asset_id" [ngClass]="{'is-invalid': isInvalidField(assetForm.get('asset_id'))}">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-input">
+                        <label for="">To</label>
+                        <input type="text" class="form-control" formControlName="to" [ngClass]="{'is-invalid': isInvalidField(assetForm.get('to'))}">
+                    </div>
+                </div>
+            </div>
+            <div class="form-input">
+                <label for="">Note</label>
+                <textarea  cols="30" rows="5" class="form-control" formControlName="note" [ngClass]="{'is-invalid': isInvalidField(assetForm.get('note'))}"></textarea>
+            </div>
+            <div class="form-input">
+              <label for="">Type</label>
+              <select class="form-select" formControlName="status" [ngClass]="{'is-invalid': isInvalidField(assetForm.get('status'))}">
+                  <option value="Y">Y</option>
+                  <option value="Y">N</option>
+              </select>
+          </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary " (click)="modal.dismiss()" >Cancel</button>
+            <button type="submit" class="btn btn-success" >Create</button>
+          </div>
+      </form>
+</ng-template>
+
+<ng-template #editModel let-modal>
+    <div class="modal-header">
+        <h3 class="modal-title">Edit Asset</h3>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form [formGroup]="assetForm" (ngSubmit)="OnEditSumbit()">
+          <div class="modal-body">
+              <div class="form-input">
+                  <label for="">Type</label>
+                  <select class="form-select" formControlName="type" [ngClass]="{'is-invalid': isInvalidField(assetForm.get('type'))}">
+                    <option value="{{type._id}}" *ngFor="let type of allTypes">{{type.name}}</option>
+                  </select>
+              </div>
+              <div class="form-input">
+                  <label for="">Name</label>
+                  <input type="text" class="form-control" formControlName="name" [ngClass]="{'is-invalid': isInvalidField(assetForm.get('name'))}">
+              </div>
+              <div class="row">
+                <div class="col-6">
+                    <div class="form-input">
+                        <label for="">Asset ID</label>
+                        <input type="text" class="form-control" formControlName="asset_id" [ngClass]="{'is-invalid': isInvalidField(assetForm.get('asset_id'))}">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-input">
+                        <label for="">To</label>
+                        <input type="text" class="form-control" formControlName="to" [ngClass]="{'is-invalid': isInvalidField(assetForm.get('to'))}">
+                    </div>
+                </div>
+            </div>
+              <div class="form-input">
+                  <label for="">Note</label>
+                  <textarea  cols="30" rows="5" class="form-control" formControlName="note" [ngClass]="{'is-invalid': isInvalidField(assetForm.get('note'))}"></textarea>
+              </div>
+              <div class="form-input">
+                <label for="">Type</label>
+                <select class="form-select" formControlName="status" [ngClass]="{'is-invalid': isInvalidField(assetForm.get('status'))}">
+                    <option value="Y">Y</option>
+                    <option value="Y">N</option>
+                </select>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary " (click)="modal.dismiss()" >Cancel</button>
+            <button type="submit" class="btn btn-warning" >Update</button>
+          </div>
+      </form>
+</ng-template>
+
+
+<ng-template #deleteModel let-modal>
+    <div class="modal-header">
+        <h3 class="modal-title">Delete Asset</h3>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form >
+          <div class="modal-body">
+              <p>Do you want to delete this asset.</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary " (click)="modal.dismiss()" >Cancel</button>
+            <button type="submit" class="btn btn-danger" (click)="OnDeleteSubmit()" >Delete</button>
+          </div>
+      </form>
+</ng-template>
+
+<app-loading *ngIf="isLoading"></app-loading>

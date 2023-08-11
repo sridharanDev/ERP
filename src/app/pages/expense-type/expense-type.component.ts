@@ -7,26 +7,21 @@ import { ExpenseService } from 'src/app/services/expense.service';
 import { Subject } from 'rxjs';
 
 @Component({
-  selector: 'app-expense',
-  templateUrl: './expense.component.html',
-  styleUrls: ['./expense.component.css']
+  selector: 'app-expense-type',
+  templateUrl: './expense-type.component.html',
+  styleUrls: ['./expense-type.component.css']
 })
-export class ExpenseComponent implements OnInit
+export class ExpenseTypeComponent implements OnInit
 {
-  allTypes:any = [];
-  allExpenses:any = [];
-  expenseId:any;
+  types:any = [];
+  typeId:any;
   isLoading:boolean = false;
 
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<any> = new Subject<any>();
 
-
-  expenseForm = new FormGroup({
-    type :new FormControl('',Validators.required),
-    date :new FormControl('',Validators.required),
-    amount :new FormControl(0,Validators.required),
-    note :new FormControl(''),
+  typeForm = new FormGroup({
+    name :new FormControl('',Validators.required),
   });
 
   constructor(private expenseService:ExpenseService,private modalService: NgbModal,
@@ -37,26 +32,25 @@ export class ExpenseComponent implements OnInit
     this.dtOptions = {
       pagingType: 'full_numbers',
       pageLength: 10,
-      columnDefs :[
-        {
-          targets:[0],
-          width:'10px'
-        },
-        {
-          targets:[5],
-          width:'10px',
-          orderable: false,
-          searchable: false,
-        },
-      ]
-    };  
-    this.GetAllTypes();
-    this.GetAllExpenses();
+    columnDefs :[
+      {
+        targets:[0],
+        width:'10px'
+      },
+      {
+        targets:[2],
+        width:'10px',
+        orderable: false,
+        searchable: false,
+      },
+    ]
+  };
+    this.GetAllTypes(); 
   }
 
-  openModal(component:any,expenseId:any)
+  openModal(component:any,typeId:any)
   {
-    this.expenseId = expenseId;
+    this.typeId = typeId;
     const modalRef = this.modalService.open(component,{
       size: 'md',
       windowClass: 'modal',
@@ -64,12 +58,11 @@ export class ExpenseComponent implements OnInit
       backdrop: 'static',
       keyboard: false,
     });
-    this.expenseForm.reset();
-    if(this.expenseId)
+    this.typeForm.reset();
+    if(this.typeId)
     {
-      this.expenseService.GetExpense(this.expenseId).subscribe((res:any)=>{
-        this.expenseForm.patchValue(res);
-        this.expenseForm.get("date")?.setValue(new Date(res.date).toISOString().substring(0, 10));        
+      this.expenseService.GetType(this.typeId).subscribe((res:any)=>{
+        this.typeForm.patchValue(res);
       },(error)=>{
         this.toastr.error(error.message, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
       });
@@ -78,19 +71,10 @@ export class ExpenseComponent implements OnInit
 
   GetAllTypes()
   {
-    this.expenseService.GetTypes().subscribe((res:any)=>{
-      this.allTypes = res;
-    },(error)=>{
-      this.toastr.error(error.message, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
-    });
-  }
-
-  GetAllExpenses()
-  {
     this.isLoading = true;
     $('#datatable').DataTable().destroy();
-    this.expenseService.GetExpenses().subscribe((res:any)=>{
-      this.allExpenses = res;
+    this.expenseService.GetTypes().subscribe((res:any)=>{
+      this.types = res;
       this.dtTrigger.next(null);
       this.isLoading = false;
     },(error)=>{
@@ -101,17 +85,17 @@ export class ExpenseComponent implements OnInit
 
   OnCreateSumbit()
   {
-    if(this.expenseForm.invalid)
+    if(this.typeForm.invalid)
     {
-      this.formValidatorService.markFormGroupTouched(this.expenseForm);
+      this.formValidatorService.markFormGroupTouched(this.typeForm);
       return;
     }
-    const formData = this.expenseForm.value;
+    const formData = this.typeForm.value;
     this.isLoading = true;
-    this.expenseService.CreateExpense(formData).subscribe((res:any)=>{
-      this.GetAllExpenses();
+    this.expenseService.CreateType(formData).subscribe((res:any)=>{
+      this.GetAllTypes();
       this.modalService.dismissAll();
-      this.toastr.success('New expense created successfully.', 'Create expense',{timeOut: 3000,closeButton: true,progressBar: true,},);
+      this.toastr.success('New type created successfully.', 'Create type',{timeOut: 3000,closeButton: true,progressBar: true,},);
       this.isLoading = false;
     },(error)=>{
       this.toastr.error(error.message, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
@@ -121,17 +105,17 @@ export class ExpenseComponent implements OnInit
 
   OnEditSumbit()
   {
-    if(this.expenseForm.invalid)
+    if(this.typeForm.invalid)
     {
-      this.formValidatorService.markFormGroupTouched(this.expenseForm);
+      this.formValidatorService.markFormGroupTouched(this.typeForm);
       return;
     }
-    const formData = this.expenseForm.value;
+    const formData = this.typeForm.value;
     this.isLoading = true;
-    this.expenseService.EditExpense(this.expenseId,formData).subscribe((res:any)=>{
-      this.GetAllExpenses();
+    this.expenseService.EditType(this.typeId,formData).subscribe((res:any)=>{
+      this.GetAllTypes();
       this.modalService.dismissAll();
-      this.toastr.warning('Expense updated successfully.', 'Edit expense',{timeOut: 3000,closeButton: true,progressBar: true,},);
+      this.toastr.warning('Type updated successfully.', 'Edit type',{timeOut: 3000,closeButton: true,progressBar: true,},);
       this.isLoading = false;
     },(error)=>{
       this.toastr.error(error.message, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
@@ -142,10 +126,10 @@ export class ExpenseComponent implements OnInit
   OnDeleteSubmit()
   {
     this.isLoading = true;
-    this.expenseService.DeleteExpense(this.expenseId).subscribe((res:any)=>{
-      this.GetAllExpenses();
+    this.expenseService.DeleteType(this.typeId).subscribe((res:any)=>{
+      this.GetAllTypes();
       this.modalService.dismissAll();
-      this.toastr.error('Expense deleted successfully.', 'Delete expense',{timeOut: 3000,closeButton: true,progressBar: true,},);
+      this.toastr.error('Type deleted successfully.', 'Delete type',{timeOut: 3000,closeButton: true,progressBar: true,},);
       this.isLoading = false;
     },(error)=>{
       this.toastr.error(error.message, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);

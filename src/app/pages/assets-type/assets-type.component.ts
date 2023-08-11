@@ -7,28 +7,21 @@ import { AssetService } from 'src/app/services/asset.service';
 import { Subject } from 'rxjs';
 
 @Component({
-  selector: 'app-assets',
-  templateUrl: './assets.component.html',
-  styleUrls: ['./assets.component.css']
+  selector: 'app-assets-type',
+  templateUrl: './assets-type.component.html',
+  styleUrls: ['./assets-type.component.css']
 })
-export class AssetsComponent implements OnInit
+export class AssetsTypeComponent implements OnInit
 {
-  allTypes:any = [];
-  allAssets:any = [];
-  expenseId:any;
+  types:any = [];
+  typeId:any;
   isLoading:boolean = false;
 
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<any> = new Subject<any>();
 
-
-  assetForm = new FormGroup({
-    type :new FormControl('',Validators.required),
+  typeForm = new FormGroup({
     name :new FormControl('',Validators.required),
-    asset_id :new FormControl('',Validators.required),
-    to :new FormControl('',Validators.required),
-    note :new FormControl(''),
-    status :new FormControl('',Validators.required),
   });
 
   constructor(private assetService:AssetService,private modalService: NgbModal,
@@ -39,26 +32,25 @@ export class AssetsComponent implements OnInit
     this.dtOptions = {
       pagingType: 'full_numbers',
       pageLength: 10,
-      columnDefs :[
-        {
-          targets:[0],
-          width:'10px'
-        },
-        {
-          targets:[5],
-          width:'10px',
-          orderable: false,
-          searchable: false,
-        },
-      ]
-    };  
-    this.GetAllTypes();
-    this.GetAllAssets();
+    columnDefs :[
+      {
+        targets:[0],
+        width:'10px'
+      },
+      {
+        targets:[2],
+        width:'10px',
+        orderable: false,
+        searchable: false,
+      },
+    ]
+  };
+    this.GetAllTypes(); 
   }
 
-  openModal(component:any,expenseId:any)
+  openModal(component:any,typeId:any)
   {
-    this.expenseId = expenseId;
+    this.typeId = typeId;
     const modalRef = this.modalService.open(component,{
       size: 'md',
       windowClass: 'modal',
@@ -66,11 +58,11 @@ export class AssetsComponent implements OnInit
       backdrop: 'static',
       keyboard: false,
     });
-    this.assetForm.reset();
-    if(this.expenseId)
+    this.typeForm.reset();
+    if(this.typeId)
     {
-      this.assetService.GetAsset(this.expenseId).subscribe((res:any)=>{
-        this.assetForm.patchValue(res);
+      this.assetService.GetType(this.typeId).subscribe((res:any)=>{
+        this.typeForm.patchValue(res);
       },(error)=>{
         this.toastr.error(error.message, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
       });
@@ -79,19 +71,10 @@ export class AssetsComponent implements OnInit
 
   GetAllTypes()
   {
-    this.assetService.GetTypes().subscribe((res:any)=>{
-      this.allTypes = res;
-    },(error)=>{
-      this.toastr.error(error.message, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
-    });
-  }
-
-  GetAllAssets()
-  {
     this.isLoading = true;
     $('#datatable').DataTable().destroy();
-    this.assetService.GetAssets().subscribe((res:any)=>{
-      this.allAssets = res;
+    this.assetService.GetTypes().subscribe((res:any)=>{
+      this.types = res;
       this.dtTrigger.next(null);
       this.isLoading = false;
     },(error)=>{
@@ -102,17 +85,17 @@ export class AssetsComponent implements OnInit
 
   OnCreateSumbit()
   {
-    if(this.assetForm.invalid)
+    if(this.typeForm.invalid)
     {
-      this.formValidatorService.markFormGroupTouched(this.assetForm);
+      this.formValidatorService.markFormGroupTouched(this.typeForm);
       return;
     }
-    const formData = this.assetForm.value;
+    const formData = this.typeForm.value;
     this.isLoading = true;
-    this.assetService.CreateAsset(formData).subscribe((res:any)=>{
-      this.GetAllAssets();
+    this.assetService.CreateType(formData).subscribe((res:any)=>{
+      this.GetAllTypes();
       this.modalService.dismissAll();
-      this.toastr.success('New asset created successfully.', 'Create asset',{timeOut: 3000,closeButton: true,progressBar: true,},);
+      this.toastr.success('New type created successfully.', 'Create type',{timeOut: 3000,closeButton: true,progressBar: true,},);
       this.isLoading = false;
     },(error)=>{
       this.toastr.error(error.message, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
@@ -122,17 +105,17 @@ export class AssetsComponent implements OnInit
 
   OnEditSumbit()
   {
-    if(this.assetForm.invalid)
+    if(this.typeForm.invalid)
     {
-      this.formValidatorService.markFormGroupTouched(this.assetForm);
+      this.formValidatorService.markFormGroupTouched(this.typeForm);
       return;
     }
-    const formData = this.assetForm.value;
+    const formData = this.typeForm.value;
     this.isLoading = true;
-    this.assetService.EditAsset(this.expenseId,formData).subscribe((res:any)=>{
-      this.GetAllAssets();
+    this.assetService.EditType(this.typeId,formData).subscribe((res:any)=>{
+      this.GetAllTypes();
       this.modalService.dismissAll();
-      this.toastr.warning('Asset updated successfully.', 'Edit asset',{timeOut: 3000,closeButton: true,progressBar: true,},);
+      this.toastr.warning('Type updated successfully.', 'Edit type',{timeOut: 3000,closeButton: true,progressBar: true,},);
       this.isLoading = false;
     },(error)=>{
       this.toastr.error(error.message, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
@@ -143,10 +126,10 @@ export class AssetsComponent implements OnInit
   OnDeleteSubmit()
   {
     this.isLoading = true;
-    this.assetService.DeleteAsset(this.expenseId).subscribe((res:any)=>{
-      this.GetAllAssets();
+    this.assetService.DeleteType(this.typeId).subscribe((res:any)=>{
+      this.GetAllTypes();
       this.modalService.dismissAll();
-      this.toastr.error('Asset deleted successfully.', 'Delete asset',{timeOut: 3000,closeButton: true,progressBar: true,},);
+      this.toastr.error('Type deleted successfully.', 'Delete type',{timeOut: 3000,closeButton: true,progressBar: true,},);
       this.isLoading = false;
     },(error)=>{
       this.toastr.error(error.message, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);

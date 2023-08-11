@@ -20,6 +20,17 @@ export class IncomeComponent implements OnInit
   allProjects:any = [];
   allCourses:any = [];
 
+  incomeForm = new FormGroup({
+    entityType:new FormControl('',Validators.required),
+    entity:new FormControl(''),
+    name:new FormControl(''),
+    from:new FormControl('',Validators.required),
+    to:new FormControl('',Validators.required),
+    amount:new FormControl('',Validators.required),
+    note:new FormControl(''),
+    date:new FormControl('',Validators.required),
+  });
+
   constructor(private modalService: NgbModal,private courseService:CourseService,
     private projectService:ProjectService,private formValidatorService:FormValidatorService,
     private toastr: ToastrService) {}
@@ -27,7 +38,6 @@ export class IncomeComponent implements OnInit
   ngOnInit(): void 
   {
     this.GetAllProjects();
-    this.GetAllCourses();
   }
 
   openLgModal(component:any,incomeId:any)
@@ -67,12 +77,4 @@ export class IncomeComponent implements OnInit
     });
   }
 
-  GetAllCourses()
-  {
-    this.courseService.GetCourses().subscribe((res:any)=>{
-      this.allCourses = res;      
-    },(error)=>{
-
-    });
-  }
 }

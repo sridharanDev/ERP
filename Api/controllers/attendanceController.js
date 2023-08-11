@@ -60,37 +60,83 @@ const GetAttendancesController = async (req,res,next) =>
 
         const staffAttendanceMap = new Map();
         attendances.forEach((attendance) => {
-            const staffId = attendance.staff._id.toString();
-      
-            if (!staffAttendanceMap.has(staffId)) {
-              staffAttendanceMap.set(staffId, {
-                _id:attendance._id,
+            const date = attendance.date.toISOString().split("T")[0];
+            if (!staffAttendanceMap.has(date)) {
+              staffAttendanceMap.set(date, []);
+            }
+            
+            const dateAttendance = staffAttendanceMap.get(date);
+            
+            const existingStaffEntry = dateAttendance.find(
+              (entry) => entry.staff._id.toString() === attendance.staff._id.toString()
+            );
+            
+            if (!existingStaffEntry) {
+              dateAttendance.push({
                 staff: attendance.staff,
                 date: attendance.date,
                 loginTime: null,
                 logoutTime: null,
+                lunchInTime: null, // Add lunch in time
+                lunchOutTime: null, // Add lunch out time
                 totalLoginHours: 0,
+                lunchBreakHours: 0,
               });
             }
-      
-            if (attendance.status === "login") 
+            
+            const staffEntry = dateAttendance.find(
+              (entry) => entry.staff._id.toString() === attendance.staff._id.toString()
+            );
+            
+            if(attendance.status === "login")
             {
-              staffAttendanceMap.get(staffId).loginTime = attendance.date;
-            } 
-            else if (attendance.status === "logout") 
+                if(!staffEntry.loginTime)
+                {
+                    staffEntry.loginTime = attendance.date;
+                }
+            }
+            else if(attendance.status === "logout")
             {
-                const staffEntry = staffAttendanceMap.get(staffId);
-                if (staffEntry.loginTime) {
-                    const loginTime = staffEntry.loginTime.getTime();
-                    const logoutTime = attendance.date.getTime();
-                    const loginHours = (logoutTime - loginTime) / (1000 * 60 * 60); // Calculate login hours
-                    staffEntry.totalLoginHours += loginHours;
-                    staffEntry.totalLoginHours = Number(staffEntry.totalLoginHours.toFixed(2)); // Round to 2 decimal places
+                if(!staffEntry.logoutTime)
+                {
                     staffEntry.logoutTime = attendance.date;
                 }
             }
+            else if(attendance.status === "lunch out")
+            {
+                if(!staffEntry.lunchOutTime)
+                {
+                    staffEntry.lunchOutTime = attendance.date;
+                }
+            }
+            else if(attendance.status === "lunch in")
+            {
+                if(!staffEntry.lunchInTime)
+                {
+                    staffEntry.lunchInTime = attendance.date;
+                }
+            }
+            staffAttendanceMap.forEach((dateAttendance) => {
+                dateAttendance.forEach((staffEntry) => {
+                  const loginTime = staffEntry.loginTime ? staffEntry.loginTime.getTime() : 0;
+                  const logoutTime = staffEntry.logoutTime ? staffEntry.logoutTime.getTime() : 0;
+                  const lunchInTime = staffEntry.lunchInTime ? staffEntry.lunchInTime.getTime() : 0;
+                  const lunchOutTime = staffEntry.lunchOutTime ? staffEntry.lunchOutTime.getTime() : 0;
+              
+                  const loginHours = logoutTime != 0 ?(logoutTime - loginTime) / (1000 * 60 * 60) : 0;
+                  const lunchBreakHours = lunchOutTime != 0 ? (lunchInTime - lunchOutTime) / (1000 * 60 * 60) : 0;
+              
+                  staffEntry.totalLoginHours = (loginHours - lunchBreakHours).toFixed(2);
+                  staffEntry.lunchBreakHours = lunchBreakHours.toFixed(2);
+                });
+            });   
+              
         });
-        const staffAttendance = Array.from(staffAttendanceMap.values());
+          
+        const staffAttendance = [];
+        staffAttendanceMap.forEach((dateAttendance) => {
+        staffAttendance.push(...dateAttendance);
+        });
 
         res.status(200).json(staffAttendance);
     }

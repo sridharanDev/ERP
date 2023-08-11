@@ -85,6 +85,8 @@ export class SalaryComponent implements OnInit
     {
       this.salaryService.GetSalary(this.salaryDetailId).subscribe((res:any)=>{
         this.salaryForm.patchValue(res);
+        this.salaryForm.get("salary_date")?.setValue(new Date(res.salary_date).toISOString().substring(0, 10));
+        this.salaryForm.get("credited_date")?.setValue(new Date(res.credited_date).toISOString().substring(0, 10));
         this.GetSelectedStaff();
       },(error)=>{
         this.toastr.error(error.error, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);

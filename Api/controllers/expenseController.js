@@ -1,5 +1,5 @@
 const ExpType = require("../models/expenseType");
-const Expense = require("../models/expenseType");
+const Expense = require("../models/expense");
 
 const CreateTypeController = async (req,res,next)=>{
     try
@@ -133,6 +133,34 @@ const DeleteExpenseController = async (req,res,next)=>{
     }
 };
 
+const GetExpensesController = async (req,res,next)=>{
+    try
+    {
+        const expenses = await Expense.find().populate("type");
+        res.status(200).json(expenses);
+    }
+    catch(error)
+    {
+        res.status(500).json(error.message);
+    }
+};
+
+const GetExpenseController = async (req,res,next)=>{
+    try
+    {
+        const expense = await Expense.findById(req.params.id);
+        if(!expense)
+        {
+            return res.status(404).json({message:"expense not found."});
+        }
+        res.status(200).json(expense);
+    }
+    catch(error)
+    {
+        res.status(500).json(error.message);
+    }
+};
+
 module.exports = {
     CreateTypeController,
     EditTypeController,
@@ -142,4 +170,6 @@ module.exports = {
     CreateExpenseController,
     EditExpenseController,
     DeleteExpenseController,
+    GetExpensesController,
+    GetExpenseController
 }

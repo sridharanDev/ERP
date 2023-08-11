@@ -57,6 +57,9 @@ import { EditProjectComponent } from './pages/edit-project/edit-project.componen
 import { IncomeComponent } from './pages/income/income.component';
 import { AssetsComponent } from './pages/assets/assets.component';
 import { ExpenseComponent } from './pages/expense/expense.component';
+import { ExpenseTypeComponent } from './pages/expense-type/expense-type.component';
+import { AssetsTypeComponent } from './pages/assets-type/assets-type.component';
+import { ScheduleComponent } from './pages/schedule/schedule.component';
 
 @NgModule({
   declarations: [
@@ -106,6 +109,9 @@ import { ExpenseComponent } from './pages/expense/expense.component';
     IncomeComponent,
     AssetsComponent,
     ExpenseComponent,
+    ExpenseTypeComponent,
+    AssetsTypeComponent,
+    ScheduleComponent,
   ],
   imports: [
     BrowserModule,

@@ -16,6 +16,7 @@ const CreateStaffController = async (req,res,next) =>{
             join_date,
             designation,
             role,
+            schedule,
             status,
         } = req.body;
         const staff = new Staff({
@@ -31,6 +32,7 @@ const CreateStaffController = async (req,res,next) =>{
             join_date,
             designation,
             role,
+            schedule,
             status,
         });
         const newStaff = await staff.save();
@@ -70,6 +72,7 @@ const EditStaffController = async (req,res,next) =>{
             join_date,
             designation,
             role,
+            schedule,
             status,
         } = req.body;
         const staff = await Staff.findById(req.params.id)
@@ -112,6 +115,9 @@ const EditStaffController = async (req,res,next) =>{
         if (role) {
             staff.role = role;
         }
+        if (schedule) {
+            staff.schedule = schedule;
+        }
         if (status) {
             staff.status = status;
         }
@@ -133,7 +139,7 @@ const EditStaffController = async (req,res,next) =>{
             }
             
         }
-      res.status(500).json(error.message);  
+      res.status(500).json(error);  
     }
 };
 

@@ -21,6 +21,7 @@ app.use('/uploads', express.static('uploads'));
 
 app.use("/api/staffs/roles",require("./routes/staffRole.route"));
 app.use("/api/staffs",require("./routes/staff.route"));
+app.use("/api/schedules",require("./routes/schedule.route"));
 app.use("/api/attendance",require("./routes/attendance.route"));
 app.use("/api/projects",require("./routes/project.route"));
 app.use("/api/courses",require("./routes/course.route"));
@@ -31,6 +32,7 @@ app.use("/api/salaries",require("./routes/saleryDetails.route"));
 app.use("/api/admin",require("./routes/admin.route"));
 app.use("/api/tasks",require("./routes/task.route"));
 app.use("/api/expenses",require("./routes/expense.route"));
+app.use("/api/assets",require("./routes/asset.route"));
 
 
 app.use("/api/validate-token",require("./routes/validate.route"));

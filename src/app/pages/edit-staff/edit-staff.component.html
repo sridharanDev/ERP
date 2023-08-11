@@ -91,6 +91,15 @@
                         </select>
                     </div>
                 </div>
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label for="" class="form-label">Schedule</label>
+                        <select class="form-select" formControlName="schedule" [ngClass]="{'is-invalid': isInvalidField(staffForm.get('schedule'))}">
+                            <option value="NA">-- Select Schedule --</option>
+                            <option value="{{schedule._id}}" *ngFor="let schedule of staffSchedules;">{{formatTimeTo12Hour(schedule.in_time)}} - {{formatTimeTo12Hour(schedule.out_time)}}</option>
+                        </select>
+                    </div>
+                </div>
             </div>
             <button class="btn btn-success" type="submit">Submit</button>
         </form>
