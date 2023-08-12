@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 const incomeSchema  = new mongoose.Schema({
     entityType: {
         type: String,
-        enum: ['Project', 'Course', 'Intern','Rent'],
+        enum: ['Project', 'Student', 'Intern','Rent'],
         required: true,
     },
     entity: {

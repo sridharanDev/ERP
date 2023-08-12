@@ -78,6 +78,11 @@ export class AdminService {
     return this.http.post(environment.apiBaseUrl + 'admin/login',formData); 
   }
 
+  ValidateJWT(token:any):Observable<any>
+  {
+    return this.http.post(environment.apiBaseUrl + 'validate-token/'+token,{}); 
+  }
+
   Logout(formData:any):Observable<any>
   {
     return this.http.post(environment.apiBaseUrl + 'admin/logout',formData); 

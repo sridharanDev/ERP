@@ -44,6 +44,8 @@ import { ExpenseComponent } from './pages/expense/expense.component';
 import { ExpenseTypeComponent } from './pages/expense-type/expense-type.component';
 import { AssetsTypeComponent } from './pages/assets-type/assets-type.component';
 import { ScheduleComponent } from './pages/schedule/schedule.component';
+import { StaffLeaveComponent } from './pages/staff-pages/staff-leave/staff-leave.component';
+import { LeaveApplicationComponent } from './pages/leave-application/leave-application.component';
 
 
 
@@ -72,6 +74,7 @@ const routes: Routes = [
       { path: 'assets', component: AssetsComponent ,canActivate: [AuthGuardService],data: { module: ['assets']}},
       { path: 'expense-type', component: ExpenseTypeComponent ,canActivate: [AuthGuardService],data: { module: ['expenses']}},
       { path: 'expense', component: ExpenseComponent ,canActivate: [AuthGuardService],data: { module: ['expenses']}},
+      { path: 'leave-application', component: LeaveApplicationComponent ,canActivate: [AuthGuardService],data: { module: ['staff']}},
       
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       {
@@ -112,6 +115,7 @@ const routes: Routes = [
     {path:'dashboard',component:StaffDashboardComponent},
     {path:'tasks',component:StaffTasksComponent},
     {path:'attendance',component:AttendanceComponent},
+    {path:'leave-application',component:StaffLeaveComponent},
   ],canActivate: [StaffAuthGuard]},
   {path:'**',component:ErrorPageComponent},
 ];

@@ -210,7 +210,7 @@ const StaffLoginController = async (req,res,next) =>{
 const GetStaffProfileController = async (req,res,next) =>{
     try
     {
-        const staff = await Staff.findOne({staff_id:req.params.id})
+        const staff = await Staff.findById(req.params.id)
         .populate({path:"role",select:"name salery"});
         if(!staff)
         {

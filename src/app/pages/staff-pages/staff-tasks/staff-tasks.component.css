@@ -17,3 +17,37 @@
 {
     height: 60px;
 }
+
+.comments
+{
+    height: 300px;
+    overflow-y: scroll;
+}
+
+.comments .commnet-item
+{
+    font-size: 12px;
+    border-radius: 5px;
+    padding:3px 10px;
+    margin-bottom: 10px;
+}
+
+.comments .commnet-item .header
+{
+    font-size: 10px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    margin-top: 5px;
+}
+
+.comments .commnet-item.left
+{
+    background: #e7e7e7dd;   
+    margin-right: 20%;
+}
+.comments .commnet-item.right
+{
+    background:#cde0db; 
+    margin-left: 20%;
+}

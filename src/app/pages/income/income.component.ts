@@ -6,6 +6,7 @@ import { CourseService } from 'src/app/services/course.service';
 import { ProjectService } from 'src/app/services/project.service';
 import { IncomeService } from 'src/app/services/income.service';
 import { FormValidatorService } from '../../utils/form-validator.service';
+import { CustomValidatorService } from '../../utils/custom-validator.service';
 import { Subject } from 'rxjs';
 
 @Component({
@@ -31,7 +32,7 @@ export class IncomeComponent implements OnInit
   dtTrigger: Subject<any> = new Subject<any>();
 
   incomeForm = new FormGroup({
-    entityType:new FormControl('NA',Validators.required),
+    entityType:new FormControl('NA',[Validators.required,this.CustomValidators.isEqual('NA')]),
     entity:new FormControl(),
     name:new FormControl(''),
     from:new FormControl('',Validators.required),
@@ -39,12 +40,12 @@ export class IncomeComponent implements OnInit
     amount:new FormControl('',Validators.required),
     note:new FormControl(''),
     date:new FormControl('',Validators.required),
-    payment_type:new FormControl('NA',Validators.required),
+    payment_type:new FormControl('NA',[Validators.required,this.CustomValidators.isEqual('NA')]),
   });
 
   constructor(private modalService: NgbModal,private courseService:CourseService,
     private projectService:ProjectService,private formValidatorService:FormValidatorService,
-    private incomeService:IncomeService,private toastr: ToastrService) {}
+    private incomeService:IncomeService,private toastr: ToastrService,private CustomValidators:CustomValidatorService,) {}
 
   ngOnInit(): void 
   {
@@ -120,10 +121,15 @@ export class IncomeComponent implements OnInit
   GetAllIncomes()
   {
     this.isLoading = true;
-    $('#datatable').DataTable().destroy();
+    $('#datatable1').DataTable().destroy();
+    $('#datatable2').DataTable().destroy();
+    $('#datatable3').DataTable().destroy();
+    $('#datatable4').DataTable().destroy();
     this.incomeService.GetIncomes().subscribe((res:any)=>{
       this.allProjectIncomes = res.incomesWithProjects;
       this.allCourseIncomes = res.incomesWithCourses;
+      this.allInternIncomes = res.incomesWithInterns;
+      this.allRentIncomes = res.incomesWithRents;
       this.dtTrigger.next(null);
       this.isLoading = false;
     },(error)=>{
@@ -135,6 +141,7 @@ export class IncomeComponent implements OnInit
   {
     if(this.incomeForm.invalid)
     {
+      this.formValidatorService.markFormGroupTouched(this.incomeForm);
       return;
     }
     const fromData = this.incomeForm.value;
@@ -152,6 +159,7 @@ export class IncomeComponent implements OnInit
   {
     if(this.incomeForm.invalid)
     {
+      this.formValidatorService.markFormGroupTouched(this.incomeForm);
       return;
     }
     const fromData = this.incomeForm.value;
@@ -163,6 +171,22 @@ export class IncomeComponent implements OnInit
     },(error)=>{
       this.isLoading = false;
     });
+  }
+
+  OnDeleteSubmit()
+  {
+    this.isLoading = true;
+    this.incomeService.DeleteIncome(this.incomeId).subscribe((res)=>{
+      this.modalService.dismissAll();
+      this.GetAllIncomes();
+      this.isLoading = false;
+    },(error)=>{
+      this.isLoading = false;
+    });
+  }
+
+  isInvalidField(control: any) {
+    return control.invalid && control.touched;
   }
 
 }

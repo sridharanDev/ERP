@@ -196,7 +196,7 @@ export class BillingComponent implements OnInit
       const item = this.billList[i];
       total += item.price;  
     }
-    return total - this.oldTotalPaid ;
+    return total;
   }
 
   CalculateTax()
@@ -220,7 +220,7 @@ export class BillingComponent implements OnInit
     var net_total = 0;
     net_total = this.CaculateSubtotal() + this.CalculateTax();
     net_total = net_total - this.CalaculateDiscount();
-    return net_total;
+    return net_total - this.oldTotalPaid;
   }
 
   CalculateBalace()

@@ -3,6 +3,7 @@ import { TaskService } from 'src/app/services/task.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { StaffService } from 'src/app/services/staff.service';
+import { TaskCommentCommentService } from 'src/app/services/task-comment.service';
 
 @Component({
   selector: 'app-staff-tasks',
@@ -18,10 +19,16 @@ export class StaffTasksComponent implements OnInit
   taskId:any;
   isLoading:boolean = false;
 
+  allComments:any = [];
+
   statusInput:String = "pending";
 
+  commentIntervalId: any;
+
+  commentField:String = "";
+
   constructor(private taskService:TaskService,private modalService: NgbModal,
-    private toastr: ToastrService,private staffService:StaffService){}
+    private toastr: ToastrService,private staffService:StaffService,private commentService:TaskCommentCommentService){}
 
   ngOnInit(): void 
   {
@@ -47,15 +54,36 @@ export class StaffTasksComponent implements OnInit
       backdrop: 'static',
       keyboard: false,
     });
+    this.commentField = "";
     if(this.taskId)
     {
       this.taskService.GetTask(this.taskId).subscribe((res:any)=>{
         this.statusInput = res.status;
+        this.commentIntervalId = setInterval(() => {
+          this.GetAllComments(this.taskId);
+        }, 1000);
       },(error)=>{
         this.toastr.error(error.message, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
       });
     }    
     
+  }
+
+  DestroyIntravel()
+  {
+    if (this.commentIntervalId) {
+      clearInterval(this.commentIntervalId);
+    }
+  }
+
+  GetAllComments(taskId:any)
+  {
+    const query = "task="+taskId;
+    this.commentService.GetTaskComments(query).subscribe((res:any)=>{
+      this.allComments = res;
+    },(error)=>{
+      console.log(error);
+    });
   }
 
   GetAllTasks()
@@ -124,5 +152,24 @@ export class StaffTasksComponent implements OnInit
     {
       return "bg-warning"
     }
+  }
+
+  SendComment()
+  {
+    if(this.commentField.length <= 0)
+    {
+      return;
+    }
+    const formData = {
+      task:this.taskId,
+      content:this.commentField,
+      staff:this.userId,
+    };
+    this.commentService.CreateTaskComment(formData).subscribe((res)=>{
+      this.GetAllComments(this.taskId);
+      this.commentField = "";
+    },(error)=>{
+      console.log(error);
+    })
   }
 }
