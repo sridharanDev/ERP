@@ -31,6 +31,7 @@ app.use("/api/invoices",require("./routes/invoice.route"));
 app.use("/api/salaries",require("./routes/saleryDetails.route"));
 app.use("/api/admin",require("./routes/admin.route"));
 app.use("/api/tasks",require("./routes/task.route"));
+app.use("/api/taskcomments",require("./routes/taskCommand.route"));
 app.use("/api/expenses",require("./routes/expense.route"));
 app.use("/api/assets",require("./routes/asset.route"));
 app.use("/api/leaveapplications",require("./routes/leaveApplication.route"));

@@ -1,4 +1,5 @@
 const Task = require("../models/task");
+const Comment = require("../models/taskComment");
 
 const CreateTaskController = async (req,res,next)=>{
     try
@@ -47,6 +48,7 @@ const DeleteTaskController = async (req,res,next)=>{
             return res.status(404).json({message:"task not found."});
         }
         await task.deleteOne();
+        await Comment.deleteMany({task:task._id});
         res.status(200).json({message:"task deleted."});
     }
     catch(error)

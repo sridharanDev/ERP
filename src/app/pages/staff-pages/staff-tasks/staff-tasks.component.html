@@ -17,7 +17,10 @@
                 <div>
                     <div class="d-flex justify-content-between">
                         <h4>{{task.title}}</h4>
-                        <a style="font-size:20px;" class="text-success" (click)="openModal(editModel,task._id)"><i class="fa-solid fa-square-pen"></i></a>
+                        <div>
+                            <a style="font-size:20px;" class="text-primary me-3" (click)="openModal(commentModel,task._id)"><i class="fa-solid fa-paper-plane"></i></a>
+                            <a style="font-size:25px;" class="text-success" (click)="openModal(editModel,task._id)"><i class="fa-solid fa-square-pen"></i></a>
+                        </div>
                     </div>
                     <hr>
                     <p class="desc">{{task.description}}</p>
@@ -66,4 +69,35 @@
         </div>
 </ng-template>
 
+<ng-template #commentModel let-modal>
+    <div class="modal-header">
+        <h3 class="modal-title">Task comments</h3>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss();DestroyIntravel()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+        <div class="modal-body">
+            <div class="comments mb-3">
+
+                <ng-container *ngFor="let comment of allComments">
+                    <div class="commnet-item" [class.right]="comment.staff" [class.left]="comment.admin">
+                        <div class="header">
+                            <span>@{{comment.staff ? comment.staff.name : comment.admin.username}}</span>
+                            <span>{{comment.createdAt | date:'yyyy/MM/dd HH:mm a'}}</span>
+                        </div>
+                        <p>{{comment.content}}</p>
+                    </div>
+                </ng-container>
+            </div>
+            <div class="form-input">
+                <input type="text" class="form-control" placeholder="Enter your comment..." name="commentField" [(ngModel)]="commentField">
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary " (click)="modal.dismiss();DestroyIntravel()" >Cancel</button>
+          <button type="button" class="btn btn-primary " (click)="SendComment()">Send</button>
+        </div>
+</ng-template>
+
 <app-loading *ngIf="isLoading"></app-loading>
+

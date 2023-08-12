@@ -8,6 +8,8 @@ import { NotificationService } from 'src/app/services/notification.service';
 import { StaffService } from '../../services/staff.service';
 import { ProjectService } from '../../services/project.service';
 import { TaskService } from '../../services/task.service';
+import { TaskCommentCommentService } from 'src/app/services/task-comment.service';
+import { AdminService } from 'src/app/services/admin.service';
 import { Subject } from 'rxjs';
 
 @Component({
@@ -23,8 +25,12 @@ export class ManageTasksComponent implements OnInit
   allProjects:any = [];
 
   isLoading:boolean = false;
-
+  allComments:any = [];
   taskId:any;
+  commentField:String = "";
+  commentIntervalId: any;
+
+  userId:any;
 
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<any> = new Subject<any>();
@@ -39,7 +45,8 @@ export class ManageTasksComponent implements OnInit
   constructor(private modalService: NgbModal,private toastr: ToastrService,
     private formValidatorService:FormValidatorService,private staffService:StaffService,
     private projectService:ProjectService,private taskService:TaskService,
-    private CustomValidators:CustomValidatorService,private notificationService:NotificationService){}
+    private CustomValidators:CustomValidatorService,private notificationService:NotificationService,
+    private commentService:TaskCommentCommentService,private adminService:AdminService){}
 
   ngOnInit(): void 
   {
@@ -75,6 +82,12 @@ export class ManageTasksComponent implements OnInit
     this.GetAllStaffs();
     this.GetAllProjects();
     this.GetAlltasks();
+    if(this.adminService.isAuthenticated())
+    {
+      this.adminService.ValidateJWT(this.adminService.getUserData().token).subscribe((res:any)=>{
+        this.userId = res._id;
+      });
+    }
   }
 
   openModal(component:any,taskId:any)
@@ -89,17 +102,28 @@ export class ManageTasksComponent implements OnInit
       keyboard: false,
     });
     this.taskForm.reset();
+    this.commentField = "";
     if(this.taskId)
     {
       this.taskService.GetTask(this.taskId).subscribe((res:any)=>{
         this.taskForm.patchValue(res);
         this.taskForm.get("project")?.setValue(res.project?res.project._id:"NA");        
-        this.taskForm.get("staff")?.setValue(res.staff._id);        
+        this.taskForm.get("staff")?.setValue(res.staff._id);       
+        this.commentIntervalId = setInterval(() => {
+          this.GetAllComments(this.taskId);
+        }, 1000);
       },(error)=>{
         this.toastr.error(error.message, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
       });
     }    
     
+  }
+
+  DestroyIntravel()
+  {
+    if (this.commentIntervalId) {
+      clearInterval(this.commentIntervalId);
+    }
   }
 
   GetAllStaffs()
@@ -208,6 +232,34 @@ export class ManageTasksComponent implements OnInit
     });
   }
 
+  GetAllComments(taskId:any)
+  {
+    const query = "task="+taskId;
+    this.commentService.GetTaskComments(query).subscribe((res:any)=>{
+      this.allComments = res;
+    },(error)=>{
+      console.log(error);
+    });
+  }
+
+  SendComment()
+  {
+    if(this.commentField.length <= 0)
+    {
+      return;
+    }
+    const formData = {
+      task:this.taskId,
+      content:this.commentField,
+      admin:this.userId,
+    };
+    this.commentService.CreateTaskComment(formData).subscribe((res)=>{
+      this.GetAllComments(this.taskId);
+      this.commentField = "";
+    },(error)=>{
+      console.log(error);
+    })
+  }
 
   GetStatusColor(status:String):any
   {
