@@ -10,11 +10,9 @@ const incomeSchema  = new mongoose.Schema({
     entity: {
         type: Schema.Types.ObjectId,
         refPath: 'entityType',
-        required: true,
     },
     name: {
         type: String,
-        required: true,
     },
     from: {
         type: String,
@@ -27,6 +25,10 @@ const incomeSchema  = new mongoose.Schema({
     amount: {
         type: Number,
         default:0,
+    },
+    payment_type: {
+        type: String,
+        required: true,
     },
     note: {
         type: String,
