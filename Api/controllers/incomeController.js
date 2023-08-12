@@ -92,9 +92,13 @@ const GetIncomesController = async (req,res,next)=>{
     {
         const incomesWithProjects = await Income.find({ entityType: 'Project' }).populate('entity');
         const incomesWithCourses = await Income.find({ entityType: 'Course' }).populate('entity');
+        const incomesWithInterns = await Income.find({ entityType: 'Intern' });
+        const incomesWithRents = await Income.find({ entityType: 'Rent' });
         res.status(200).json({
             incomesWithProjects,
             incomesWithCourses,
+            incomesWithInterns,
+            incomesWithRents,
         });
     }
     catch(error)
@@ -106,7 +110,7 @@ const GetIncomesController = async (req,res,next)=>{
 const GetIncomeController = async (req,res,next)=>{
     try
     {
-        const income = await Income.findById(req.params.id).populate('entity');
+        const income = await Income.findById(req.params.id);
         if(!income)
         {
             return res.status(404).json({message:"income record not found."});

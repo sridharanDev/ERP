@@ -4,6 +4,7 @@ import { FormControl, FormGroup,Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { FormValidatorService } from '../../utils/form-validator.service';
 import { CustomValidatorService } from '../../utils/custom-validator.service';
+import { NotificationService } from 'src/app/services/notification.service';
 import { StaffService } from '../../services/staff.service';
 import { ProjectService } from '../../services/project.service';
 import { TaskService } from '../../services/task.service';
@@ -38,7 +39,7 @@ export class ManageTasksComponent implements OnInit
   constructor(private modalService: NgbModal,private toastr: ToastrService,
     private formValidatorService:FormValidatorService,private staffService:StaffService,
     private projectService:ProjectService,private taskService:TaskService,
-    private CustomValidators:CustomValidatorService){}
+    private CustomValidators:CustomValidatorService,private notificationService:NotificationService){}
 
   ngOnInit(): void 
   {
@@ -112,7 +113,7 @@ export class ManageTasksComponent implements OnInit
 
   GetAllProjects()
   {
-    this.projectService.GetProjects("ongoing").subscribe((res:any)=>{
+    this.projectService.GetProjects("").subscribe((res:any)=>{
       this.allProjects = res;
     },(error)=>{
       this.toastr.error(error.message, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
@@ -146,6 +147,7 @@ export class ManageTasksComponent implements OnInit
     
     this.isLoading = true;
     this.taskService.CreateTask(formData).subscribe((res:any)=>{
+      this.SendNotification(res);
       this.modalService.dismissAll();
       this.GetAlltasks();
       this.isLoading = false;
@@ -153,6 +155,20 @@ export class ManageTasksComponent implements OnInit
     },(error)=>{
       this.toastr.error(error.message, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
       this.isLoading = false;
+    });
+  }
+
+  SendNotification(res:any)
+  {
+    const formData = {
+      type:"Task",
+      message:res.title,
+      recipient:res.staff,
+    };
+    this.notificationService.CreateNotification(formData).subscribe((res)=>{
+
+    },(error)=>{
+      console.log(error);
     });
   }
 

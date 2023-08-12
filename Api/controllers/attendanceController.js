@@ -123,11 +123,14 @@ const GetAttendancesController = async (req,res,next) =>
                   const lunchInTime = staffEntry.lunchInTime ? staffEntry.lunchInTime.getTime() : 0;
                   const lunchOutTime = staffEntry.lunchOutTime ? staffEntry.lunchOutTime.getTime() : 0;
               
-                  const loginHours = logoutTime != 0 ?(logoutTime - loginTime) / (1000 * 60 * 60) : 0;
-                  const lunchBreakHours = lunchOutTime != 0 ? (lunchInTime - lunchOutTime) / (1000 * 60 * 60) : 0;
-              
-                  staffEntry.totalLoginHours = (loginHours - lunchBreakHours).toFixed(2);
-                  staffEntry.lunchBreakHours = lunchBreakHours.toFixed(2);
+                  const loginHours = (logoutTime - loginTime) / (1000 * 60 * 60);
+                  const lunchBreakHours = (lunchInTime - lunchOutTime) / (1000 * 60 * 60);
+                
+                  if(loginTime !=0 && logoutTime != 0)
+                  {
+                      staffEntry.totalLoginHours = (loginHours - lunchBreakHours).toFixed(2);
+                      staffEntry.lunchBreakHours = lunchBreakHours.toFixed(2);
+                  }
                 });
             });   
               
