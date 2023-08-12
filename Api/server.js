@@ -33,6 +33,7 @@ app.use("/api/admin",require("./routes/admin.route"));
 app.use("/api/tasks",require("./routes/task.route"));
 app.use("/api/expenses",require("./routes/expense.route"));
 app.use("/api/assets",require("./routes/asset.route"));
+app.use("/api/leaveapplications",require("./routes/leaveApplication.route"));
 app.use("/api/notifications",require("./routes/notification.route"));
 
 

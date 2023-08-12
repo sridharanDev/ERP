@@ -15,11 +15,14 @@ export class StaffNavbarComponent
 {
   userProfile:any;
   userId:String = ""
-
+  notificationSound!: HTMLAudioElement;
   allNotifications:any = [];
 
   constructor(private modalService: NgbModal,private staffService:StaffService,private notificationService:NotificationService,
-    private router:Router,private attendanceService:AttendanceService,private toastr: ToastrService){}
+    private router:Router,private attendanceService:AttendanceService,private toastr: ToastrService)
+    {
+      this.notificationSound = new Audio('assets/audio/notification.mp3');
+    }
 
   ngOnInit(): void 
   {
@@ -33,6 +36,10 @@ export class StaffNavbarComponent
         }, 1000);
       });
     } 
+  }
+  playNotification() 
+  {
+    this.notificationSound.play();
   }
 
   openModal(component:any)
@@ -48,14 +55,11 @@ export class StaffNavbarComponent
 
   GetProfile()
   {
-    const formData = this.staffService.getUserData();
-    // this.staffService.GetProfile(formData).subscribe((res:any)=>{
-    //   this.userProfile = res;
-    //   console.log(res);
-      
-    // },(error)=>{
-    //   console.log(error);
-    // });
+    this.staffService.GetProfile(this.userId).subscribe((res:any)=>{
+      this.userProfile = res;      
+    },(error)=>{
+      console.log(error);
+    });
   }
 
   GetNotifications()
@@ -80,10 +84,19 @@ export class StaffNavbarComponent
         
       });
     }
-    if(type === "Attendance")
+    else if(type === "Attendance")
     { 
       this.notificationService.ViewNotification(_id,formData).subscribe((res:any)=>{
         this.router.navigate(['profile','attendance']);
+      },(error)=>{
+        console.log(error);
+        
+      });
+    }
+    else if(type === "Leave")
+    { 
+      this.notificationService.ViewNotification(_id,formData).subscribe((res:any)=>{
+        this.router.navigate(['profile','leave-application']);
       },(error)=>{
         console.log(error);
         
