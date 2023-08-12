@@ -39,7 +39,7 @@ export class LoginComponent implements OnInit
     }
     const formData = this.loginForm.value;
     this.isLoading = true;
-    this.adminService.Login(formData).subscribe((res:any)=>{
+    this.adminService.Login(formData).subscribe((res:any)=>{      
       if(res.redirect && res.token)
       {
         this.adminService.setUserData(res);

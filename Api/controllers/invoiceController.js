@@ -7,6 +7,7 @@ const CreateInvoiceController = async (req,res,next)=>
     try
     {
         const {type,
+            refrenece,
             invoice_no,
             date,
             student_id,
@@ -22,6 +23,7 @@ const CreateInvoiceController = async (req,res,next)=>
         } = req.body;
         const invoice = new Invoice({
             type,
+            refrenece,
             invoice_no,
             date,
             customer_name,
@@ -54,7 +56,9 @@ const EditInvoiceController = async (req,res,next)=>
 {
     try
     {
+        const invoice_no = req.params.id;
         const {type,
+            refrenece,
             date,
             customer_name,
             customer_email,
@@ -67,12 +71,13 @@ const EditInvoiceController = async (req,res,next)=>
             items,
         } = req.body;
         
-        const invoice = await Invoice.findById(req.params.id);
+        const invoice = await Invoice.findOne({invoice_no:invoice_no});
         if(!invoice)
         {
             return res.status(404).json({message:"invoice not found"});
         }
         if(type) invoice.type = type;
+        if(refrenece) invoice.refrenece = refrenece;
         if(date) invoice.date = date;
         if(customer_name) invoice.customer_name = customer_name;
         if(customer_email) invoice.customer_email = customer_email;
@@ -114,7 +119,16 @@ const GetInvoicesController = async (req,res,next)=>
 {
     try
     {
-        const invoices = await Invoice.find();
+        var filter = {};
+        const query = req.query;
+        if(query)
+        {
+            for(const key in query)
+            {
+                filter[key] = query[key];
+            }
+        }
+        const invoices = await Invoice.find(filter);
         res.status(200).json(invoices);
     }
     catch(error)

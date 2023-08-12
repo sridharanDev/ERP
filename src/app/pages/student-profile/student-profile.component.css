@@ -1,0 +1,24 @@
+/* Custom CSS for a borderless table */
+.borderless-table {
+    border-collapse: collapse;
+    width: 100%;
+}
+  
+.borderless-table th,
+.borderless-table td {
+    border: none; 
+    padding: 8px; 
+    text-align: left; 
+}
+  
+.borderless-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+.borderless-table tr td:first-child,
+.borderless-table tr td:nth-child(2)
+{
+    font-weight: bold;
+}
+  

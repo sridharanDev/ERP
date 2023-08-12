@@ -84,18 +84,20 @@
                 <div class="col-6">
                     <div class="row">
                         <div class="col-12">
-                            <div class="mb-3">
-                                <label for="" class="form-label">Courses</label>
-                                <select class="form-select" #selected_course formControlName="courses" [ngClass]="{'is-invalid': isInvalidField(studentForm.get('courses'))}">
-                                    <option value="NA">-- Select Curses --</option>
-                                    <option value="{{course._id}}" *ngFor="let course of allCourses">{{course.title}} ({{course.description}})</option>
-                                </select>
-                            </div>
+                            <ng-multiselect-dropdown
+                            placeholder="Select courses"
+                            [data]="allCourses"
+                            [settings]="dropdownSettings"
+                            (onSelect)="onItemSelect($event)"
+                            (onDeSelect)="onItemDeSelect($event)"
+                            formControlName="courses"
+                            >
+                            </ng-multiselect-dropdown>
                         </div>
                         <div class="col-12">
                             <div class="mb-3">
                                 <label for="" class="form-label">Fees</label>
-                                <input type="text" class="form-control" placeholder="fees" [value]="GetFees(selected_course.value)" disabled>
+                                <input type="text" class="form-control" placeholder="fees" name="totalFees" [value]="totalFees" disabled>
                             </div>
                         </div>
                     </div>

@@ -3,6 +3,12 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { StudentService } from 'src/app/services/student.service';
 import { StaffService } from 'src/app/services/staff.service';
+import { Subject } from 'rxjs';
+
+interface DropdownItem {
+  _id: string;
+  title: string;
+}
 
 @Component({
   selector: 'app-enquiry',
@@ -13,20 +19,57 @@ export class EnquiryComponent implements OnInit
 {
   studentId:any = null;
   allStudents:any = [];
-  allStaffs:any = [];
+  allStaffs:DropdownItem[] = [
+
+  ];
   isLoading:boolean = false;
 
   statsuField:any = 'NA';
   staffField:any = 'NA';
 
+  selectedStaffs:DropdownItem[] = [];
+  dropdownSettings = {};
+  
+  dtOptions: DataTables.Settings = {};
+  dtTrigger: Subject<any> = new Subject<any>();
+  
   constructor(private modalService: NgbModal,private studentService:StudentService,
-    private staffService:StaffService,private toastr: ToastrService) {}
-
-  ngOnInit(): void 
-  {
+    private staffService:StaffService,private toastr: ToastrService) {
+      this.dropdownSettings = {
+        singleSelection: false,
+        enableCheckAll: false,
+        idField: '_id',
+        textField: 'title',
+      };
+    }
+    
+    ngOnInit(): void 
+    {
+      this.dtOptions = {
+        pagingType: 'full_numbers',
+        pageLength: 10,
+      columnDefs :[
+        {
+          targets:[0],
+          width:'10px'
+        },
+        {
+          targets:[5],
+          width:'30px',
+          className: 'text-center',
+        },
+        {
+          targets:[6],
+          width:'10px',
+          orderable: false,
+          searchable: false,
+        },
+      ]
+    };
+    this.GetAllStaffs();
     this.GetAllStudents();
   }
-
+  
   openModal(component:any,studentId:any)
   {
     this.studentId = studentId;
@@ -40,7 +83,6 @@ export class EnquiryComponent implements OnInit
 
     if(this.studentId)
     {
-      this.GetAllStaffs();
       this.statsuField = "NA";
       this.staffField = "NA";
 
@@ -50,12 +92,14 @@ export class EnquiryComponent implements OnInit
       });
     }
   }
-
+  
   GetAllStudents()
   {
     this.isLoading = true;
+    $('#datatable').DataTable().destroy();
     this.studentService.GetStudents().subscribe((res:any)=>{
       this.allStudents = res;
+      this.dtTrigger.next(null);
       this.isLoading = false;
     },(error)=>{
       this.isLoading = false;
@@ -65,8 +109,30 @@ export class EnquiryComponent implements OnInit
   GetAllStaffs()
   {
     this.staffService.GetStaffs().subscribe((res:any)=>{
-      this.allStaffs = res;
+      const staffList = [];
+      for(let staff of res)
+      {
+        staffList.push({_id:staff._id,title:staff.staff_id + " - " + staff.name});
+      }
+      this.allStaffs = staffList;
+      
+    },(error)=>{
+      console.log(error);
+      
     });
+  }
+
+  onItemSelect(item:any)
+  {
+    this.selectedStaffs.push(item);
+  }
+  
+  onItemDeSelect(item: any) {
+    
+    const index = this.selectedStaffs.findIndex(staff => staff._id === item._id);
+    if (index !== -1) {
+      this.selectedStaffs.splice(index, 1);
+    }
   }
 
   StausSubmit()

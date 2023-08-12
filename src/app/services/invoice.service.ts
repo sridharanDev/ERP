@@ -16,9 +16,9 @@ export class InvoiceService {
   {
     return this.http.get(environment.apiBaseUrl + 'invoice-no'); 
   }
-  GetInvoices():Observable<any>
+  GetInvoices(query:any):Observable<any>
   {
-    return this.http.get(environment.apiBaseUrl + 'invoices'); 
+    return this.http.get(environment.apiBaseUrl + 'invoices?'+query); 
   }
 
   GetInvoice(_id:any):Observable<any>

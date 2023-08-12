@@ -12,9 +12,9 @@ export class ProjectService {
 
   headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-  GetProjects(status:any):Observable<any>
+  GetProjects(query:any):Observable<any>
   {
-    return this.http.get(environment.apiBaseUrl + 'projects?status='+status); 
+    return this.http.get(environment.apiBaseUrl + 'projects?'+query); 
   }
 
   GetProject(_id:any):Observable<any>

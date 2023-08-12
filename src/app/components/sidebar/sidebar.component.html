@@ -41,11 +41,23 @@
                                 <i class="fa-solid fa-user-shield"></i>
                                <span class="align-middle">Staff role</span>
                             </a>
-                         </li>
+                           </li>
+                           <li class="sidebar-item" routerLinkActive="active" *ngIf="hasModules(['staff'])">
+                              <a class="sidebar-link" href="#" routerLink="/admin/schedule">
+                                <i class="fa-solid fa-clock"></i>
+                                 <span class="align-middle">Schedule</span>
+                              </a>
+                           </li>
                          <li class="sidebar-item" routerLinkActive="active" *ngIf="hasModules(['staff'])">
                             <a class="sidebar-link" href="#" routerLink="/admin/staff-list">
                                 <i class="fa-solid fa-user-tie"></i>
                                <span class="align-middle">Staff list</span>
+                            </a>
+                         </li>
+                         <li class="sidebar-item" routerLinkActive="active" *ngIf="hasModules(['staff'])">
+                            <a class="sidebar-link" href="#" routerLink="/admin/attendance">
+                              <i class="fa-solid fa-calendar-check"></i>
+                               <span class="align-middle">Attendance</span>
                             </a>
                          </li>
                          <li class="sidebar-header" *ngIf="hasModules(['staff'])">
@@ -79,6 +91,12 @@
                               <span class="align-middle">Completed</span>
                            </a>
                         </li>
+                        <li class="sidebar-item " routerLinkActive="active" *ngIf="hasModules(['project'])">
+                           <a class="sidebar-link" href="#" routerLink="/admin/manage-tasks">
+                              <i class="fa-solid fa-list-check"></i>
+                              <span class="align-middle">Manage Tasks</span>
+                           </a>
+                        </li>
                         <li class="sidebar-header" *ngIf="hasModules(['course'])">
                            Course & Students
                         </li>
@@ -99,6 +117,69 @@
                               <i class="fa-solid fa-user-graduate"></i>
                               <span class="align-middle">Students</span>
                            </a>
+                        </li>
+                        <li class="sidebar-header" *ngIf="hasModules(['billing'])">
+                           Billing & Invoices
+                        </li>
+                        <li class="sidebar-item " routerLinkActive="active" *ngIf="hasModules(['billing'])">
+                           <a class="sidebar-link" href="#" routerLink="/admin/billing">
+                              <i class="fa-solid fa-cash-register"></i>
+                              <span class="align-middle">Billing</span>
+                           </a>
+                        </li>
+                        <li class="sidebar-item " routerLinkActive="active" *ngIf="hasModules(['billing'])">
+                           <a class="sidebar-link" href="#" routerLink="/admin/invoices/course">
+                              <i class="fa-solid fa-receipt"></i>
+                              <span class="align-middle">Courses invoices</span>
+                           </a>
+                        </li>
+                        <li class="sidebar-item " routerLinkActive="active" *ngIf="hasModules(['billing'])">
+                           <a class="sidebar-link" href="#" routerLink="/admin/invoices/project">
+                              <i class="fa-solid fa-receipt"></i>
+                              <span class="align-middle">Project invoices</span>
+                           </a>
+                        </li>
+                        <li class="sidebar-header" *ngIf="hasModules(['others'])">
+                           Others
+                        </li>
+                        <li class="sidebar-item " routerLinkActive="active" *ngIf="hasModules(['others'])">
+                           <a class="sidebar-link" href="#" routerLink="/admin/incomes">
+                              <i class="fa-solid fa-money-bill-transfer"></i>
+                              <span class="align-middle">Incomes</span>
+                           </a>
+                        </li>
+                        <li class="sidebar-header" *ngIf="hasModules(['assets'])">
+                           Assest
+                        </li>
+                        <li class="sidebar-item " routerLinkActive="active" *ngIf="hasModules(['assets'])">
+                           <a class="sidebar-link" href="#" routerLink="/admin/assets-type">
+                              <i class="fa-solid fa-circle-dot"></i>
+                              <span class="align-middle">Assets Type</span>
+                           </a>
+                        </li>
+                        <li class="sidebar-item " routerLinkActive="active" *ngIf="hasModules(['assets'])">
+                           <a class="sidebar-link" href="#" routerLink="/admin/assets">
+                              <i class="fa-solid fa-cubes"></i>
+                              <span class="align-middle">Assets List</span>
+                           </a>
+                        </li>
+                        <li class="sidebar-header" *ngIf="hasModules(['expenses'])">
+                           Expense
+                        </li>
+                        <li class="sidebar-item " routerLinkActive="active" *ngIf="hasModules(['expenses'])">
+                           <a class="sidebar-link" href="#" routerLink="/admin/expense-type">
+                              <i class="fa-solid fa-circle-dot"></i>
+                              <span class="align-middle">Expense Type</span>
+                           </a>
+                        </li>
+                        <li class="sidebar-item " routerLinkActive="active" *ngIf="hasModules(['expenses'])">
+                           <a class="sidebar-link" href="#" routerLink="/admin/expense">
+                              <i class="fa-solid fa-money-bill-trend-up"></i>
+                              <span class="align-middle">Expense list</span>
+                           </a>
+                        </li>
+                        <li style="height: 100px;">
+
                         </li>
                       </ul>
                       

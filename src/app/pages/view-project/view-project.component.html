@@ -1,0 +1,93 @@
+<div class="card">
+    <div class="card-body">
+        <div class="d-flex justify-content-between mb-3">
+            <h5 class="card-title">Project details</h5>
+        </div>
+        <div class="row">
+            <div class="col-lg-5">
+                <dl class="dl-horizontal">
+                    <dt>Project name:</dt> <dd>{{projectDetails.project_name}}</dd>
+                    <dt>Platform:</dt> <dd>{{projectDetails.platform}}</dd>
+                    <dt>Client:</dt> <dd>{{projectDetails.client_name}}</dd>
+                    <dt>Client mobile:</dt> <dd>{{projectDetails.mobile}}</dd>
+                </dl>
+            </div>
+            <div class="col-lg-5">
+                <dl class="dl-horizontal">
+                    <dt>Status:</dt> <dd>  <span class="badge " [ngClass]="GetStatusColor(projectDetails.status)">{{projectDetails.status}}</span></dd>
+                    <dt>Reference:</dt> <dd>{{projectDetails.reference}}</dd>
+                    <dt>Note:</dt> <dd>{{projectDetails.note}}</dd>
+                </dl>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <dl class="dl-horizontal">
+                    <dt>Completed:</dt>
+                    <dd>
+                        <div class="progress progress-striped active m-b-sm">
+                            <div style="width: {{projectDetails.completionPercentage}}%;" class="progress-bar bg-success">{{projectDetails.completionPercentage}}%</div>
+                        </div>
+                        <small>Project completed in <strong>{{projectDetails.completionPercentage}}%</strong>.</small>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <div class="d-flex justify-content-between mb-3">
+            <h5 class="card-title">Participants</h5>
+        </div>
+        <div class="row">
+            <div class="user col-auto" *ngFor="let staff of projectDetails.staffs">
+                <img alt="image" class="img-circle" src="assets/img/avatars/user.png">
+                <div class="text-center">{{staff.staff_id}}</div>
+                <div class="text-center">{{staff.name}}</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <div class="d-flex justify-content-between">
+            <h5 class="card-title">Activity</h5>
+        </div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Status</th>
+                <th>Title</th>
+                <th>Start Time</th>
+                <th>Update Time</th>
+                <th>Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let task of projectDetails.tasks">
+                <td class="text-center">
+                    <span class="badge bg-secondary" *ngIf="task.status == 'pending'">pending</span>
+                    <span class="badge bg-warning" *ngIf="task.status == 'inProgres'">inProgres</span>
+                    <span class="badge bg-success" *ngIf="task.status == 'completed'">completed</span>
+                </td>
+                <td>
+                   {{task.title}}
+                </td>
+                <td>
+                   {{task.createdAt | date:'yyyy-MM-dd h:mm a'}}
+                </td>
+                <td>
+                    {{task.updatedAt | date:'yyyy-MM-dd h:mm a'}}
+                </td>
+                <td>
+                <p class="small">
+                    {{task.description}}
+                </p>
+                </td>
+            </tbody>
+        </table>
+    </div>
+</div>

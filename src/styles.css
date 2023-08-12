@@ -2,3 +2,15 @@
 {
     z-index: 1056;
 }
+
+.table.dataTable
+{
+    border-collapse: collapse;
+}
+
+.page-title
+{
+    color: #25364C;
+}
+
+

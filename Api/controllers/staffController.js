@@ -1,4 +1,5 @@
 const Staff = require("../models/staff");
+const jwt = require("jsonwebtoken");
 
 const CreateStaffController = async (req,res,next) =>{
     try 
@@ -15,6 +16,7 @@ const CreateStaffController = async (req,res,next) =>{
             join_date,
             designation,
             role,
+            schedule,
             status,
         } = req.body;
         const staff = new Staff({
@@ -30,6 +32,7 @@ const CreateStaffController = async (req,res,next) =>{
             join_date,
             designation,
             role,
+            schedule,
             status,
         });
         const newStaff = await staff.save();
@@ -69,6 +72,7 @@ const EditStaffController = async (req,res,next) =>{
             join_date,
             designation,
             role,
+            schedule,
             status,
         } = req.body;
         const staff = await Staff.findById(req.params.id)
@@ -111,6 +115,9 @@ const EditStaffController = async (req,res,next) =>{
         if (role) {
             staff.role = role;
         }
+        if (schedule) {
+            staff.schedule = schedule;
+        }
         if (status) {
             staff.status = status;
         }
@@ -132,7 +139,7 @@ const EditStaffController = async (req,res,next) =>{
             }
             
         }
-      res.status(500).json(error.message);  
+      res.status(500).json(error);  
     }
 };
 
@@ -183,10 +190,47 @@ const GetStaffController = async (req,res,next) =>{
     }
 };
 
+const StaffLoginController = async (req,res,next) =>{
+    try
+    {
+        const { staff_id, password } = req.body;   
+        const staff = await Staff.findOne({ staff_id });
+        if (!staff) {
+            return res.status(401).json({ field: "staff_id", error: "Invalid staff ID" });
+        }
+        const token = jwt.sign({ _id: staff._id }, process.env.JWT_SECRET);
+        res.status(200).json({ token:token,staff_id:staff.staff_id });
+    }
+    catch(error)
+    {
+        res.status(500).json(error.message); 
+    }
+};
+
+const GetStaffProfileController = async (req,res,next) =>{
+    try
+    {
+        const staff = await Staff.findOne({staff_id:req.params.id})
+        .populate({path:"role",select:"name salery"});
+        if(!staff)
+        {
+            return res.status(404).json({message:"staff not found."});
+        }
+        res.json(staff);
+        next();
+    }
+    catch(error)
+    {
+        res.status(500).json(error.message); 
+    }
+};
+
 module.exports = {
     CreateStaffController,
     EditStaffController,
     DeleteStaffController,
     GetStaffsController,
     GetStaffController,
+    StaffLoginController,
+    GetStaffProfileController,
 };

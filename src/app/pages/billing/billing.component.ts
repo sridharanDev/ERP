@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { InvoiceService } from 'src/app/services/invoice.service';
 import { StudentService } from 'src/app/services/student.service';
 import { CourseService } from 'src/app/services/course.service';
+import { ProjectService } from 'src/app/services/project.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -15,16 +16,26 @@ import { ToastrService } from 'ngx-toastr';
 export class BillingComponent implements OnInit
 {
   constructor(private route:ActivatedRoute,private studentService:StudentService,
-    private invoiceService:InvoiceService,private toastr: ToastrService,
+    private invoiceService:InvoiceService,private toastr: ToastrService,private projectService:ProjectService,
     private courseService:CourseService,private router: Router){}
 
   studentId:any;
-  
+  projectId:any;
   allCourses:any  = [];
+  allProjects:any  = [];
+
+  oldInvoices:any = [];
+
+  invoiceType:String = "other";
+
+  invoiceDetails:any = null;
+  oldTotalPaid:any = 0;
 
   ngOnInit(): void 
   {
     const studentId = this.route.snapshot.queryParamMap.get("studentId");
+    const projectId = this.route.snapshot.queryParamMap.get("projectId");
+    const invoiceNo = this.route.snapshot.queryParamMap.get("invoiceno");
     this.GetInvoiceNumber();
     const currentDate:any = new Date();
     this.form1.get("date")?.setValue(this.DateFormate(currentDate));
@@ -32,8 +43,23 @@ export class BillingComponent implements OnInit
     {
       this.studentId = studentId;
       this.GetStudentData(studentId);
+      this.form1.get("refrenece")?.setValue(studentId);
+      this.invoiceType = "course";
+    }
+    else if(projectId)
+    {
+      this.projectId = projectId;
+      this.GetProjectData();
+      this.form1.get("refrenece")?.setValue(projectId);
+      this.invoiceType = "project";
+    }
+    else if(invoiceNo)
+    {
+      this.GetInvoice(invoiceNo);
     }
     this.GetCourses();
+    this.GetAllProjects();
+    this.GetOldInvoices();
   }
   
   GetInvoiceNumber()
@@ -53,6 +79,7 @@ export class BillingComponent implements OnInit
     customer_name :new FormControl('',Validators.required),
     customer_email :new FormControl(''),
     customer_mobile :new FormControl('',Validators.required),
+    refrenece:new FormControl(),
   });
   form2 = new FormGroup({
     type :new FormControl('NA'),
@@ -69,7 +96,7 @@ export class BillingComponent implements OnInit
     discount :new FormControl(0),
     net_total :new FormControl(0),
     pay_type :new FormControl('NA'),
-    paid :new FormControl(0),
+    paid :new FormControl(0,Validators.required),
     balance :new FormControl(0),
     remider_date :new FormControl(''),
   });
@@ -93,12 +120,62 @@ export class BillingComponent implements OnInit
     });
   }
 
+  GetProjectData()
+  {
+    this.projectService.GetProject(this.projectId).subscribe((res:any)=>{
+      this.form1.get("customer_name")?.setValue(res.client_name);   
+      this.form1.get("customer_email")?.setValue(res.email);   
+      this.form1.get("customer_mobile")?.setValue(res.mobile);  
+      const courses = res.courses;
+
+      // const item = {name:res.project_name.title,desc:res.note,price:courses[i].fees,amount:courses[i].fees};
+      // this.AddToBill(item);        
+      // this.OnChange();
+    },(error)=>{
+      this.toastr.error(error.error, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
+    });
+  }
+
   GetCourses()
   {
     this.courseService.GetCourses().subscribe((res:any)=>{
       this.allCourses = res;      
     },(error)=>{
       this.toastr.error(error.error, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
+    });
+  }
+
+  GetAllProjects()
+  {
+    this.projectService.GetProjects("").subscribe((res:any)=>{
+      this.allProjects = res;      
+    },(error)=>{
+      this.toastr.error(error.error, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
+    });
+  }
+
+  GetInvoice(invoiceNo:any)
+  {
+    this.invoiceService.GetInvoice(invoiceNo).subscribe((res:any)=>{
+      this.invoiceDetails = res;
+      this.form1.get("invoice_no")?.setValue(res.invoice_no);   
+      this.form1.get("date")?.setValue(res.date);   
+      this.form1.get("customer_name")?.setValue(res.customer_name);   
+      this.form1.get("customer_email")?.setValue(res.customer_email);   
+      this.form1.get("customer_mobile")?.setValue(res.customer_mobile); 
+      this.form3.get("tax")?.setValue(res.tax); 
+      this.form3.get("discount_percent")?.setValue(res.discount_percent); 
+      this.form3.get("pay_type")?.setValue(res.pay_type); 
+      this.form3.get("paid")?.setValue(res.paid); 
+      const items = res.items;
+      this.billList.splice(0,this.billList.length);
+      for (let i = 0; i < items.length; i++) {
+        const item = {name:items[i].name,desc:items[i].desc,price:items[i].price,amount:items[i].amount};
+        this.AddToBill(item);        
+      }
+      this.OnChange();
+    },(error)=>{
+
     });
   }
   
@@ -119,7 +196,7 @@ export class BillingComponent implements OnInit
       const item = this.billList[i];
       total += item.price;  
     }
-    return total;
+    return total - this.oldTotalPaid ;
   }
 
   CalculateTax()
@@ -176,66 +253,133 @@ export class BillingComponent implements OnInit
     this.OnChange();
   }
 
-  SelectType(type:any)
-  {
-    if(type == "courses")
-    {
-      return true;
-    }
-    else
-    {
-      return false;
-    }
-  }
 
   AddItemSubmit()
   {
     const _id = this.form2.value.option;
+    const type = this.form2.value.type;
     var selected = null;
-    for (let i = 0; i < this.allCourses.length; i++) 
+    if(type === "course")
     {
-      if(this.allCourses[i]._id == _id)
+      for (let i = 0; i < this.allCourses.length; i++) 
       {
-        selected = this.allCourses[i];
-        break;
+        if(this.allCourses[i]._id == _id)
+        {
+          selected = this.allCourses[i];
+          break;
+        }
       }
+      if(selected)
+      {
+        const item = {name:selected.title,desc:selected.description,price:selected.fees,amount:selected.fees};
+        this.AddToBill(item);
+      }    
     }
-    if(selected)
+    else if(type === "project")
     {
-      const item = {name:selected.title,desc:selected.description,price:selected.fees,amount:selected.fees};
-      this.AddToBill(item);
-    }    
+      for (let i = 0; i < this.allProjects.length; i++) 
+      {
+        if(this.allProjects[i]._id == _id)
+        {
+          selected = this.allProjects[i];
+          break;
+        }
+      }
+      if(selected)
+      {
+        const item = {name:selected.project_name,desc:selected.description,price:0,amount:0};
+        this.AddToBill(item);
+      }    
+    }
+    
     this.OnChange();
   }
 
   OnPrintSubmit()
   {
-    const type = {type:"course",student_id:this.studentId};
+    if(this.form1.invalid || this.form3.invalid)
+    {
+      return;
+    }
+    const type = {type:this.invoiceType,student_id:this.studentId};
     const items = {items:this.billList};
     const formData = Object.assign({},items,type,this.form1.value,this.form3.value);
     
-    this.invoiceService.CreateInvoice(formData).subscribe((res:any)=>{
-      // this.router.navigate(['/invoice',res.invoice_no]);
-      const routePath = '/invoice/'+res.invoice_no;
-      window.open(this.router.createUrlTree([routePath]).toString(), '_blank');
-    },(error)=>{
-      this.toastr.error(error.error, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
-    });
-    
+    if(!this.invoiceDetails)
+    {
+      this.invoiceService.CreateInvoice(formData).subscribe((res:any)=>{
+        const routePath = '/invoice/'+res.invoice_no;
+        window.open(this.router.createUrlTree([routePath]).toString(), '_blank');
+      },(error)=>{
+        this.toastr.error(error.error, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
+      });
+    }
+    else
+    {
+      this.invoiceService.EditInvoice(this.invoiceDetails.invoice_no,formData).subscribe((res:any)=>{
+        const routePath = '/invoice/'+res.invoice_no;
+        window.open(this.router.createUrlTree([routePath]).toString(), '_blank');
+      },(error)=>{
+        this.toastr.error(error.error, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
+      });
+    }
   }
   OnSaveSubmit()
   {
-    const type = {type:"course",student_id:this.studentId};
+
+    if(this.form1.invalid || this.form3.invalid)
+    {
+    
+      return;
+    }
+
+    const type = {type:this.invoiceType,student_id:this.studentId};
     const items = {items:this.billList};
     const formData = Object.assign({},items,type,this.form1.value,this.form3.value);
     
-    this.invoiceService.CreateInvoice(formData).subscribe((res:any)=>{
-      this.toastr.success('Invoice saved successfully.', 'Save Invoice',{timeOut: 3000,closeButton: true,progressBar: true,},);
-    },(error)=>{
-      this.toastr.error(error.error, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
-    });
+    if(!this.invoiceDetails)
+    {
+
+      this.invoiceService.CreateInvoice(formData).subscribe((res:any)=>{
+        this.GetInvoice(res.invoice_no);
+        this.toastr.success('Invoice saved successfully.', 'Save Invoice',{timeOut: 3000,closeButton: true,progressBar: true,},);
+      },(error)=>{
+        this.toastr.error(error.error, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
+      });
+    }
+    else
+    {
+      this.invoiceService.EditInvoice(this.invoiceDetails.invoice_no,formData).subscribe((res:any)=>{
+        this.toastr.warning('Invoice updated successfully.', 'Update Invoice',{timeOut: 3000,closeButton: true,progressBar: true,},);
+      },(error)=>{
+        this.toastr.error(error.error, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
+      });
+    }
   }
 
+  EditPriceInList(index:any,event:any)
+  {
+    const item = this.billList[index];
+    item.price = Number(event.target.value);
+    item.amount = Number(event.target.value);
+    this.OnChange();
+  }
 
+  GetOldInvoices()
+  {
+    const query = "refrenece="+this.form1.value.refrenece;
+    this.invoiceService.GetInvoices(query).subscribe((res:any)=>{
+      this.oldInvoices = res;
+      let totalPaid = 0;
+      for(let invoice of this.oldInvoices)
+      {
+        totalPaid += invoice.paid;
+      }
+      this.oldTotalPaid = totalPaid;
+      this.OnChange();
+    },(error)=>{
+      console.log(error);
+    });
+  }
 
 }

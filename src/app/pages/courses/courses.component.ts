@@ -4,6 +4,7 @@ import { FormControl, FormGroup,Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { CourseService } from 'src/app/services/course.service';
 import { FormValidatorService } from '../../utils/form-validator.service';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-courses',
@@ -28,8 +29,35 @@ export class CoursesComponent implements OnInit
 
   isLoading:boolean = false;
 
+  dtOptions: DataTables.Settings = {};
+  dtTrigger: Subject<any> = new Subject<any>();
+
   ngOnInit(): void 
   {
+    this.dtOptions = {
+      pagingType: 'full_numbers',
+      pageLength: 10,
+      columnDefs :[
+        {
+          targets:[0],
+          width:'10px'
+        },
+        {
+          targets:[3],
+          width:'50px'
+        },
+        {
+          targets:[4],
+          width:'50px'
+        },
+        {
+          targets:[5],
+          width:'10px',
+          orderable: false,
+          searchable: false,
+        },
+      ]
+    };
     this.GetAllCourses();
   }
   
@@ -58,8 +86,10 @@ export class CoursesComponent implements OnInit
   GetAllCourses()
   {
     this.isLoading = true;
+    $('#datatable').DataTable().destroy();
     this.courseService.GetCourses().subscribe((res:any)=>{
       this.allCourses = res;
+      this.dtTrigger.next(null);
       this.isLoading = false;
     },(error)=>{
       

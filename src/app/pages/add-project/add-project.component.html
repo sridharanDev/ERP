@@ -1,0 +1,58 @@
+<app-breadcrumb></app-breadcrumb>
+<div class="card">
+    <div class="card-header">
+        <h5 class="card-title mb-0">Add new project</h5>
+    </div>
+    <div class="card-body">
+        <form [formGroup]="projectForm" (ngSubmit)="OnFormSubmit()">
+            <div class="row">
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label for="" class="form-label">Client Name</label>
+                        <input type="text" class="form-control" placeholder="Client name" formControlName="client_name" [ngClass]="{'is-invalid': isInvalidField(projectForm.get('client_name'))}">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label for="" class="form-label">Mobile</label>
+                        <input type="number" class="form-control" placeholder="Mobile" formControlName="mobile" [ngClass]="{'is-invalid': isInvalidField(projectForm.get('mobile'))}">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label for="" class="form-label">Platform</label>
+                        <input type="text" class="form-control" placeholder="Platform" formControlName="platform" [ngClass]="{'is-invalid': isInvalidField(projectForm.get('platform'))}">
+                    </div>
+                </div>
+                
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label for="" class="form-label">Project Name</label>
+                        <input type="text" class="form-control" placeholder="Project_name" formControlName="project_name" [ngClass]="{'is-invalid': isInvalidField(projectForm.get('project_name'))}">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label for="" class="form-label">Reference</label>
+                        <input type="text" class="form-control" placeholder="Mobile" formControlName="reference" [ngClass]="{'is-invalid': isInvalidField(projectForm.get('reference'))}">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label for="" class="form-label">Note</label>
+                        <textarea  cols="30" rows="5" class="form-control" placeholder="Note" formControlName="note" [ngClass]="{'is-invalid': isInvalidField(projectForm.get('note'))}"></textarea>
+                    </div>
+                </div>
+            </div>
+            
+           
+            <button class="btn btn-success" type="submit">Submit</button>
+        </form>
+    </div>
+</div>
+
+<app-loading *ngIf="isLoading"></app-loading>

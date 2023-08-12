@@ -1,16 +1,6 @@
-.waraper {
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #f9f9f9;
-    font-family: Arial, sans-serif;
-}
-  
-.card
+.error-text
 {
-  width: 400px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #DC3545;
 }
-  
-  

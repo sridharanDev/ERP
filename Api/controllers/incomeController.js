@@ -9,6 +9,7 @@ const CreateIncomeController = async (req,res,next) =>{
             from,
             to,
             amount,
+            payment_type,
             note,
             date
         } = req.body;
@@ -19,6 +20,7 @@ const CreateIncomeController = async (req,res,next) =>{
             from,
             to,
             amount,
+            payment_type,
             note,
             date
         });
@@ -40,6 +42,7 @@ const EditIncomeController = async (req,res,next) =>{
             from,
             to,
             amount,
+            payment_type,
             note,
             date
         } = req.body;
@@ -54,6 +57,7 @@ const EditIncomeController = async (req,res,next) =>{
         if(from) income.from = from;
         if(to) income.to = to;
         if(amount) income.amount = amount;
+        if(payment_type) income.payment_type = payment_type;
         if(note) income.note = note;
         if(date) income.date = date;
         const editedIncome = await income.save();

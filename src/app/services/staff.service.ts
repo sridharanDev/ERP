@@ -45,6 +45,10 @@ export class StaffService {
       return this.http.get(environment.apiBaseUrl + 'staffs/'+_id);
     }
 
+    GetProfile(_id:any) {
+      return this.http.get(environment.apiBaseUrl + 'staffs/profile/'+_id);
+    }
+
     CreateStaff(formData:any): Observable<any> {
       return this.http.post(environment.apiBaseUrl + 'staffs',formData); 
     }
@@ -55,6 +59,61 @@ export class StaffService {
 
     DeleteStaff(_id:any): Observable<any> {
       return this.http.delete(environment.apiBaseUrl + 'staffs/'+_id); 
+    }
+
+    Login(formData:any):Observable<any>
+    {
+      return this.http.post(environment.apiBaseUrl + 'staffs/login',formData); 
+    }
+
+    ValidateJWT(token:any):Observable<any>
+    {
+      return this.http.post(environment.apiBaseUrl + 'validate-token/'+token,{}); 
+    }
+
+    isAuthenticated()
+    {    
+      if(this.retrieveDataFromLocalStorage() != null)
+      {
+          return true;
+      }
+      return false;
+    }
+
+    getUserData()
+    {   
+      const token = this.retrieveDataFromLocalStorage().token;
+      return this.retrieveDataFromLocalStorage();
+    }
+
+    setUserData(value:any)
+    {
+      const data = { value: value, expiration: Date.now() + 8 * 60 * 60 * 1000 };
+      const json = JSON.stringify(data);
+      localStorage.setItem('staffsession', json);
+    }
+  
+    retrieveDataFromLocalStorage()
+    {
+      const storedData = localStorage.getItem('staffsession');    
+      if (storedData) {
+        const data = JSON.parse(storedData);
+        if (data.expiration > Date.now()) {
+          return data.value;
+        } else {
+          console.log('Data has expired');
+          localStorage.removeItem('staffsession');
+          return null;
+        }
+      } else {
+        console.log('No data found');
+        return null;
+      }
+    }
+
+    clearUserData()
+    {
+      localStorage.removeItem('staffsession');
     }
   
   }

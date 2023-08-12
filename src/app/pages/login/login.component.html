@@ -21,7 +21,7 @@
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label">Password</label>
-                                        <input class="form-control form-control-lg" type="password" formControlName="password" placeholder="Enter your password" [ngClass]="{'is-invalid': isInvalidField(loginForm.get('username'))}">
+                                        <input class="form-control form-control-lg" type="password" formControlName="password" placeholder="Enter your password" [ngClass]="{'is-invalid': isInvalidField(loginForm.get('password'))}">
                                         <div class="error-text" *ngIf="loginErrors && loginErrors.field == 'password'">
                                             <p>{{loginErrors.error}}</p>
                                         </div>

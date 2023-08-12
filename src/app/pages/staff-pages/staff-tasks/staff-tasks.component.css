@@ -1,0 +1,19 @@
+.status
+{
+    font-size: 15px;
+}
+
+.task-card
+{
+    height: 250px;
+}
+
+.task-card .card
+{
+    height: 100%;
+}
+
+.desc
+{
+    height: 60px;
+}

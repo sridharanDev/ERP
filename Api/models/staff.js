@@ -55,6 +55,11 @@ const staffSchema = new mongoose.Schema({
         ref: 'StaffRole',
         required:true,
     },
+    schedule:{ 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'schedule',
+        required:true,
+    },
     status:{
         type:String,
     },

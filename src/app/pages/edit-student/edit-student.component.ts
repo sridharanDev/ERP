@@ -9,6 +9,11 @@ import { CourseService } from '../../services/course.service';
 import { StudentService } from 'src/app/services/student.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 
+interface DropdownItem {
+  _id: string;
+  title: string;
+}
+
 @Component({
   selector: 'app-edit-student',
   templateUrl: './edit-student.component.html',
@@ -21,6 +26,10 @@ export class EditStudentComponent implements OnInit
   allCourses:any = [];
   isLoading:boolean = false;
 
+  totalFees:string = "₹0";
+  selectedCourses:DropdownItem[] = [];
+  dropdownSettings = {};
+
   studentForm = new FormGroup({
     name :new FormControl('',Validators.required),
     mobile :new FormControl('',Validators.required),
@@ -31,7 +40,7 @@ export class EditStudentComponent implements OnInit
     passed_out_year :new FormControl('',Validators.required),
     current_status :new FormControl('NA',[Validators.required,this.CustomValidators.isEqual('NA')]),
     institute_or_company :new FormControl(''),
-    courses:new FormControl('NA',[Validators.required,this.CustomValidators.isEqual('NA')]),
+    courses:new FormControl([Validators.required,this.CustomValidators.isEqual('NA')]),
     note :new FormControl(''),
 
   });
@@ -40,7 +49,13 @@ export class EditStudentComponent implements OnInit
     private breadcrumbService: BreadcrumbService,private formValidatorService:FormValidatorService,
     private courseService:CourseService,private studentService:StudentService,
     private CustomValidators:CustomValidatorService,private location: Location,
-    private route: ActivatedRoute){}
+    private route: ActivatedRoute){      
+      this.dropdownSettings = {
+        singleSelection: false,
+        idField: '_id',
+        textField: 'title',
+      };
+    }
 
   ngOnInit(): void 
   {
@@ -59,8 +74,9 @@ export class EditStudentComponent implements OnInit
     this.studentService.GetStudent(this.studentId).subscribe((res:any)=>{
       this.studentForm.patchValue(res);      
       this.studentForm.get("current_status")?.setValue(res.current_status);
-      this.studentForm.get("courses")?.setValue(res.courses[0]._id);
+      this.studentForm.get("courses")?.setValue(res.courses);
       this.isLoading = false;
+      this.GetFees();
     },(error)=>{
       this.toastr.error(error.message, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
       this.isLoading = false;
@@ -76,19 +92,33 @@ export class EditStudentComponent implements OnInit
     });
   }
 
-  GetFees(courseId:any)
+  onItemSelect(item:any)
+  {
+    this.selectedCourses.push(item);
+    this.GetFees();
+  }
+  
+  onItemDeSelect(item: any) {
+    
+    const index = this.selectedCourses.findIndex(course => course._id === item._id);
+    if (index !== -1) {
+      this.selectedCourses.splice(index, 1);
+    }
+    this.GetFees();
+  }
+
+  GetFees()
   {
     var fees = 0;
-    for (let i = 0; i < this.allCourses.length; i++) 
+    for(let selectedCourse  of this.selectedCourses)
     {
-      if(this.allCourses[i]._id == courseId)
-      {
-        fees = this.allCourses[i].fees;
-        break;
-      }  
+      const course = this.allCourses.find((course:any) => course._id === selectedCourse._id);
+      if (course) {
+        fees += course.fees;
+      }
       
     }
-    return "₹"+fees;
+    this.totalFees = "₹"+fees;
   }
 
   OnFormSubmit()

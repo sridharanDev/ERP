@@ -2,6 +2,7 @@ import { Component,OnInit } from '@angular/core';
 import { AdminService } from 'src/app/services/admin.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-admin-role',
@@ -15,11 +16,30 @@ export class AdminRoleComponent implements OnInit
   isLoading:boolean = false;
   roleId:any = null;
 
+  dtOptions: DataTables.Settings = {};
+  dtTrigger: Subject<any> = new Subject<any>();
+
   constructor(private modalService: NgbModal,private adminService:AdminService,
     private toastr: ToastrService){}
 
   ngOnInit(): void 
   {
+    this.dtOptions = {
+      pagingType: 'full_numbers',
+      pageLength: 10,
+      columnDefs :[
+        {
+          targets:[0],
+          width:'10px'
+        },
+        {
+          targets:[3],
+          width:'10px',
+          orderable: false,
+          searchable: false,
+        },
+      ]
+    };
     this.GetAllRoles();
   }
 
@@ -39,8 +59,10 @@ export class AdminRoleComponent implements OnInit
   GetAllRoles()
   {
     this.isLoading=true;
+    $('#datatable').DataTable().destroy();
     this.adminService.GetRoles().subscribe((res:any)=>{
       this.allRoles = res;
+      this.dtTrigger.next(null);
       this.isLoading=false;
     },(error)=>{
       this.toastr.error(error.message, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);

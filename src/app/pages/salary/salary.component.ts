@@ -6,6 +6,7 @@ import { StaffService } from '../../services/staff.service';
 import { SalaryService } from '../../services/salary.service';
 import { FormValidatorService } from '../../utils/form-validator.service';
 import { CustomValidatorService } from '../../utils/custom-validator.service';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-salary',
@@ -34,12 +35,36 @@ export class SalaryComponent implements OnInit
 
   selectedCSV:File | null = null;
 
+  dtOptions: DataTables.Settings = {};
+  dtTrigger: Subject<any> = new Subject<any>();
+
   constructor(private modalService: NgbModal,private staffService:StaffService,
     private formValidatorService:FormValidatorService,private CustomValidators:CustomValidatorService,
     private salaryService:SalaryService,private toastr: ToastrService) {}
 
   ngOnInit(): void 
   {
+    this.dtOptions = {
+      pagingType: 'full_numbers',
+      pageLength: 10,
+      columnDefs :[
+        {
+          targets:[0],
+          width:'50px'
+        },
+        {
+          targets:[6],
+          width:'50px',
+          className: 'text-center',
+        },
+        {
+          targets:[7],
+          width:'10px',
+          orderable: false,
+          searchable: false,
+        },
+      ]
+    };
     this.GetAllStaffs();
     this.GetAllSalary();
   }
@@ -60,6 +85,8 @@ export class SalaryComponent implements OnInit
     {
       this.salaryService.GetSalary(this.salaryDetailId).subscribe((res:any)=>{
         this.salaryForm.patchValue(res);
+        this.salaryForm.get("salary_date")?.setValue(new Date(res.salary_date).toISOString().substring(0, 10));
+        this.salaryForm.get("credited_date")?.setValue(new Date(res.credited_date).toISOString().substring(0, 10));
         this.GetSelectedStaff();
       },(error)=>{
         this.toastr.error(error.error, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
@@ -93,8 +120,10 @@ export class SalaryComponent implements OnInit
   GetAllSalary()
   {
     this.isLoading = true;
+    $('#datatable').DataTable().destroy();
     this.salaryService.GetSalarys().subscribe((res:any)=>{
       this.salaries = res;
+      this.dtTrigger.next(null);
       this.isLoading = false;
     },(error)=>{
       this.toastr.error(error.error, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
@@ -202,6 +231,19 @@ export class SalaryComponent implements OnInit
 
   isInvalidField(control: any) {
     return control.invalid && control.touched;
+  }
+
+  GetStatusColor(status:String):any
+  {
+    if(status == "unpaid")
+    {
+      return "bg-danger"
+    }
+
+    else if(status == "paid")
+    {
+      return "bg-success"
+    }
   }
 }
 
