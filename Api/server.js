@@ -36,6 +36,7 @@ app.use("/api/expenses",require("./routes/expense.route"));
 app.use("/api/assets",require("./routes/asset.route"));
 app.use("/api/leaveapplications",require("./routes/leaveApplication.route"));
 app.use("/api/notifications",require("./routes/notification.route"));
+app.use("/api/worklogs",require("./routes/worklog.route"));
 
 
 app.use("/api/validate-token",require("./routes/validate.route"));

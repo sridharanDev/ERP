@@ -9,6 +9,7 @@ import { DataTablesModule } from 'angular-datatables';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { NgChartsModule } from 'ng2-charts';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -62,6 +63,7 @@ import { AssetsTypeComponent } from './pages/assets-type/assets-type.component';
 import { ScheduleComponent } from './pages/schedule/schedule.component';
 import { StaffLeaveComponent } from './pages/staff-pages/staff-leave/staff-leave.component';
 import { LeaveApplicationComponent } from './pages/leave-application/leave-application.component';
+import { StaffWorklogComponent } from './pages/staff-pages/staff-worklog/staff-worklog.component';
 
 @NgModule({
   declarations: [
@@ -116,6 +118,7 @@ import { LeaveApplicationComponent } from './pages/leave-application/leave-appli
     ScheduleComponent,
     StaffLeaveComponent,
     LeaveApplicationComponent,
+    StaffWorklogComponent,
   ],
   imports: [
     BrowserModule,
@@ -132,6 +135,7 @@ import { LeaveApplicationComponent } from './pages/leave-application/leave-appli
       useFactory: adapterFactory,
     }),
     NgMultiSelectDropDownModule.forRoot(),
+    NgChartsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

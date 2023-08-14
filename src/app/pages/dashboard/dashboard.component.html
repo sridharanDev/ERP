@@ -1,0 +1,205 @@
+<div class="row g-3">
+    <div class="col-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col mt-0">
+                        <h5 class="card-title">Projects</h5>
+                    </div>
+
+                    <div class="col-auto">
+                        <div class="stat text-primary">
+                            <i class="fa-solid fa-diagram-project"></i>
+                        </div>
+                    </div>
+                </div>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td><span class="text-muted">Upcomming</span></td>
+                            <td>:</td>
+                            <td><span class="text-primary"> {{projects.upcomming}} </span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="text-muted">Inprogress</span></td>
+                            <td>:</td>
+                            <td><span class="text-primary"> {{projects.ongoing}} </span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="text-muted">Completed</span></td>
+                            <td>:</td>
+                            <td><span class="text-primary"> {{projects.completed}} </span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col mt-0">
+                        <h5 class="card-title">Staffs</h5>
+                    </div>
+
+                    <div class="col-auto">
+                        <div class="stat text-primary">
+                            <i class="fa-solid fa-user-tie"></i>
+                        </div>
+                    </div>
+                </div>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td><span class="text-muted">Total</span></td>
+                            <td>:</td>
+                            <td><span class="text-primary"> {{staffs.total}} </span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="text-muted">Present</span></td>
+                            <td>:</td>
+                            <td><span class="text-primary"> {{staffs.present}} </span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="text-muted">Leave</span></td>
+                            <td>:</td>
+                            <td><span class="text-primary"> {{staffs.leave}} </span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col mt-0">
+                        <h5 class="card-title">Students</h5>
+                    </div>
+
+                    <div class="col-auto">
+                        <div class="stat text-primary">
+                            <i class="fa-solid fa-user-graduate"></i>
+                        </div>
+                    </div>
+                </div>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td><span class="text-muted">Total</span></td>
+                            <td>:</td>
+                            <td><span class="text-primary"> {{students.total}} </span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="text-muted">Studying</span></td>
+                            <td>:</td>
+                            <td><span class="text-primary"> {{students.studying}} </span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="text-muted">Completed</span></td>
+                            <td>:</td>
+                            <td><span class="text-primary"> {{students.completed}} </span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col mt-0">
+                        <h5 class="card-title">Assets</h5>
+                    </div>
+
+                    <div class="col-auto">
+                        <div class="stat text-primary">
+                            <i class="fa-solid fa-cubes"></i>
+                        </div>
+                    </div>
+                </div>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td><span class="text-muted">Laptop</span></td>
+                            <td>:</td>
+                            <td><span class="text-primary"> {{assets.laptop}} </span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="text-muted">Desktop</span></td>
+                            <td>:</td>
+                            <td><span class="text-primary"> {{assets.desktop}} </span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="text-muted">Scanner</span></td>
+                            <td>:</td>
+                            <td><span class="text-primary"> {{assets.scanner}} </span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3">
+    <div class="col-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">Overall progress</h5>
+            </div>
+            <div class="card-body">
+                <canvas class="container" style="height: 500px;" id="progress-pie-chart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">Project reminders</h5>
+            </div>
+            <div class="card-body">
+                
+            </div>
+        </div>
+    </div>
+    <div class="col-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">Courses</h5>
+            </div>
+            <div class="card-body">
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3">
+    <div class="col-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">Attendance Report</h5>
+            </div>
+            <div class="card-body">
+                <canvas class="container" style="height: 300px;" id="attendance-bar-chart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">Overall progress</h5>
+            </div>
+            <div class="card-body">
+                <canvas class="container" style="height: 300px;" id="allprogress-bar-chart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>

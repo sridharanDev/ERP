@@ -9,7 +9,7 @@
                     <tr>
                         <th>S.No</th>
                         <th>Date</th>
-                        <th>Staff ID</th>
+                        <th>Staff</th>
                         <th>Login</th>
                         <th>Logout</th>
                         <th>Total Hours</th>
@@ -20,8 +20,8 @@
                     <tr *ngFor="let attendance of allAttendances;index as i;">
                         <td>{{i+1}}</td>
                         <td>{{attendance.date | date:'yyyy-MM-dd'}}</td>
-                        <td>{{attendance.staff.staff_id}}</td>
-                        <td>{{attendance.loginTime | date:'h:mm a'}}</td>
+                        <td>{{attendance.staff.staff_id}} - {{attendance.staff.name}}</td>
+                        <td>{{attendance.loginTime | date:'h:mm a'}} <span class="text-danger" *ngIf="attendance.lateLogin"> [Late login]</span></td>
                         <td>{{attendance.logoutTime | date:'h:mm a'}}</td>
                         <td><i class="fa-regular fa-clock"></i> {{attendance.totalLoginHours}}</td>
                         <td>

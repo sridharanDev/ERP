@@ -46,6 +46,7 @@ import { AssetsTypeComponent } from './pages/assets-type/assets-type.component';
 import { ScheduleComponent } from './pages/schedule/schedule.component';
 import { StaffLeaveComponent } from './pages/staff-pages/staff-leave/staff-leave.component';
 import { LeaveApplicationComponent } from './pages/leave-application/leave-application.component';
+import { StaffWorklogComponent } from './pages/staff-pages/staff-worklog/staff-worklog.component';
 
 
 
@@ -116,6 +117,7 @@ const routes: Routes = [
     {path:'tasks',component:StaffTasksComponent},
     {path:'attendance',component:AttendanceComponent},
     {path:'leave-application',component:StaffLeaveComponent},
+    {path:'worklog',component:StaffWorklogComponent},
   ],canActivate: [StaffAuthGuard]},
   {path:'**',component:ErrorPageComponent},
 ];

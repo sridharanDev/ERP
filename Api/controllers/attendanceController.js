@@ -24,7 +24,19 @@ const AttendanceController = async (req,res,next) =>{
               return res.status(401).json({ message: `Attendance not recorded as login for this date. Cannot record ${status} without login` });
             }
         }
-        
+        if (status === 'lunch in')
+        {
+            const existingLunchOutAttendance = await Attendance.findOne({
+                staff: staff._id,
+                status: 'lunch out',
+                date: { $gte: currentDay, $lt: new Date(currentDay.getTime() + 86400000) },
+            });
+
+            if(!existingLunchOutAttendance)
+            {
+                return res.status(401).json({ message: `Attendance lunch out recorded not available on this date` });
+            }
+        }
         const existingAttendance = await Attendance.findOne({
             staff: staff._id,
             date: { $gte: currentDay, $lt: new Date(currentDay.getTime() + 86400000) },
@@ -59,7 +71,7 @@ const GetAttendancesController = async (req,res,next) =>
         const attendances = await Attendance.find().populate({path:"staff",select : "name staff_id"});
 
         const staffAttendanceMap = new Map();
-        attendances.forEach((attendance) => {
+        await Promise.all(attendances.map(async (attendance) => {
             const date = attendance.date.toISOString().split("T")[0];
             if (!staffAttendanceMap.has(date)) {
               staffAttendanceMap.set(date, []);
@@ -81,6 +93,7 @@ const GetAttendancesController = async (req,res,next) =>
                 lunchOutTime: null, // Add lunch out time
                 totalLoginHours: 0,
                 lunchBreakHours: 0,
+                lateLogin: false,
               });
             }
             
@@ -93,6 +106,25 @@ const GetAttendancesController = async (req,res,next) =>
                 if(!staffEntry.loginTime)
                 {
                     staffEntry.loginTime = attendance.date;
+
+                    const staff = await Staff.findById(attendance.staff._id).populate("schedule");
+                    if (staff && staff.schedule) {
+                        const inTime = parseTimeString(staff.schedule.in_time);
+                        const loginTime = parseTimeString(attendance.date.toISOString().split("T")[1]);
+
+                        const loginHours = loginTime.getHours();
+                        const loginMinutes = loginTime.getMinutes();
+
+                        const inHours = inTime.getUTCHours();
+                        const inMinutes = inTime.getUTCMinutes();
+
+                        const isLateLogin = loginHours > inHours || (loginHours === inHours && loginMinutes > inMinutes);
+
+                        if (isLateLogin) {
+                            staffEntry.lateLogin = true;
+                        }
+                    }
+
                 }
             }
             else if(attendance.status === "logout")
@@ -134,7 +166,7 @@ const GetAttendancesController = async (req,res,next) =>
                 });
             });   
               
-        });
+        }));
           
         const staffAttendance = [];
         staffAttendanceMap.forEach((dateAttendance) => {
@@ -179,6 +211,16 @@ const DeleteAttendaceController = async (req,res)=>
         res.status(500).json(error.message);
     }
 }
+
+function parseTimeString(timeString) {
+    const [hours, minutes] = timeString.split(":").map(Number);
+    const date = new Date();
+    date.setUTCHours(hours);
+    date.setUTCMinutes(minutes);
+    date.setUTCSeconds(0);
+    return date;
+}
+
 
 module.exports = {
     AttendanceController,

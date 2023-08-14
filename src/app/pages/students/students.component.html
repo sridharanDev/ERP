@@ -32,14 +32,14 @@
                         <td>{{student.totalFees | currency: 'INR' : 'symbol-narrow': '1.0-0'}}</td>
                         <td>{{student.paid | currency: 'INR' : 'symbol-narrow': '1.0-0'}}</td>
                         <td>{{student.balanceFees | currency: 'INR' : 'symbol-narrow': '1.0-0'}}</td>
-                        <td><div class="badge " [ngClass]="GetStatusColor(student.status)">{{student.status}}</div></td>
+                        <td><div class="badge " [ngClass]="GetStatusColor(student.status)" (click)="openModal(editStatusModel,student._id)" style="cursor: pointer;">{{student.status}}</div></td>
                         <td style="width: 50px; text-align: center;" >
                             <button type="button" class="btn btn-primary btn-sm me-2" data-bs-toggle="dropdown">Action</button>     
                             <div class="dropdown">
                                 <div class="dropdown-menu dropdown-menu-end">
                                     <a class="dropdown-item" href="#" routerLink="/admin/billing" [queryParams]="{studentId:student._id}">Billing</a>
                                     <a class="dropdown-item" href="#" routerLink="/admin/students/profile/{{student._id}}">Profile</a>
-                                    <a class="dropdown-item"  (click)="openModal(editStatusModel,student._id)">Staus</a>
+                                    <!-- <a class="dropdown-item"  (click)="openModal(editStatusModel,student._id)">Staus</a> -->
                                     <a class="dropdown-item" href="#" routerLink="/admin/enquiry/edit-student/{{student._id}}">Edit</a>
                                     <a class="dropdown-item"  (click)="openModal(deleteStaffModel,student._id)">Delete</a>
                                 </div>

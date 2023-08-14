@@ -18,7 +18,7 @@
             <tbody>
                 <tr *ngFor="let application of allApplications;index as i;">
                     <td>{{i+1}}</td>
-                    <td>{{application.staff.staff_id}}<br>{{application.staff.name}}</td>
+                    <td>{{application.staff.staff_id}} - {{application.staff.name}}</td>
                     <td>{{application.from_date | date:'yyyy-MM-dd'}}</td>
                     <td>{{application.to_date | date:'yyyy-MM-dd'}}</td>
                     <td>{{application.reason}}</td>

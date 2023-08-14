@@ -22,7 +22,7 @@
                         <td>{{i + 1}}</td>
                         <td>{{task.title}}</td>
                         <td>{{task.description}}</td>
-                        <td>{{task.staff.staff_id}}</td>
+                        <td>{{task.staff.staff_id}} - {{task.staff.name}}</td>
                         <td>{{task.createdAt | date:'yyyy-MM-dd'}} <br> {{task.createdAt | date:'H;mm a'}}</td>
                         <td><span class="badge " [ngClass]="GetStatusColor(task.status)">{{task.status}}</span></td>
                         <td style="width: 50px; text-align: center;">

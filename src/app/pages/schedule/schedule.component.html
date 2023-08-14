@@ -71,12 +71,16 @@
         </button>
       </div>
       <form [formGroup]="scheduleForm" (ngSubmit)="OnEditSumbit()">
-          <div class="modal-body">
-              <div class="form-input">
-                  <label for="">Type name</label>
-                  <input type="text" class="form-control" placeholder="type name" formControlName="name" [ngClass]="{'is-invalid': isInvalidField(scheduleForm.get('name'))}">
-              </div>
-          </div>
+        <div class="modal-body">
+            <div class="form-input">
+                <label for="">In Time</label>
+                <input type="time" class="form-control" placeholder="in time" formControlName="in_time" [ngClass]="{'is-invalid': isInvalidField(scheduleForm.get('in_time'))}">
+            </div>
+            <div class="form-input">
+                <label for="">Out Time</label>
+                <input type="time" class="form-control" placeholder="out time" formControlName="out_time" [ngClass]="{'is-invalid': isInvalidField(scheduleForm.get('out_time'))}">
+            </div>
+        </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary " (click)="modal.dismiss()" >Cancel</button>
             <button type="submit" class="btn btn-warning" >Update</button>
