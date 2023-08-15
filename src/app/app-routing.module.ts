@@ -47,6 +47,7 @@ import { ScheduleComponent } from './pages/schedule/schedule.component';
 import { StaffLeaveComponent } from './pages/staff-pages/staff-leave/staff-leave.component';
 import { LeaveApplicationComponent } from './pages/leave-application/leave-application.component';
 import { StaffWorklogComponent } from './pages/staff-pages/staff-worklog/staff-worklog.component';
+import { WorklogComponent } from './pages/worklog/worklog.component';
 
 
 
@@ -70,6 +71,7 @@ const routes: Routes = [
       { path: 'billing', component: BillingComponent ,canActivate: [AuthGuardService],data: { module: ['course','project']}},
       { path: 'invoices/:type', component: InvoicesComponent ,canActivate: [AuthGuardService],data: { module: ['course']}},
       { path: 'manage-tasks', component: ManageTasksComponent ,canActivate: [AuthGuardService],data: { module: ['project']}},
+      { path: 'worklog', component: WorklogComponent ,canActivate: [AuthGuardService],data: { module: ['project','staff']}},
       { path: 'incomes', component: IncomeComponent ,canActivate: [AuthGuardService],data: { module: ['others']}},
       { path: 'assets-type', component: AssetsTypeComponent ,canActivate: [AuthGuardService],data: { module: ['assets']}},
       { path: 'assets', component: AssetsComponent ,canActivate: [AuthGuardService],data: { module: ['assets']}},

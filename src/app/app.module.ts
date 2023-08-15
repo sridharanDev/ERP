@@ -64,6 +64,8 @@ import { ScheduleComponent } from './pages/schedule/schedule.component';
 import { StaffLeaveComponent } from './pages/staff-pages/staff-leave/staff-leave.component';
 import { LeaveApplicationComponent } from './pages/leave-application/leave-application.component';
 import { StaffWorklogComponent } from './pages/staff-pages/staff-worklog/staff-worklog.component';
+import { WorklogComponent } from './pages/worklog/worklog.component';
+import { SidebarDirective } from './components/sidebar/sidebar.directive';
 
 @NgModule({
   declarations: [
@@ -119,6 +121,8 @@ import { StaffWorklogComponent } from './pages/staff-pages/staff-worklog/staff-w
     StaffLeaveComponent,
     LeaveApplicationComponent,
     StaffWorklogComponent,
+    WorklogComponent,
+    SidebarDirective,
   ],
   imports: [
     BrowserModule,

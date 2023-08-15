@@ -20,11 +20,11 @@ export class DashboardComponent implements OnInit,AfterViewInit
   staffs:any = {total:0,present:0,leave:0};
   students:any = {total:0,studying:0,completed:0};
   assets:any = {laptop:0,desktop:0,scanner:0};
-
+  courses:any = {total:0,monthly:0,followups:0};
   pieChartData:any = [0,0,0];  
 
-
-
+  attendaceFilter:any = "monthly";
+  attendanceChart :any;
 
   constructor(private projectService:ProjectService,private staffService:StaffService,private incomeService:IncomeService,
     private studentService:StudentService,private assetService:AssetService,private attendanceService:AttendanceService){}
@@ -94,6 +94,18 @@ export class DashboardComponent implements OnInit,AfterViewInit
         else if(student.status === "completed")
         {
           this.students.completed++;
+        }
+        else if(student.status !== "converted" && student.status !== "call back")
+        {
+          this.courses.total++;          
+          if(this.isDateInCurrentMonth(student.createdAt))
+          {
+            this.courses.monthly++;
+          }
+        }
+        else if(student.status === "call back")
+        {
+          this.courses.followups++;
         }
       } 
       
@@ -179,39 +191,79 @@ export class DashboardComponent implements OnInit,AfterViewInit
   GetAttendanceReport()
   {
 
-    const weeks:any = [];
+    const labels:any = [];
     const lateLogin:any = [];
     const ontimeLogin:any = [];
-    for(let i=1;i <= this.calculateWeeksInMonth();i++)
+    if(this.attendaceFilter == "weekly")
     {
-      weeks.push("Week "+i);
-      lateLogin.push(0);
-      ontimeLogin.push(0);
+      for(let i=1;i <= this.calculateWeeksInMonth();i++)
+      {
+        labels.push("Week "+i);
+        lateLogin.push(0);
+        ontimeLogin.push(0);
+      }
     }
+    else if(this.attendaceFilter == "monthly")
+    {
+      const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov","Dec"];
+      for(let month of months)
+      {
+        labels.push(month);
+        lateLogin.push(0);
+        ontimeLogin.push(0);
+      }
+    }
+
     this.attendanceService.GetAttendances().subscribe((res:any)=>{
       for(let attendace of res)
       {
-        const week = this.getWeekNumberInCurrentMonth(new Date(attendace.date))-1;
-        if(attendace.lateLogin)
+        if(this.attendaceFilter == "weekly")
         {
-          lateLogin[week]++;
+          if(this.isDateInCurrentYear(attendace.date))
+          {
+            const week = this.getWeekNumberInCurrentMonth(new Date(attendace.date))-1;
+            if(attendace.lateLogin)
+            {
+              lateLogin[week]++;
+            }
+            else
+            {
+              ontimeLogin[week]++;
+            }
+          }
         }
-        else
+        else if(this.attendaceFilter == "monthly")
         {
-          ontimeLogin[week]++;
+          if(this.isDateInCurrentYear(attendace.date))
+          {
+            const month = this.getMonthNumberFromDate(new Date(attendace.date));
+            if(attendace.lateLogin)
+            {
+              lateLogin[month]++;
+            }
+            else
+            {
+              ontimeLogin[month]++;
+            }
+          }
+          
         }
         
       }
-      this.CreateAttendanceChart(weeks,lateLogin,ontimeLogin);
+      this.CreateAttendanceChart(labels,lateLogin,ontimeLogin);
       
     },(error)=>{
 
     })
   }
 
-  CreateAttendanceChart(weeks: any, lateLogin: any, ontimeLogin: any) {
+  CreateAttendanceChart(labels: any, lateLogin: any, ontimeLogin: any) {
     const canvas = document.getElementById('attendance-bar-chart') as HTMLCanvasElement;
     const ctx = canvas.getContext('2d');
+
+    if (this.attendanceChart) {
+      this.attendanceChart.destroy();
+    }
   
     const datasets: ChartDataset<'bar', number[]>[] = [
       {
@@ -221,7 +273,7 @@ export class DashboardComponent implements OnInit,AfterViewInit
       },
       {
         label: 'Late Attendance',
-        backgroundColor: '#3B7DDD',
+        backgroundColor: '#DC3545',
         data: lateLogin
       },
     ];
@@ -229,7 +281,7 @@ export class DashboardComponent implements OnInit,AfterViewInit
     const chartConfig: ChartConfiguration<'bar'> = {
       type: 'bar',
       data: {
-        labels: weeks,
+        labels: labels,
         datasets: datasets
       },
       options: {
@@ -246,7 +298,7 @@ export class DashboardComponent implements OnInit,AfterViewInit
       }
     };
   
-    new Chart(ctx!, chartConfig);
+    this.attendanceChart = new Chart(ctx!, chartConfig);
   }
 
   CreateOverAllProgressChart(projects: any, courses: any,rents:any) {
@@ -312,22 +364,31 @@ export class DashboardComponent implements OnInit,AfterViewInit
       rentCount = incomeRes.incomesWithRents.length;
       for(let project of projectRes)
       {
-        const month = this.getMonthNumberFromDate(new Date(project.createdAt));
-        projects[month]++;    
+        if(this.isDateInCurrentYear(project.createdAt))
+        {
+          const month = this.getMonthNumberFromDate(new Date(project.createdAt));
+          projects[month]++;    
+        }
       }
       
       for (const student of studentRes) {
         if (student.status === "converted") {
-          courseCount++;
-          const month = this.getMonthNumberFromDate(new Date(student.createdAt));
-          courses[month]++;    
+          if(this.isDateInCurrentYear(student.createdAt))
+          {
+            courseCount++;
+            const month = this.getMonthNumberFromDate(new Date(student.createdAt));
+            courses[month]++;    
+          }
         }
       } 
 
       for(let rent of incomeRes.incomesWithRents)
       {
-        const month = this.getMonthNumberFromDate(new Date(rent.createdAt));
-        rents[month]++;
+        if(this.isDateInCurrentYear(rent.createdAt))
+        {
+          const month = this.getMonthNumberFromDate(new Date(rent.createdAt));
+          rents[month]++;
+        }
       }
       this.CreateOverAllProgressChart(projects,courses,rents);     
       this.GetOverallProgress(projectCount, courseCount, rentCount);
@@ -364,6 +425,23 @@ export class DashboardComponent implements OnInit,AfterViewInit
 
   getMonthNumberFromDate(inputDate: Date): number {
     return inputDate.getMonth();
+  }
+
+  isDateInCurrentYear(dateString: string): boolean {
+    const currentDate = new Date();
+    const inputDate = new Date(dateString);
+  
+    return currentDate.getFullYear() === inputDate.getFullYear();
+  }
+  
+  isDateInCurrentMonth(dateString: string): boolean {
+    const currentDate = new Date();
+    const inputDate = new Date(dateString);
+  
+    return (
+      currentDate.getFullYear() === inputDate.getFullYear() &&
+      currentDate.getMonth() === inputDate.getMonth()
+    );
   }
 
   formatDate(dateString:any) {

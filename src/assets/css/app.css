@@ -12058,8 +12058,8 @@
  }
  .sidebar {
    direction: ltr;
-   max-width: 260px;
-   min-width: 260px;
+   max-width: 200px;
+   min-width: 200px;
  }
  .sidebar,
  .sidebar-content {
