@@ -6,6 +6,7 @@ import { InvoiceService } from 'src/app/services/invoice.service';
 import { StudentService } from 'src/app/services/student.service';
 import { CourseService } from 'src/app/services/course.service';
 import { ProjectService } from 'src/app/services/project.service';
+import { AssetService } from 'src/app/services/asset.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -17,12 +18,14 @@ export class BillingComponent implements OnInit
 {
   constructor(private route:ActivatedRoute,private studentService:StudentService,
     private invoiceService:InvoiceService,private toastr: ToastrService,private projectService:ProjectService,
-    private courseService:CourseService,private router: Router){}
+    private courseService:CourseService,private assetService:AssetService,private router: Router){}
 
   studentId:any;
   projectId:any;
   allCourses:any  = [];
   allProjects:any  = [];
+  allAssetsTypes:any = [];
+  allAssets:any = [];
 
   oldInvoices:any = [];
 
@@ -59,6 +62,7 @@ export class BillingComponent implements OnInit
     }
     this.GetCourses();
     this.GetAllProjects();
+    this.GetAssetsType();
     this.GetOldInvoices();
   }
   
@@ -149,6 +153,32 @@ export class BillingComponent implements OnInit
   {
     this.projectService.GetProjects("").subscribe((res:any)=>{
       this.allProjects = res;      
+    },(error)=>{
+      this.toastr.error(error.error, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
+    });
+  }
+
+  GetAssetsType()
+  {
+    this.assetService.GetTypes().subscribe((res:any)=>{
+      this.allAssetsTypes = res;
+    },(error)=>{
+      this.toastr.error(error.error, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
+    });
+  }
+  
+  GetAssets(event: Event) {
+    const value = (event.target as HTMLInputElement).value;
+    const assetList:any = [];
+    this.assetService.GetAssets().subscribe((res:any)=>{
+      for(const asset of res)
+      {
+        if(asset.type._id === value)
+        {
+          assetList.push(asset);
+        }
+      }
+      this.allAssets = assetList;
     },(error)=>{
       this.toastr.error(error.error, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
     });
@@ -290,6 +320,22 @@ export class BillingComponent implements OnInit
         const item = {name:selected.project_name,desc:selected.description,price:0,amount:0};
         this.AddToBill(item);
       }    
+    }
+    else if(type === "rent")
+    {
+      for (let i = 0; i < this.allAssets.length; i++) 
+      {
+        if(this.allAssets[i]._id == _id)
+        {
+          selected = this.allAssets[i];
+          break;
+        }
+      }
+      if(selected)
+      {
+        const item = {name:selected.type.name,desc:`${selected.asset_id}-${selected.name}`,price:0,amount:0};
+        this.AddToBill(item);
+      } 
     }
     
     this.OnChange();

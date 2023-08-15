@@ -48,6 +48,7 @@ import { StaffLeaveComponent } from './pages/staff-pages/staff-leave/staff-leave
 import { LeaveApplicationComponent } from './pages/leave-application/leave-application.component';
 import { StaffWorklogComponent } from './pages/staff-pages/staff-worklog/staff-worklog.component';
 import { WorklogComponent } from './pages/worklog/worklog.component';
+import { StaffReportComponent } from './pages/staff-report/staff-report.component';
 
 
 
@@ -78,7 +79,7 @@ const routes: Routes = [
       { path: 'expense-type', component: ExpenseTypeComponent ,canActivate: [AuthGuardService],data: { module: ['expenses']}},
       { path: 'expense', component: ExpenseComponent ,canActivate: [AuthGuardService],data: { module: ['expenses']}},
       { path: 'leave-application', component: LeaveApplicationComponent ,canActivate: [AuthGuardService],data: { module: ['staff']}},
-      
+      { path: 'report/staff', component: StaffReportComponent ,canActivate: [AuthGuardService],data: { module: ['expenses']}},
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       {
         path: 'staff-list',

@@ -60,6 +60,10 @@ const staffSchema = new mongoose.Schema({
         ref: 'schedule',
         required:true,
     },
+    password:{
+        type:String,
+        required:true,
+    },
     status:{
         type:String,
     },

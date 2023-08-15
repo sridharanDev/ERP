@@ -66,6 +66,7 @@ import { LeaveApplicationComponent } from './pages/leave-application/leave-appli
 import { StaffWorklogComponent } from './pages/staff-pages/staff-worklog/staff-worklog.component';
 import { WorklogComponent } from './pages/worklog/worklog.component';
 import { SidebarDirective } from './components/sidebar/sidebar.directive';
+import { StaffReportComponent } from './pages/staff-report/staff-report.component';
 
 @NgModule({
   declarations: [
@@ -123,6 +124,7 @@ import { SidebarDirective } from './components/sidebar/sidebar.directive';
     StaffWorklogComponent,
     WorklogComponent,
     SidebarDirective,
+    StaffReportComponent,
   ],
   imports: [
     BrowserModule,

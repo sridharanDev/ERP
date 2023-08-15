@@ -56,20 +56,41 @@ export class SidebarComponent implements OnInit {
     this.taskService.GetTasks('').subscribe((res: any) => {
       for(const task of res)
       {
-        const query = "task="+task._id;
-        // this.taskCommentService.GetTaskComments(query).subscribe((res:any)=>{
-
-        // });
-        taskCount++;
+        if(this.isDateInCurrentDay(task.updatedAt))
+        {
+          if(task.status === "completed")
+          {
+            taskCount++;
+          }        
+        }        
       }
       this.taskCount = taskCount;
     });
   }
 
   getAllWorkLogs() {
+    let worklogCount = 0;
     this.worklogService.GetWorklogs('').subscribe((res: any) => {
-      this.worklogCount = res.length;
+      for(const worklog of res)
+      {
+        if(this.isDateInCurrentDay(worklog.updatedAt))
+        {
+          worklogCount++;
+        }
+      }
+      this.worklogCount = worklogCount;
     });
+  }
+
+  isDateInCurrentDay(dateString: string): boolean {
+    const currentDate = new Date();
+    const inputDate = new Date(dateString);
+  
+    return (
+      currentDate.getFullYear() === inputDate.getFullYear() &&
+      currentDate.getMonth() === inputDate.getMonth() &&
+      currentDate.getDay() === inputDate.getDay()
+    );
   }
 
   hasModules(modules: string[]) {

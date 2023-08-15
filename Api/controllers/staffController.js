@@ -1,5 +1,6 @@
 const Staff = require("../models/staff");
 const jwt = require("jsonwebtoken");
+const bcrypt = require('bcrypt');
 
 const CreateStaffController = async (req,res,next) =>{
     try 
@@ -19,6 +20,8 @@ const CreateStaffController = async (req,res,next) =>{
             schedule,
             status,
         } = req.body;
+        const password = generatePassword(name,dob);
+        const HashedPassword = await bcrypt.hash(password,10);
         const staff = new Staff({
             staff_id,
             name,
@@ -33,6 +36,7 @@ const CreateStaffController = async (req,res,next) =>{
             designation,
             role,
             schedule,
+            password : HashedPassword,
             status,
         });
         const newStaff = await staff.save();
@@ -73,8 +77,10 @@ const EditStaffController = async (req,res,next) =>{
             designation,
             role,
             schedule,
+            password,
             status,
         } = req.body;
+        const HashedPassword = await bcrypt.hash(password,10);
         const staff = await Staff.findById(req.params.id)
         if (!staff) {
             return res.status(404).json({ error: 'Staff member not found' });
@@ -117,6 +123,9 @@ const EditStaffController = async (req,res,next) =>{
         }
         if (schedule) {
             staff.schedule = schedule;
+        }
+        if (password) {
+            staff.password = HashedPassword;
         }
         if (status) {
             staff.status = status;
@@ -162,7 +171,8 @@ const GetStaffsController = async (req,res,next) =>{
     try
     {
         const staffs = await Staff.find()
-        .populate({path:"role",select:"name salery"});
+        .populate({path:"role",select:"name salery"})
+        .populate("schedule");
         res.json(staffs);
         next();
     }
@@ -198,6 +208,10 @@ const StaffLoginController = async (req,res,next) =>{
         if (!staff) {
             return res.status(401).json({ field: "staff_id", error: "Invalid staff ID" });
         }
+        const isPasswordValid = await bcrypt.compare(password, staff.password);
+        if (!isPasswordValid) {
+            return res.status(401).json({ field: "password", error: "Invalid password" });
+        }
         const token = jwt.sign({ _id: staff._id }, process.env.JWT_SECRET);
         res.status(200).json({ token:token,staff_id:staff.staff_id });
     }
@@ -224,6 +238,14 @@ const GetStaffProfileController = async (req,res,next) =>{
         res.status(500).json(error.message); 
     }
 };
+
+function generatePassword(username, dob) {
+    const year = dob.split('-')[0];
+    const cleanedUsername = username.replace(/\s/g, '');
+    const password = cleanedUsername + year;
+  
+    return password;
+  }
 
 module.exports = {
     CreateStaffController,

@@ -52,10 +52,20 @@
                             <option value="NA">-- Select Type --</option>
                             <option value="course">Cources</option>
                             <option value="project">Projects</option>
+                            <option value="rent">Rent</option>
                         </select>
                     </div>
                 </div>
-                <div class="col-6">
+                <div class="col-3" *ngIf="form2.value.type === 'rent'" >
+                    <div class="form-group">
+                        <label for="">Asset type</label>
+                        <select name="" id="" class="form-select" (change)="GetAssets($event)">
+                            <option value="NA">-- Select Asset type --</option>
+                            <option value="{{option._id}}" *ngFor="let option of allAssetsTypes">{{option.name}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-3" [class.col-3]="form2.value.type === 'rent'" [class.col-6]="form2.value.type !== 'rent'">
                     <div class="form-group">
                         <label for="">Option</label>
                         <select name="" id="" class="form-select" formControlName="option">
@@ -65,6 +75,9 @@
                             </ng-container>
                             <ng-container *ngIf="form2.value.type === 'project'">
                                 <option value="{{option._id}}" *ngFor="let option of allProjects;">{{option.project_name}}</option>
+                            </ng-container>
+                            <ng-container *ngIf="form2.value.type === 'rent'">
+                                <option value="{{option._id}}" *ngFor="let option of allAssets;">{{option.asset_id}}-{{option.name}}</option>
                             </ng-container>
                         </select>
                     </div>

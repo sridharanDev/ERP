@@ -18,6 +18,8 @@ export class StaffListComponent implements OnInit
   allStaffs:any = [];
   isLoading:boolean = false;
 
+  passwordInput:any;
+
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<any> = new Subject<any>();
 
@@ -58,6 +60,7 @@ export class StaffListComponent implements OnInit
       backdrop: 'static',
       keyboard: false,
     });
+    this.passwordInput = null;
   }
   
   GetAllStaffs()
@@ -69,6 +72,25 @@ export class StaffListComponent implements OnInit
       this.dtTrigger.next(null);
       this.isLoading = false;
     },(error)=>{
+      this.isLoading = false;
+    });
+  }
+
+  ChangePassSubmit()
+  {
+    if(!this.staffId || this.passwordInput == "")
+    {
+      return;
+    }
+    const formData = {password:this.passwordInput};
+    this.isLoading = true;
+    this.staffService.EditStaff(this.staffId,formData).subscribe((res)=>{
+      this.isLoading = false;
+      this.GetAllStaffs();
+      this.modalService.dismissAll();
+      this.toastr.info('Password updated successfully.', 'Update password',{timeOut: 3000,closeButton: true,progressBar: true,},);
+    },(error)=>{
+      this.toastr.error(error.message, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
       this.isLoading = false;
     });
   }
