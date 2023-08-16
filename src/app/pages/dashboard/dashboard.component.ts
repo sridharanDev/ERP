@@ -182,6 +182,9 @@ export class DashboardComponent implements OnInit,AfterViewInit
         labels: ["Projects", "Courses", "Rents"]
       },
       options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        aspectRatio: 1.5,
       }
     };
   
@@ -286,6 +289,8 @@ export class DashboardComponent implements OnInit,AfterViewInit
       },
       options: {
         responsive: true,
+        maintainAspectRatio: false,
+        aspectRatio: 1,
         indexAxis: 'x',
         scales: {
           x: {
@@ -331,6 +336,8 @@ export class DashboardComponent implements OnInit,AfterViewInit
       },
       options: {
         responsive: true,
+        maintainAspectRatio: false,
+        aspectRatio: 1,
         indexAxis: 'x',
         scales: {
           x: {

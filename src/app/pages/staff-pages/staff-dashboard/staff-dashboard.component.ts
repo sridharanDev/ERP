@@ -183,6 +183,8 @@ export class StaffDashboardComponent implements OnInit
       },
       options: {
         responsive: true,
+        maintainAspectRatio: false,
+        aspectRatio: 2,
         indexAxis: 'x',
         scales: {
           x: {
