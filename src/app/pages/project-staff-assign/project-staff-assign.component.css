@@ -1,24 +1,28 @@
-.dl-horizontal {
-    overflow: hidden;
-    padding-left: 15px;
-    margin-bottom: 15px;
+/* Custom CSS for a borderless table */
+.borderless-table {
+    border-collapse: collapse;
+    width: 100%;
 }
-
-.dl-horizontal dt {
-    float: left;
-    /* width: 160px; */
-    clear: left;
-    text-align: left;
-    padding-right: 10px;
+  
+.borderless-table th,
+.borderless-table td {
+    border: none; 
+    padding: 8px; 
+    text-align: left; 
+}
+  
+.borderless-table th {
+    background-color: #f2f2f2;
     font-weight: bold;
-    margin-bottom: 20px;
 }
 
-.dl-horizontal dd {
-    margin-left: 40px;
-    padding-left: 10px;
-    margin-bottom: 20px;
+.borderless-table tr td:first-child,
+.borderless-table tr td:nth-child(2)
+{
+    font-weight: bold;
 }
+  
+
 .img-circle {
     display: inline-block;
     width: 50px;
@@ -31,7 +35,6 @@
 .user {
     text-align: center;
     position: relative;
-    padding: 5px 20px;
 }
 
 .user a {

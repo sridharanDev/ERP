@@ -14,3 +14,9 @@
     background-color: #f2f2f2;
     font-weight: bold;
 }
+
+.card-title
+{
+    font-size: 15px;
+    color: #a09f9f;
+}

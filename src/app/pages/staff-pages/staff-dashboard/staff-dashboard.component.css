@@ -19,3 +19,9 @@
     padding-left: 10px;
     margin-bottom: 20px;
 }
+
+.card-title
+{
+    font-size: 15px;
+    color: #a09f9f;
+}
