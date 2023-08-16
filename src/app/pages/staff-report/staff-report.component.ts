@@ -1,7 +1,8 @@
-import { Component,OnInit } from '@angular/core';
+import { Component,OnInit ,ViewChild } from '@angular/core';
 import { StaffService } from 'src/app/services/staff.service';
 import { AttendanceService } from 'src/app/services/attendance.service';
 import { Subject } from 'rxjs';
+
 
 @Component({
   selector: 'app-staff-report',
@@ -10,6 +11,8 @@ import { Subject } from 'rxjs';
 })
 export class StaffReportComponent implements OnInit
 {
+
+
   filterInput1:String = "all_staffs";
   filterInput2:String = "all_attendance";
 
@@ -21,8 +24,10 @@ export class StaffReportComponent implements OnInit
   allStaffs:any = [];
   allAttendance:any = [];
 
-  dtOptions: DataTables.Settings = {};
-  dtTrigger: Subject<any> = new Subject<any>();
+  dtOptions1: DataTables.Settings = {};
+  dtTrigger1: Subject<any> = new Subject<any>();
+  dtOptions2: DataTables.Settings = {};
+  dtTrigger2: Subject<any> = new Subject<any>();
 
   constructor(
     private staffService:StaffService,
@@ -31,20 +36,36 @@ export class StaffReportComponent implements OnInit
 
   ngOnInit(): void 
   {
-    this.dtOptions = {
+    this.dtOptions1 = {
       pagingType: 'full_numbers',
       pageLength: 10,
-    };
+      dom: "<'row'<'col-sm-6'l<'float-left'B>><'col-sm-6'f>>" +
+      "<'row'<'col-sm-12'tr>>" +
+      "<'row'<'col-sm-6'i><'col-sm-6'<'float-right'p>>>",
+      buttons: [
+        'csv', 'excel', 'pdf', 'print'
+      ],
+    } as DataTables.Settings;
+    this.dtOptions2 = {
+      pagingType: 'full_numbers',
+      pageLength: 10,
+      dom: "<'row'<'col-sm-6'l<'float-left'B>><'col-sm-6'f>>" +
+      "<'row'<'col-sm-12'tr>>" +
+      "<'row'<'col-sm-6'i><'col-sm-6'<'float-right'p>>>",
+      buttons: [
+        'csv', 'excel', 'pdf', 'print'
+      ],
+    } as DataTables.Settings;
     this.GetAllStaffs();
     this.GetStaffAttendance();
   }
 
   GetAllStaffs()
   {
-    $('#datatable').DataTable().destroy();
+    $('#datatable1').DataTable().destroy();
     this.staffService.GetStaffs().subscribe((res:any)=>{
       this.allStaffs = res;
-      this.dtTrigger.next(null);
+      this.dtTrigger1.next(null);
     },(error)=>{
 
     });
@@ -53,7 +74,7 @@ export class StaffReportComponent implements OnInit
   GetStaffAttendance()
   {    
     const allAttendance:any = [];
-    $('#datatable1').DataTable().destroy();
+    $('#datatable2').DataTable().destroy();
     this.attendanceService.GetAttendances().subscribe((res:any)=>{
       if(this.filterInput2 !== "all_attendance")
       {
@@ -209,7 +230,13 @@ export class StaffReportComponent implements OnInit
         }
         this.allAttendance = allAttendance;
       }
+      this.dtTrigger2.next(null);
     });
+  }
+
+  toggleTable()
+  {
+    
   }
 
   areDatesEqual(dateString1: any, dateString2: any) {

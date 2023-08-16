@@ -6,7 +6,7 @@
         <div class="row g-2 mb-2">
             <div class="col-2">
                 <label for="">Filter</label>
-                <select class="form-select" [(ngModel)]="filterInput1">
+                <select class="form-select" [(ngModel)]="filterInput1" (change)="toggleTable()">
                     <option value="all_staffs">All Staffs</option>
                     <option value="staff_attendance">Staff Attendance</option>
                 </select>
@@ -35,52 +35,56 @@
                 </select>
             </div>
         </div>
-        <table id="datatable" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-striped table-bordered w-100"  *ngIf="filterInput1 === 'all_staffs'">
-            <thead>
-                <tr>
-                    <th>S.No</th>
-                    <th>Staff ID</th>
-                    <th>Staff Name</th>
-                    <th>Role</th>
-                    <th>Schadule</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let staff of allStaffs;index as i;">
-                    <td>{{i+1}}</td>
-                    <td>{{staff.staff_id}}</td>
-                    <td>{{staff.name}}</td>
-                    <td>{{staff.role.name}}</td>
-                    <td>{{staff.schedule.in_time}} - {{staff.schedule.out_time}}</td>
-                </tr>
-            </tbody>
-        </table>
+        <div [class.hide]="filterInput1 !== 'all_staffs'">
+            <table id="datatable1" datatable [dtOptions]="dtOptions1" [dtTrigger]="dtTrigger1" class="table table-striped table-bordered w-100" >
+                <thead>
+                    <tr>
+                        <th>S.No</th>
+                        <th>Staff ID</th>
+                        <th>Staff Name</th>
+                        <th>Role</th>
+                        <th>Schadule</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let staff of allStaffs;index as i;">
+                        <td>{{i+1}}</td>
+                        <td>{{staff.staff_id}}</td>
+                        <td>{{staff.name}}</td>
+                        <td>{{staff.role.name}}</td>
+                        <td>{{staff.schedule.in_time}} - {{staff.schedule.out_time}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
-        <table id="datatable1" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-striped table-bordered w-100"  *ngIf="filterInput1 === 'staff_attendance'">
-            <thead>
-                <tr>
-                    <th>S.No</th>
-                    <th>Staff ID</th>
-                    <th>Staff Name</th>
-                    <th>Date</th>
-                    <th>Login</th>
-                    <th>Logout</th>
-                    <th>Lunch out</th>
-                    <th>Lunch in</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let attendance of allAttendance;index as i;">
-                    <td>{{i+1}}</td>
-                    <td>{{attendance.staff.staff_id}}</td>
-                    <td>{{attendance.staff.name}}</td>
-                    <td>{{attendance.date | date:"yyyy-MM-dd"}}</td>
-                    <td>{{attendance.loginTime | date:"HH:mm a"}}</td>
-                    <td>{{attendance.logoutTime | date:"HH:mm a"}}</td>
-                    <td>{{attendance.lunchOutTime | date:"HH:mm a"}}</td>
-                    <td>{{attendance.lunchInTime | date:"HH:mm a"}}</td>
-                </tr>
-            </tbody>
-        </table>
+        <div [class.hide]="filterInput1 !== 'staff_attendance'">
+            <table id="datatable2" datatable [dtOptions]="dtOptions2" [dtTrigger]="dtTrigger2" class="table table-striped table-bordered w-100" >
+                <thead>
+                    <tr>
+                        <th>S.No</th>
+                        <th>Staff ID</th>
+                        <th>Staff Name</th>
+                        <th>Date</th>
+                        <th>Login</th>
+                        <th>Logout</th>
+                        <th>Lunch out</th>
+                        <th>Lunch in</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let attendance of allAttendance;index as i;">
+                        <td>{{i+1}}</td>
+                        <td>{{attendance.staff.staff_id}}</td>
+                        <td>{{attendance.staff.name}}</td>
+                        <td>{{attendance.date | date:"yyyy-MM-dd"}}</td>
+                        <td>{{attendance.loginTime | date:"HH:mm a"}}</td>
+                        <td>{{attendance.logoutTime | date:"HH:mm a"}}</td>
+                        <td>{{attendance.lunchOutTime | date:"HH:mm a"}}</td>
+                        <td>{{attendance.lunchInTime | date:"HH:mm a"}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>

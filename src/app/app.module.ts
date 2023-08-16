@@ -68,6 +68,8 @@ import { WorklogComponent } from './pages/worklog/worklog.component';
 import { SidebarDirective } from './components/sidebar/sidebar.directive';
 import { StaffReportComponent } from './pages/staff-report/staff-report.component';
 import { ProjectStaffAssignComponent } from './pages/project-staff-assign/project-staff-assign.component';
+import { ProjectReportComponent } from './pages/project-report/project-report.component';
+import { CourseReportComponent } from './pages/course-report/course-report.component';
 
 @NgModule({
   declarations: [
@@ -127,6 +129,8 @@ import { ProjectStaffAssignComponent } from './pages/project-staff-assign/projec
     SidebarDirective,
     StaffReportComponent,
     ProjectStaffAssignComponent,
+    ProjectReportComponent,
+    CourseReportComponent,
   ],
   imports: [
     BrowserModule,

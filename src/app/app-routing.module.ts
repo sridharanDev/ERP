@@ -50,6 +50,8 @@ import { StaffWorklogComponent } from './pages/staff-pages/staff-worklog/staff-w
 import { WorklogComponent } from './pages/worklog/worklog.component';
 import { StaffReportComponent } from './pages/staff-report/staff-report.component';
 import { ProjectStaffAssignComponent } from './pages/project-staff-assign/project-staff-assign.component';
+import { ProjectReportComponent } from './pages/project-report/project-report.component';
+import { CourseReportComponent } from './pages/course-report/course-report.component';
 
 
 
@@ -82,6 +84,8 @@ const routes: Routes = [
       { path: 'expense', component: ExpenseComponent ,canActivate: [AuthGuardService],data: { module: ['expenses']}},
       { path: 'leave-application', component: LeaveApplicationComponent ,canActivate: [AuthGuardService],data: { module: ['staff']}},
       { path: 'report/staff', component: StaffReportComponent ,canActivate: [AuthGuardService],data: { module: ['expenses']}},
+      { path: 'report/project', component: ProjectReportComponent ,canActivate: [AuthGuardService],data: { module: ['expenses']}},
+      { path: 'report/course', component: CourseReportComponent ,canActivate: [AuthGuardService],data: { module: ['expenses']}},
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       {
         path: 'staff-list',
