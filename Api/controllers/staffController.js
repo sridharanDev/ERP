@@ -225,7 +225,8 @@ const GetStaffProfileController = async (req,res,next) =>{
     try
     {
         const staff = await Staff.findById(req.params.id)
-        .populate({path:"role",select:"name salery"});
+        .populate({path:"role",select:"name salery"})
+        .populate("schedule");
         if(!staff)
         {
             return res.status(404).json({message:"staff not found."});

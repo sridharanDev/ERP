@@ -49,6 +49,7 @@ import { LeaveApplicationComponent } from './pages/leave-application/leave-appli
 import { StaffWorklogComponent } from './pages/staff-pages/staff-worklog/staff-worklog.component';
 import { WorklogComponent } from './pages/worklog/worklog.component';
 import { StaffReportComponent } from './pages/staff-report/staff-report.component';
+import { ProjectStaffAssignComponent } from './pages/project-staff-assign/project-staff-assign.component';
 
 
 
@@ -66,6 +67,7 @@ const routes: Routes = [
       { path: 'ongoing-projects', component: OngoingProjectsComponent ,canActivate: [AuthGuardService],data: { module: ['project']}},
       { path: 'completed-projects', component: CompletedProjectsComponent ,canActivate: [AuthGuardService],data: { module: ['project']}},
       { path: 'project/:id', component: ViewProjectComponent ,canActivate: [AuthGuardService],data: { module: ['project']}},
+      { path: 'project/assign-staffs/:id', component: ProjectStaffAssignComponent ,canActivate: [AuthGuardService],data: { module: ['project']}},
       { path: 'courses', component: CoursesComponent ,canActivate: [AuthGuardService],data: { module: ['course']}},
       { path: 'students', component: StudentsComponent ,canActivate: [AuthGuardService],data: { module: ['course']}},
       { path: 'students/profile/:id', component: StudentProfileComponent ,canActivate: [AuthGuardService],data: { module: ['course']}},

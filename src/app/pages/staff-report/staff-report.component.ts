@@ -1,6 +1,7 @@
 import { Component,OnInit } from '@angular/core';
 import { StaffService } from 'src/app/services/staff.service';
 import { AttendanceService } from 'src/app/services/attendance.service';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-staff-report',
@@ -20,6 +21,9 @@ export class StaffReportComponent implements OnInit
   allStaffs:any = [];
   allAttendance:any = [];
 
+  dtOptions: DataTables.Settings = {};
+  dtTrigger: Subject<any> = new Subject<any>();
+
   constructor(
     private staffService:StaffService,
     private attendanceService:AttendanceService,
@@ -27,14 +31,20 @@ export class StaffReportComponent implements OnInit
 
   ngOnInit(): void 
   {
+    this.dtOptions = {
+      pagingType: 'full_numbers',
+      pageLength: 10,
+    };
     this.GetAllStaffs();
     this.GetStaffAttendance();
   }
 
   GetAllStaffs()
   {
+    $('#datatable').DataTable().destroy();
     this.staffService.GetStaffs().subscribe((res:any)=>{
       this.allStaffs = res;
+      this.dtTrigger.next(null);
     },(error)=>{
 
     });
@@ -43,6 +53,7 @@ export class StaffReportComponent implements OnInit
   GetStaffAttendance()
   {    
     const allAttendance:any = [];
+    $('#datatable1').DataTable().destroy();
     this.attendanceService.GetAttendances().subscribe((res:any)=>{
       if(this.filterInput2 !== "all_attendance")
       {

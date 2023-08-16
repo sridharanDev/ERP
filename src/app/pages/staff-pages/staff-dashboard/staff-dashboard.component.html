@@ -1,1 +1,96 @@
-<p>staff-dashboard works!</p>
+<div class="row g-3">
+    <div class="col-6 pb-4">
+        <div class="card h-100">
+            <div class="card-header">
+                <h5 class="card-title">Profile</h5>
+            </div>
+            <div class="card-body">
+                <div class="row" *ngIf="staffProfile">
+                    <div class="col-6">
+                        <dl class="dl-horizontal">
+                            <dt>ID : </dt> <dd>{{staffProfile.staff_id}}</dd>
+                            <dt>DOB : </dt> <dd>{{staffProfile.dob}}</dd>
+                            <dt>Email : </dt> <dd>{{staffProfile.email}}</dd>
+                            <dt>Role : </dt> <dd>{{staffProfile.role.name}}</dd>
+                        </dl>
+                    </div>
+                    <div class="col-6">
+                        <dl class="dl-horizontal">
+                            <dt>Name : </dt> <dd>{{staffProfile.name}}</dd>
+                            <dt>Mobile : </dt> <dd>{{staffProfile.mobile}}</dd>
+                            <dt>Schedule : </dt> <dd>{{formatTimeTo12Hour(staffProfile.schedule.in_time)}} - {{formatTimeTo12Hour(staffProfile.schedule.out_time)}}</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <h5 class="card-title">Attendance Report</h5>
+                <div class="form-input">
+                    <select class="form-select form-select-sm" name="attendaceFilter" [(ngModel)]="attendaceFilter" (change)="GetAttendanceReport()">
+                        <option value="monthly">Monthly</option>
+                        <option value="weekly">Weekly</option>
+                    </select>
+                </div>
+            </div>
+            <div class="card-body">
+                <canvas class="container" style="display: block;" id="attendance-bar-chart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row g-3">
+    <div class="col-6 pb-3">
+        <div class="card h-100">
+            <div class="card-header">
+                <h5 class="card-title">Projects</h5>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr >
+                            <th>Project name</th>
+                            <th>Pending</th>
+                            <th>Completed</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let project of allProjects;index as i;">
+                            <td>{{i+1}}.{{project.name}}</td>
+                            <td class="text-center">{{project.pending}}</td>
+                            <td class="text-center">{{project.completed}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 pb-3">
+        <div class="card h-100">
+            <div class="card-header">
+                <h5 class="card-title">Tasks (Pending)</h5>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Assigned Date</th>
+                            <th>Reasons</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let task of allPendingTasks">
+                            <td>{{task.title}}</td>
+                            <td>{{task.createdAt | date:"yyyy-MM-dd"}}</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

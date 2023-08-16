@@ -32,7 +32,7 @@ export class UpcommingProjectsComponent implements OnInit
 
   statusForm = new FormGroup({
     status :new FormControl('',Validators.required),
-    staffs :new FormControl('',Validators.required),
+    // staffs :new FormControl('',Validators.required),
   });
 
 
@@ -71,11 +71,11 @@ export class UpcommingProjectsComponent implements OnInit
     this.showSecondLabel = statusControl?.value === 'ongoing';
 
     // Optionally, you can reset the staffs selection when the status changes
-    if (!this.showSecondLabel) {
-      this.statusForm.patchValue({
-        staffs: 'NA',
-      });
-    }
+    // if (!this.showSecondLabel) {
+    //   this.statusForm.patchValue({
+    //     staffs: 'NA',
+    //   });
+    // }
   }
   GetAllStaffRoles()
   {

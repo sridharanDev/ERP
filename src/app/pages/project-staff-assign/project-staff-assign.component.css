@@ -30,9 +30,29 @@
 
 .user {
     text-align: center;
+    position: relative;
+    padding: 5px 20px;
 }
 
 .user a {
     display: block;
     margin-bottom: 10px;
-  } 
+} 
+
+.close
+{
+    border: none;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    background: #DC3545;
+    color: #fff;
+    border-radius: 5px;
+    font-size: 13px;
+    padding: 0 5px;
+}
+
+.close:hover
+{
+    background: #bb2d3b;
+}

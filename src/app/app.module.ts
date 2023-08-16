@@ -67,6 +67,7 @@ import { StaffWorklogComponent } from './pages/staff-pages/staff-worklog/staff-w
 import { WorklogComponent } from './pages/worklog/worklog.component';
 import { SidebarDirective } from './components/sidebar/sidebar.directive';
 import { StaffReportComponent } from './pages/staff-report/staff-report.component';
+import { ProjectStaffAssignComponent } from './pages/project-staff-assign/project-staff-assign.component';
 
 @NgModule({
   declarations: [
@@ -125,6 +126,7 @@ import { StaffReportComponent } from './pages/staff-report/staff-report.componen
     WorklogComponent,
     SidebarDirective,
     StaffReportComponent,
+    ProjectStaffAssignComponent,
   ],
   imports: [
     BrowserModule,
