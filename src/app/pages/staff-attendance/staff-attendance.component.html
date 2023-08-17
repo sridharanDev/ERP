@@ -21,14 +21,17 @@
                         <td>{{i+1}}</td>
                         <td>{{attendance.date | date:'yyyy-MM-dd'}}</td>
                         <td>{{attendance.staff.staff_id}} - {{attendance.staff.name}}</td>
-                        <td>{{attendance.loginTime | date:'h:mm a'}} <span class="text-danger" *ngIf="attendance.lateLogin"> [Late login]</span></td>
+                        <td>{{attendance.loginTime | date:'h:mm a'}} 
+                            <span class="badge bg-danger" *ngIf="attendance.lateLogin">Late login</span>
+                            <span class="badge bg-success" *ngIf="!attendance.lateLogin">On Time</span>
+                        </td>
                         <td>{{attendance.logoutTime | date:'h:mm a'}}</td>
                         <td><i class="fa-regular fa-clock"></i> {{attendance.totalLoginHours}}</td>
                         <td>
                             <button type="button" class="btn btn-primary btn-sm me-2" data-bs-toggle="dropdown">Action</button>     
                             <div class="dropdown">
                                 <div class="dropdown-menu dropdown-menu-end">
-                                    <a class="dropdown-item" (click)="openModal(deleteModel,attendance._id)">Delete</a>
+                                    <a class="dropdown-item" (click)="openModal(deleteModel,attendance)">Delete</a>
                                 </div>
                             </div>
                         </td>

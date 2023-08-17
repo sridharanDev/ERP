@@ -7,6 +7,7 @@ import { StudentService } from 'src/app/services/student.service';
 import { CourseService } from 'src/app/services/course.service';
 import { ProjectService } from 'src/app/services/project.service';
 import { AssetService } from 'src/app/services/asset.service';
+import { IncomeService } from 'src/app/services/income.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -16,7 +17,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class BillingComponent implements OnInit
 {
-  constructor(private route:ActivatedRoute,private studentService:StudentService,
+  constructor(private route:ActivatedRoute,private studentService:StudentService,private incomeService:IncomeService,
     private invoiceService:InvoiceService,private toastr: ToastrService,private projectService:ProjectService,
     private courseService:CourseService,private assetService:AssetService,private router: Router){}
 
@@ -283,12 +284,19 @@ export class BillingComponent implements OnInit
     this.OnChange();
   }
 
+  SetInvoiceType(type:any)
+  {
+    if(this.invoiceType === "other" || this.invoiceType === "")
+    this.invoiceType = type;
+  }
+
 
   AddItemSubmit()
   {
     const _id = this.form2.value.option;
     const type = this.form2.value.type;
     var selected = null;
+    this.SetInvoiceType(type);
     if(type === "course")
     {
       for (let i = 0; i < this.allCourses.length; i++) 
@@ -382,12 +390,25 @@ export class BillingComponent implements OnInit
     const type = {type:this.invoiceType,student_id:this.studentId};
     const items = {items:this.billList};
     const formData = Object.assign({},items,type,this.form1.value,this.form3.value);
-    
+    const incomeFormData = {
+      entityType:"Student",
+      entity:this.studentId,
+      name:this.form1.value.customer_name,
+      from:this.form1.value.customer_name,
+      to:"AAA",
+      amount:formData.net_total,
+      payment_type:this.form3.value.pay_type,
+      date:this.form1.value.date
+    }    
     if(!this.invoiceDetails)
     {
 
       this.invoiceService.CreateInvoice(formData).subscribe((res:any)=>{
         this.GetInvoice(res.invoice_no);
+        if(this.studentId && this.invoiceType === "course")
+        {
+          this.AddToIncome(incomeFormData);
+        }
         this.toastr.success('Invoice saved successfully.', 'Save Invoice',{timeOut: 3000,closeButton: true,progressBar: true,},);
       },(error)=>{
         this.toastr.error(error.error, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
@@ -401,6 +422,15 @@ export class BillingComponent implements OnInit
         this.toastr.error(error.error, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
       });
     }
+  }
+
+  AddToIncome(formData:any)
+  {
+    this.incomeService.CreateIncome(formData).subscribe((res:any)=>{
+      console.log(res);
+    },(error)=>{
+      console.log(error);
+    });
   }
 
   EditPriceInList(index:any,event:any)

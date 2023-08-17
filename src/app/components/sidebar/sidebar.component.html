@@ -27,6 +27,7 @@
            <li routerLinkActive="active" *ngIf="hasModules(['staff'])"><a href="#" routerLink="/admin/schedule"><i class="fa-solid fa-ellipsis-vertical"></i> Staff schadule</a></li>
            <li routerLinkActive="active" *ngIf="hasModules(['staff'])"><a href="#" routerLink="/admin/staff-list"><i class="fa-solid fa-ellipsis-vertical"></i> Staff List</a></li>
            <li routerLinkActive="active" *ngIf="hasModules(['staff'])"><a href="#" routerLink="/admin/attendance"><i class="fa-solid fa-ellipsis-vertical"></i> Attendance</a></li>
+           <li routerLinkActive="active" *ngIf="hasModules(['staff'])"><a href="#" routerLink="/admin/salary"><i class="fa-solid fa-ellipsis-vertical"></i> Salary</a></li>
            <li routerLinkActive="active" *ngIf="hasModules(['staff'])">
             <a href="#" routerLink="/admin/leave-application"><i class="fa-solid fa-ellipsis-vertical"></i> Leave applications 
                <span class="badge text-bg-danger align-end" *ngIf="leaveApplicationCount > 0">{{leaveApplicationCount < 99 ? leaveApplicationCount : "+99"}}</span>
@@ -114,6 +115,7 @@
            <li routerLinkActive="active"><a href="#" routerLink="/admin/report/staff"><i class="fa-solid fa-ellipsis-vertical"></i> Staff report</a></li>
            <li routerLinkActive="active"><a href="#" routerLink="/admin/report/project"><i class="fa-solid fa-ellipsis-vertical"></i> Project report</a></li>
            <li routerLinkActive="active"><a href="#" routerLink="/admin/report/course"><i class="fa-solid fa-ellipsis-vertical"></i> Course report</a></li>
+           <li routerLinkActive="active"><a href="#" routerLink="/admin/report/income"><i class="fa-solid fa-ellipsis-vertical"></i> Income report</a></li>
          </ul>
        </li>
    </ul>

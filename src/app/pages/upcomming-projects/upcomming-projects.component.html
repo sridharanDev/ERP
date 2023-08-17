@@ -23,7 +23,7 @@
                           <td>{{project.client_name}}</td>
                           <td>{{project.platform}}</td>
                           <td>{{project.project_name}}</td>
-                          <td><div class="badge bg-success" (click)="openModal(editRoleModel,project._id)" style="cursor: pointer;">{{project.status}}</div></td>
+                          <td><div class="badge bg-success" (click)="openModal(editRoleModel,project._id)" style="cursor: pointer;">{{project.status | titlecase}}</div></td>
                           <td style="text-align: center;">
                             <button type="button" class="btn btn-primary btn-sm me-2" data-bs-toggle="dropdown">Action</button>     
                             <div class="dropdown">

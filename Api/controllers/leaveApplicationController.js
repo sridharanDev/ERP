@@ -72,7 +72,8 @@ const GetLeaveApplicationsController = async (req,res,next)=>
             }
         }
         const leaves = await LeaveApplication.find(filter)
-        .populate({path:"staff",select:"name staff_id"});
+        .populate({path:"staff",select:"name staff_id"})
+        .sort({ createdAt: -1 });
         res.status(200).json(leaves);
     }
     catch(error)

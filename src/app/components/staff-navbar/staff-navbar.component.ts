@@ -33,7 +33,7 @@ export class StaffNavbarComponent
         this.GetProfile();  
         setInterval(() => {
           this.GetNotifications();
-        }, 1000);
+        }, 3000);
       });
     } 
   }

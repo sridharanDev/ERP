@@ -6,19 +6,51 @@
         </div>
         <div class="row">
             <div class="col-lg-5">
-                <dl class="dl-horizontal">
-                    <dt>Project name:</dt> <dd>{{projectDetails.project_name}}</dd>
-                    <dt>Platform:</dt> <dd>{{projectDetails.platform}}</dd>
-                    <dt>Client:</dt> <dd>{{projectDetails.client_name}}</dd>
-                    <dt>Client mobile:</dt> <dd>{{projectDetails.mobile}}</dd>
-                </dl>
+                <table class="borderless-table">
+                    <tbody>
+                        <tr>
+                            <td>Project name</td>
+                            <td>:</td>
+                            <td>{{projectDetails.project_name}}</td>
+                        </tr>
+                        <tr>
+                            <td>Platform:</td>
+                            <td>:</td>
+                            <td>{{projectDetails.platform}}</td>
+                        </tr>
+                        <tr>
+                            <td>Client</td>
+                            <td>:</td>
+                            <td>{{projectDetails.client_name}}</td>
+                        </tr>
+                        <tr>
+                            <td>Client mobile:</td>
+                            <td>:</td>
+                            <td>{{projectDetails.mobile}}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
             <div class="col-lg-5">
-                <dl class="dl-horizontal">
-                    <dt>Status:</dt> <dd>  <span class="badge " [ngClass]="GetStatusColor(projectDetails.status)">{{projectDetails.status}}</span></dd>
-                    <dt>Reference:</dt> <dd>{{projectDetails.reference}}</dd>
-                    <dt>Note:</dt> <dd>{{projectDetails.note}}</dd>
-                </dl>
+                <table class="borderless-table">
+                    <tbody>
+                        <tr>
+                            <td>Status</td>
+                            <td>:</td>
+                            <td><span class="badge " [ngClass]="GetStatusColor(projectDetails.status)">{{projectDetails.status}}</span></td>
+                        </tr>
+                        <tr>
+                            <td>Reference:</td>
+                            <td>:</td>
+                            <td>{{projectDetails.reference}}</td>
+                        </tr>
+                        <tr>
+                            <td>Note</td>
+                            <td>:</td>
+                            <td>{{projectDetails.note}}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

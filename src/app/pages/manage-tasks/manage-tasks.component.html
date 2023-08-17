@@ -24,7 +24,7 @@
                         <td>{{task.description}}</td>
                         <td>{{task.staff.staff_id}} - {{task.staff.name}}</td>
                         <td>{{task.createdAt | date:'yyyy-MM-dd'}} <br> {{task.createdAt | date:'H;mm a'}}</td>
-                        <td><span class="badge " [ngClass]="GetStatusColor(task.status)">{{task.status}}</span></td>
+                        <td><span class="badge " [ngClass]="GetStatusColor(task.status)">{{task.status | titlecase}}</span></td>
                         <td style="width: 50px; text-align: center;">
                             <button type="button" class="btn btn-primary btn-sm me-2" data-bs-toggle="dropdown">Action</button>     
                             <div class="dropdown">

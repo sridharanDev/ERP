@@ -29,7 +29,7 @@
                         <td>{{salery.credited_date}}</td>
                         <td>{{salery.actual_salary | currency: 'INR' : 'symbol-narrow': '1.0-0'}}</td>
                         <td>{{salery.paid | currency: 'INR' : 'symbol-narrow': '1.0-0'}}</td>
-                        <td><div class="badge " [ngClass]="GetStatusColor(salery.status)">{{salery.status}}</div></td>
+                        <td><div class="badge " [ngClass]="GetStatusColor(salery.status)">{{salery.status | titlecase}}</div></td>
                         <td style="width: 50px; text-align: center;">
                             <button type="button" class="btn btn-primary btn-sm me-2" data-bs-toggle="dropdown">Action</button>     
                             <div class="dropdown">
@@ -238,6 +238,9 @@
         <div class="modal-body">
             <div class="form-group m-t-20">
                 <input type="file" class="form-control" (change)="onFileSelected($event)">
+            </div>
+            <div class="text-center my-3">
+                <p><a href="assets/salery.csv">Download</a> csv template</p>
             </div>
         </div>
         <div class="modal-footer">

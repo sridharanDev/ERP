@@ -52,6 +52,7 @@ import { StaffReportComponent } from './pages/staff-report/staff-report.componen
 import { ProjectStaffAssignComponent } from './pages/project-staff-assign/project-staff-assign.component';
 import { ProjectReportComponent } from './pages/project-report/project-report.component';
 import { CourseReportComponent } from './pages/course-report/course-report.component';
+import { IncomeReportComponent } from './pages/income-report/income-report.component';
 
 
 
@@ -86,6 +87,7 @@ const routes: Routes = [
       { path: 'report/staff', component: StaffReportComponent ,canActivate: [AuthGuardService],data: { module: ['expenses']}},
       { path: 'report/project', component: ProjectReportComponent ,canActivate: [AuthGuardService],data: { module: ['expenses']}},
       { path: 'report/course', component: CourseReportComponent ,canActivate: [AuthGuardService],data: { module: ['expenses']}},
+      { path: 'report/income', component: IncomeReportComponent ,canActivate: [AuthGuardService],data: { module: ['expenses']}},
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       {
         path: 'staff-list',
