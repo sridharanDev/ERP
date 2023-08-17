@@ -22,7 +22,7 @@
                     <td>{{application.from_date | date:'yyyy-MM-dd'}}</td>
                     <td>{{application.to_date | date:'yyyy-MM-dd'}}</td>
                     <td>{{application.reason}}</td>
-                    <td><span class="badge" [ngClass]="GetStatusColor(application.status)">{{application.status}}</span></td>
+                    <td><span class="badge" [ngClass]="GetStatusColor(application.status)">{{application.status | titlecase }}</span></td>
                     <td style="width: 50px; text-align: center;">
                         <button type="button" class="btn btn-primary btn-sm me-2" data-bs-toggle="dropdown">Action</button>     
                         <div class="dropdown">

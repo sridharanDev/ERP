@@ -246,7 +246,7 @@ function generatePassword(username, dob) {
     const password = cleanedUsername + year;
   
     return password;
-  }
+};
 
 module.exports = {
     CreateStaffController,

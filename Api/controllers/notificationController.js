@@ -71,8 +71,9 @@ const GetNotificationController = async (req,res,next)=>
         }
         if(staff_id && notifcation.recipient == staff_id)
         {
-            notifcation.viewed = true;
-            notifcation.save();
+            // notifcation.viewed = true;
+            // notifcation.save();
+            notifcation.deleteOne();
         }
         res.status(200).json(notifcation);
     }
