@@ -1,1 +1,48 @@
-<p>income-report works!</p>
+<div class="card">
+    <div class="card-header">
+        <h1 class="card-title">Income Report</h1>
+    </div>
+    <div class="card-body">
+        <div class="row mb-2">
+            <div class="col-2">
+                <select class="form-select" name="filter1" [(ngModel)]="filter1" (change)="GetAllIncomes()">
+                    <option value="Project">Project income</option>
+                    <option value="Student">Course income</option>
+                    <option value="Intern">Intern income</option>
+                    <option value="Rent">Rent income</option>
+                </select>
+            </div>
+            <div class="col-2">
+                <input type="month" class="form-control" name="filter2" [(ngModel)]="filter2" (change)="GetAllIncomes()">
+            </div>
+        </div>
+
+        <div>
+            <table id="datatable1" datatable [dtOptions]="dtOptions1" [dtTrigger]="dtTrigger1" class="table table-striped table-bordered w-100" >
+                <thead>
+                    <tr>
+                        <th>S.No</th>
+                        <th>Name</th>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>Amount</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let income of allIncomes;index as i;">
+                        <td>{{i+1}}</td>
+                        <td *ngIf="filter1 === 'Project'">{{income.entity.project_name}}</td>
+                        <td *ngIf="filter1 === 'Student'">{{income.name}}</td>
+                        <td *ngIf="filter1 === 'Intern'">{{income.name}}</td>
+                        <td *ngIf="filter1 === 'Rent'">{{income.name}}</td>
+                        <td>{{income.from}}</td>
+                        <td>{{income.to}}</td>
+                        <td>{{income.amount | currency: 'INR' : 'symbol-narrow': '1.0-0'}}</td>
+                        <td>{{income.createdAt | date:"yyyy-MM-dd"}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
