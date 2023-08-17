@@ -19,6 +19,8 @@ export class WorklogComponent implements OnInit
   worklogID:any;
   isLoading:boolean = false;
 
+  filterInput:any = "recent";
+
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<any> = new Subject<any>();
 
@@ -41,11 +43,11 @@ export class WorklogComponent implements OnInit
           width:'50px'
         },
         {
-          targets:[1],
-          width:'50px'
+          targets:[2],
+          width:'100px'
         },
         {
-          targets:[4],
+          targets:[5],
           width:'10px',
           orderable: false,
           searchable: false,
@@ -82,13 +84,36 @@ export class WorklogComponent implements OnInit
     this.isLoading = true;
     $('#datatable').DataTable().destroy();
     this.worklogService.GetWorklogs("").subscribe((res:any)=>{
-      this.allWorklogs = res;
+      if(this.filterInput === "recent")
+      {
+        this.allWorklogs = this.GetRecentLogs(res);
+      }
+      else
+      {
+        this.allWorklogs = res;
+      }
       this.dtTrigger.next(null);
       this.isLoading = false;
     },(error)=>{
       this.toastr.error(error.error, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
       this.isLoading = false;
     });
+  }
+
+  GetRecentLogs(workLogsRes:any)
+  {
+    const worklogs:any = [];
+    for(const log of workLogsRes)
+    {
+      const currentDate = new Date();
+      currentDate.setDate(currentDate.getDate() - 1);
+      const previousDate = currentDate.toISOString();
+      if(this.isDateGreaterThanOrEqual(log.createdAt,previousDate))
+      {
+        worklogs.push(log);
+      }
+    }    
+    return worklogs;
   }
 
 
@@ -126,6 +151,61 @@ export class WorklogComponent implements OnInit
       this.toastr.error(error.error, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
       this.isLoading = false;
     });
+  }
+
+  areDatesEqual(dateString1: any, dateString2: any) {
+    const date1 = new Date(dateString1);
+    const date2 = new Date(dateString2);
+  
+    const year1 = date1.getFullYear();
+    const month1 = date1.getMonth();
+    const day1 = date1.getDate();
+  
+    const year2 = date2.getFullYear();
+    const month2 = date2.getMonth();
+    const day2 = date2.getDate();
+  
+    return year1 === year2 && month1 === month2 && day1 === day2;
+  }
+  
+  isDateLessThan(dateString1: any, dateString2: any) {
+    const date1 = new Date(dateString1);
+    const date2 = new Date(dateString2);
+  
+    date1.setHours(0, 0, 0, 0);
+    date2.setHours(0, 0, 0, 0);
+  
+    return date1.getTime() < date2.getTime();
+  }
+  
+  isDateGreaterThan(dateString1: any, dateString2: any) {
+    const date1 = new Date(dateString1);
+    const date2 = new Date(dateString2);
+  
+    date1.setHours(0, 0, 0, 0);
+    date2.setHours(0, 0, 0, 0);
+  
+    return date1.getTime() > date2.getTime();
+  }
+  
+  isDateGreaterThanOrEqual(dateString1: any, dateString2: any) {
+    const date1 = new Date(dateString1);
+    const date2 = new Date(dateString2);
+  
+    date1.setHours(0, 0, 0, 0);
+    date2.setHours(0, 0, 0, 0);
+  
+    return date1.getTime() >= date2.getTime();
+  }
+  
+  isDateLessThanOrEqual(dateString1: any, dateString2: any) {
+    const date1 = new Date(dateString1);
+    const date2 = new Date(dateString2);
+  
+    date1.setHours(0, 0, 0, 0);
+    date2.setHours(0, 0, 0, 0);
+  
+    return date1.getTime() <= date2.getTime();
   }
 
   isInvalidField(control: any) {

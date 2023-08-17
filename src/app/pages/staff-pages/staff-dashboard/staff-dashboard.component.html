@@ -7,19 +7,51 @@
             <div class="card-body">
                 <div class="row" *ngIf="staffProfile">
                     <div class="col-6">
-                        <dl class="dl-horizontal">
-                            <dt>ID : </dt> <dd>{{staffProfile.staff_id}}</dd>
-                            <dt>DOB : </dt> <dd>{{staffProfile.dob}}</dd>
-                            <dt>Email : </dt> <dd>{{staffProfile.email}}</dd>
-                            <dt>Role : </dt> <dd>{{staffProfile.role.name}}</dd>
-                        </dl>
+                        <table class="borderless-table">
+                            <tbody>
+                                <tr>
+                                    <td>ID</td>
+                                    <td>:</td>
+                                    <td>{{staffProfile.staff_id}}</td>
+                                </tr>
+                                <tr>
+                                    <td>DOB</td>
+                                    <td>:</td>
+                                    <td>{{staffProfile.dob}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Email</td>
+                                    <td>:</td>
+                                    <td>{{staffProfile.email}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Role</td>
+                                    <td>:</td>
+                                    <td>{{staffProfile.role.name}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                     <div class="col-6">
-                        <dl class="dl-horizontal">
-                            <dt>Name : </dt> <dd>{{staffProfile.name}}</dd>
-                            <dt>Mobile : </dt> <dd>{{staffProfile.mobile}}</dd>
-                            <dt>Schedule : </dt> <dd>{{formatTimeTo12Hour(staffProfile.schedule.in_time)}} - {{formatTimeTo12Hour(staffProfile.schedule.out_time)}}</dd>
-                        </dl>
+                        <table class="borderless-table">
+                            <tbody>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>:</td>
+                                    <td>{{staffProfile.name}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Mobile</td>
+                                    <td>:</td>
+                                    <td>{{staffProfile.mobile}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Schedule</td>
+                                    <td>:</td>
+                                    <td>{{formatTimeTo12Hour(staffProfile.schedule.in_time)}} - {{formatTimeTo12Hour(staffProfile.schedule.out_time)}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

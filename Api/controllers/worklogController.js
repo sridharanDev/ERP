@@ -66,7 +66,8 @@ const GetWorklogsController = async (req,res,next)=>{
             }
         }
         const worklogs = await Worklog.find(filter)
-        .populate({path:"staff",select:"name staff_id"});
+        .populate({path:"staff",select:"name staff_id"})
+        .sort({ createdAt: -1 });
         res.status(200).json(worklogs);
     }
     catch(error)

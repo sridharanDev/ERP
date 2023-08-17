@@ -70,6 +70,7 @@ import { StaffReportComponent } from './pages/staff-report/staff-report.componen
 import { ProjectStaffAssignComponent } from './pages/project-staff-assign/project-staff-assign.component';
 import { ProjectReportComponent } from './pages/project-report/project-report.component';
 import { CourseReportComponent } from './pages/course-report/course-report.component';
+import { IncomeReportComponent } from './pages/income-report/income-report.component';
 
 @NgModule({
   declarations: [
@@ -131,6 +132,7 @@ import { CourseReportComponent } from './pages/course-report/course-report.compo
     ProjectStaffAssignComponent,
     ProjectReportComponent,
     CourseReportComponent,
+    IncomeReportComponent,
   ],
   imports: [
     BrowserModule,

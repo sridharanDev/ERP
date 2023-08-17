@@ -3,21 +3,77 @@
         <h1 class="card-title">Project Report</h1>
     </div>
     <div class="card-body">
-        <table class="table table-striped table-bordered w-100">
-            <thead>
-                <tr>
-                    <th>S.No</th>
-                    <th>Project Name</th>
-                    <th>Client Name</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="row mb-2">
+            <div class="col-3">
+                <select class="form-select" name="filter1" [(ngModel)]="filter1" (change)="GetProjectReport();GetTaskReports()">
+                    <option value="all_projects">All Projects</option>
+                    <option value="{{project._id}}" *ngFor="let project of allProjects">{{project.project_name}}</option>
+                </select>
+            </div>
+            <div class="col-2" *ngIf="filter1 === 'all_projects'" (change)="GetProjectReport()">
+                <select class="form-select" name="filter2" [(ngModel)]="filter2">
+                    <option value="NA">-- Select Status --</option>
+                    <option value="upcomming">Upcomming</option>
+                    <option value="ongoing">Ongoing</option>
+                    <option value="completed">Completed</option>
+                </select>
+            </div>
+            <div class="col-2" *ngIf="filter1 !== 'all_projects'" (change)="GetTaskReports()">
+                <select class="form-select" name="filter3" [(ngModel)]="filter3">
+                    <option value="all_tasks">All tasks</option>
+                    <option value="pending">pending</option>
+                    <option value="inProgres">inProgres</option>
+                    <option value="completed">Completed</option>
+                </select>
+            </div>
+        </div>
+        <div [class.hide]="filter1 !== 'all_projects'">
+            <table id="datatable1" datatable [dtOptions]="dtOptions1" [dtTrigger]="dtTrigger1" class="table table-striped table-bordered w-100">
+                <thead>
+                    <tr>
+                        <th>S.No</th>
+                        <th>Project Name</th>
+                        <th>Client Name</th>
+                        <th>Client Mobile</th>
+                        <th>Platform</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let project of projectList;index as i;">
+                        <td>{{i+1}}</td>
+                        <td>{{project.project_name}}</td>
+                        <td>{{project.client_name}}</td>
+                        <td>{{project.mobile}}</td>
+                        <td>{{project.platform}}</td>
+                        <td>{{project.status}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div [class.hide]="filter1 === 'all_projects'">
+            <table id="datatable2" datatable [dtOptions]="dtOptions2" [dtTrigger]="dtTrigger2" class="table table-striped table-bordered w-100">
+                <thead>
+                    <tr>
+                        <th>S.No</th>
+                        <th>Task Title</th>
+                        <th>Description</th>
+                        <th>Staff</th>
+                        <th>Date & Time</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let task of taskList;index as i;">
+                        <td>{{i+1}}</td>
+                        <td>{{task.title}}</td>
+                        <td>{{task.description}}</td>
+                        <td>{{task.staff.staff_id}} - {{task.staff.name}}</td>
+                        <td>{{task.createdAt | date:"yyyy-MM-dd HH:mm a"}}</td>
+                        <td>{{task.status}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>

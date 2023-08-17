@@ -68,7 +68,8 @@ const GetAttendancesController = async (req,res,next) =>
 {
     try
     {
-        const attendances = await Attendance.find().populate({path:"staff",select : "name staff_id"});
+        const attendances = await Attendance.find().populate({path:"staff",select : "name staff_id"})
+        .sort({ date: -1 });
 
         const staffAttendanceMap = new Map();
         await Promise.all(attendances.map(async (attendance) => {
@@ -185,8 +186,7 @@ const GetAttendanceController = async (req,res,next) => {
     try
     {
         const staff = req.params.id;
-        const date = req.body.date;
-        const attendance = await Attendance.find({staff:staff,date:date});
+        const attendance = await Attendance.find({staff:staff});
         res.status(200).json(attendance);
     }
     catch(error)
