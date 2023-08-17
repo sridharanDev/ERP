@@ -5,7 +5,6 @@ import { ToastrService } from 'ngx-toastr';
 import { FormControl, FormGroup,Validators } from '@angular/forms';
 import { FormValidatorService } from 'src/app/utils/form-validator.service';
 import { Subject } from 'rxjs';
-import { StaffService } from 'src/app/services/staff.service';
 
 
 @Component({
@@ -29,7 +28,7 @@ export class WorklogComponent implements OnInit
   });
 
   constructor(private worklogService:WorklogService,private modalService: NgbModal,
-    private toastr: ToastrService,private staffService:StaffService,private formValidatorService:FormValidatorService){}
+    private toastr: ToastrService,private formValidatorService:FormValidatorService){}
 
   ngOnInit(): void 
   {
@@ -53,13 +52,7 @@ export class WorklogComponent implements OnInit
         },
       ]
     }
-    if(this.staffService.isAuthenticated())
-    {
-      this.staffService.ValidateJWT(this.staffService.getUserData().token).subscribe((res:any)=>{
-        this.userId = res._id;
-        this.GetAllWorklogs();
-      });
-    } 
+    this.GetAllWorklogs();
   }
 
   openModal(component:any,worklogID:any)

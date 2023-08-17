@@ -91,7 +91,7 @@ const GetIncomesController = async (req,res,next)=>{
     try
     {
         const incomesWithProjects = await Income.find({ entityType: 'Project' }).populate('entity');
-        const incomesWithCourses = await Income.find({ entityType: 'Course' }).populate('entity');
+        const incomesWithCourses = await Income.find({ entityType: 'Student' }).populate('entity');
         const incomesWithInterns = await Income.find({ entityType: 'Intern' });
         const incomesWithRents = await Income.find({ entityType: 'Rent' });
         res.status(200).json({

@@ -25,8 +25,8 @@ export class AttendanceService {
     return this.http.get(environment.apiBaseUrl + 'attendance/staff/'+_id); 
   }
 
-  DeleteAttendance(_id:any):Observable<any>
+  DeleteAttendance(_id:any,date:any):Observable<any>
   {
-    return this.http.delete(environment.apiBaseUrl + 'attendance/'+_id); 
+    return this.http.delete(environment.apiBaseUrl + 'attendance/'+_id +"/"+date); 
   }
 }

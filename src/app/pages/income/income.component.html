@@ -75,7 +75,7 @@
                 <tbody>
                     <tr *ngFor="let income of allCourseIncomes;index as i;">
                         <td>{{i + 1}}</td>
-                        <td>{{income.entity}}</td>
+                        <td>{{income.name}}</td>
                         <td>{{income.from}}</td>
                         <td>{{income.to}}</td>
                         <td>{{income.amount | currency: 'INR' : 'symbol-narrow': '1.0-0'}}</td>

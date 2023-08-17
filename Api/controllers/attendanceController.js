@@ -185,7 +185,8 @@ const GetAttendanceController = async (req,res,next) => {
     try
     {
         const staff = req.params.id;
-        const attendance = await Attendance.find({staff:staff});
+        const date = req.body.date;
+        const attendance = await Attendance.find({staff:staff,date:date});
         res.status(200).json(attendance);
     }
     catch(error)
@@ -194,23 +195,37 @@ const GetAttendanceController = async (req,res,next) => {
     }   
 };
 
-const DeleteAttendaceController = async (req,res)=>
-{
-    try
-    {
-        const attendance = await Attendance.findById(req.params.id);
-        if(!attendance)
-        {
-            return res.status(404).json({message:"attendance not found."});
+const DeleteAttendaceController = async (req, res) => {
+    try {
+        const staffId = req.params.id; // Assuming staffId is passed as a parameter
+        const dateToDelete = req.params.date; // Assuming date is passed as a parameter
+
+        const startOfDay = new Date(dateToDelete);
+        startOfDay.setHours(0, 0, 0, 0);
+
+        const endOfDay = new Date(dateToDelete);
+        endOfDay.setHours(23, 59, 59, 999);
+
+        const attendance = await Attendance.deleteMany({
+            staff: staffId,
+            date: {
+                $gte: startOfDay,
+                $lte: endOfDay
+            }
+        });
+
+        if (attendance.deletedCount === 0) {
+            return res.status(404).json({ message: "No attendance records found for the given staff and date." });
         }
-        await attendance.deleteOne();
-        res.status(200).json({message:"attendance deleted."});
-    }
-    catch(error)
-    {
+
+        res.status(200).json({ message: "Attendance records deleted." });
+    } catch (error) {
         res.status(500).json(error.message);
     }
-}
+};
+
+
+
 
 function parseTimeString(timeString) {
     const [hours, minutes] = timeString.split(":").map(Number);

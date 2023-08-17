@@ -76,9 +76,11 @@ export class StaffAttendanceComponent implements OnInit
 
   DeleteSubmit()
   {
-    return;
+    const staff_id = this.attendanceId.staff._id;
+    const date = this.attendanceId.date.split("T")[0];
+
     this.isLoading = true;
-    this.attendanceService.DeleteAttendance(this.attendanceId).subscribe((res:any)=>{
+    this.attendanceService.DeleteAttendance(staff_id,date).subscribe((res:any)=>{
       this.GetAllAttendances();
       this.modalService.dismissAll();
       this.toastr.error('Attendance detail deleted successfully.', 'Delete Attendance',{timeOut: 3000,closeButton: true,progressBar: true,},);
@@ -86,6 +88,7 @@ export class StaffAttendanceComponent implements OnInit
     },(error)=>{
       this.toastr.error(error.error, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
       this.isLoading = false;
-    });
+    })  
+
   }
 }
