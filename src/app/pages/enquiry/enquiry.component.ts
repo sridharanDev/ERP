@@ -26,6 +26,7 @@ export class EnquiryComponent implements OnInit
 
   statsuField:any = 'NA';
   staffField:any = 'NA';
+  callBackDateField:any = '';
 
   selectedStaffs:DropdownItem[] = [];
   dropdownSettings = {};
@@ -55,11 +56,15 @@ export class EnquiryComponent implements OnInit
         },
         {
           targets:[5],
+          width:'50px',
+        },
+        {
+          targets:[6],
           width:'30px',
           className: 'text-center',
         },
         {
-          targets:[6],
+          targets:[7],
           width:'10px',
           orderable: false,
           searchable: false,
@@ -85,10 +90,12 @@ export class EnquiryComponent implements OnInit
     {
       this.statsuField = "NA";
       this.staffField = "NA";
+      this.callBackDateField = "";
 
       this.studentService.GetStudent(this.studentId).subscribe((res:any)=>{
         this.statsuField = res.status;
         this.staffField = res.staff._id;
+        this.callBackDateField = res.call_back_date;
       });
     }
   }
@@ -143,7 +150,7 @@ export class EnquiryComponent implements OnInit
     }
     var formData = {};
     if(this.staffField != 'NA'){ 
-      formData = {status:this.statsuField , staff:this.staffField};
+      formData = {status:this.statsuField , staff:this.staffField, call_back_date:this.callBackDateField};
     }
     else{
       status:this.statsuField

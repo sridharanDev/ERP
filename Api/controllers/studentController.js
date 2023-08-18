@@ -17,6 +17,7 @@ const CreateStudetCotroller = async (req,res,next)=>{
             paid,
             staff,
             status,
+            call_back_date,
             join_date,
 
         } = req.body;
@@ -35,6 +36,7 @@ const CreateStudetCotroller = async (req,res,next)=>{
             paid,
             staff,
             status,
+            call_back_date,
             join_date,
         });
         const newStudent = await student.save();
@@ -64,6 +66,7 @@ const EditStudetCotroller = async (req,res,next)=>{
             paid,
             staff,
             status,
+            call_back_date,
             join_date,
         } = req.body;
         const student = await Student.findById(req.params.id);
@@ -85,6 +88,7 @@ const EditStudetCotroller = async (req,res,next)=>{
         if(paid) student.paid = paid;
         if(staff) student.staff = staff;
         if(status) student.status = status;
+        if(call_back_date) student.call_back_date = call_back_date;
         if(join_date) student.join_date = join_date;
         const editedStudent = await student.save();
         res.status(200).json(editedStudent);

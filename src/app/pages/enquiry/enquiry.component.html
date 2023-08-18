@@ -13,6 +13,7 @@
                         <th>Mobile</th>
                         <th>Course</th>
                         <th [width]="200">Note</th>
+                        <th [width]="100">Callback Date</th>
                         <th [width]="100">Status</th>
                         <th [width]="100">Action</th>
                     </tr>
@@ -28,6 +29,7 @@
                             </ng-container>
                         </td>
                         <td>{{student.note}}</td>
+                        <td>{{student.call_back_date}}</td>
                         <td><div class="badge " [ngClass]="GetStatusColor(student.status)" (click)="openModal(editStatusModel,student._id)" style="cursor: pointer;">{{student.status | titlecase}}</div></td>
                         <td style="width: 50px; text-align: center;" >
                             <button type="button" class="btn btn-primary btn-sm me-2" data-bs-toggle="dropdown">Action</button>     
@@ -68,12 +70,17 @@
                     <option value="converted">Converted</option>
                 </select>
             </div>
+            <div class="form-gorup m-t-20"  *ngIf="status_select.value == 'call back'">
+                <label for="">CallBack Date</label>
+                <input type="date" class="form-control" name="callBackDateField" [(ngModel)]="callBackDateField">
+            </div>
             <div class="form-group m-t-20" *ngIf="status_select.value == 'converted'">
                 <label>Staff</label>
                 <select name="" class="form-select"  [(ngModel)]="staffField">
                     <option value="NA">-- Select Staff --</option>
                     <option value="{{staff._id}}" *ngFor="let staff of allStaffs;">{{staff.title}}</option>
                 </select>
+
                 <!-- <ng-multiselect-dropdown
                 [data]="allStaffs"
                 placeholder="Select Staffs"

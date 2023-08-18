@@ -32,7 +32,7 @@
                 <div class="col-4">
                     <div class="form-group">
                         <label for="">Customer mobile</label>
-                        <input type="number" class="form-control" formControlName="customer_mobile">
+                        <input type="number" class="form-control" formControlName="customer_mobile" (keyup)="GetCustomerByNumber($event)">
                     </div>
                 </div>
     

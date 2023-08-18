@@ -53,7 +53,10 @@ const staudentSchema  = new mongoose.Schema({
     status: {
         type: String,
         enum:["call back","intrested","not intrested","not answer","converted"],
-        default:"call back"
+        default:"intrested"
+    },
+    call_back_date:{
+        type:String,
     },
     join_date: {
         type: String,

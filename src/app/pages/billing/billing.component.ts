@@ -458,4 +458,12 @@ export class BillingComponent implements OnInit
     });
   }
 
+  GetCustomerByNumber(event:any)
+  {
+    const mobileNo = event.target.value;
+    this.studentService.GetStudents().subscribe((res:any)=>{
+      
+    });    
+  }
+
 }
