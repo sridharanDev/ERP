@@ -18,6 +18,8 @@ export class AssetsComponent implements OnInit
   expenseId:any;
   isLoading:boolean = false;
 
+  filter:String = "NA";
+
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<any> = new Subject<any>();
 
@@ -39,19 +41,29 @@ export class AssetsComponent implements OnInit
     this.dtOptions = {
       pagingType: 'full_numbers',
       pageLength: 10,
+      dom: "<'row'<'col-sm-6'l<'float-left'B>><'col-sm-6'f>>" +
+      "<'row'<'col-sm-12'tr>>" +
+      "<'row'<'col-sm-6'i><'col-sm-6'<'float-right'p>>>",
+      buttons: [
+        'csv', 'excel', 'pdf', 'print'
+      ],
       columnDefs :[
         {
           targets:[0],
           width:'10px'
         },
         {
-          targets:[5],
+          targets:[6],
+          width:'50px'
+        },
+        {
+          targets:[7],
           width:'10px',
           orderable: false,
           searchable: false,
         },
       ]
-    };  
+    } as DataTables.Settings;  
     this.GetAllTypes();
     this.GetAllAssets();
   }
@@ -91,7 +103,22 @@ export class AssetsComponent implements OnInit
     this.isLoading = true;
     $('#datatable').DataTable().destroy();
     this.assetService.GetAssets().subscribe((res:any)=>{
-      this.allAssets = res;
+      const assets:any = [];
+      for(const asset of res)
+      {
+        if(this.filter === "NA")
+        {
+          assets.push(asset);
+        }
+        else
+        {
+          if(this.filter === asset.type._id)
+          {
+            assets.push(asset);
+          }
+        }
+      }
+      this.allAssets = assets;
       this.dtTrigger.next(null);
       this.isLoading = false;
     },(error)=>{

@@ -12,6 +12,8 @@ export class IncomeReportComponent implements OnInit
 
   allIncomes:any = [];
 
+  totalIncome:number = 0;
+
   filter1:string = "Project";
   filter2:string = "";
 
@@ -40,6 +42,7 @@ export class IncomeReportComponent implements OnInit
   GetAllIncomes()
   {
     const incomes:any = [];
+    let totalIncome = 0;
     $('#datatable1').DataTable().destroy();
     this.incomeService.GetIncomes().subscribe((res:any)=>{
       if(this.filter1 === "Project")
@@ -49,6 +52,7 @@ export class IncomeReportComponent implements OnInit
           if(this.filter2.length <= 0)
           {
             incomes.push(income);
+            totalIncome += income.amount;
           }
           else
           {
@@ -56,6 +60,7 @@ export class IncomeReportComponent implements OnInit
             if(date === this.filter2)
             {
               incomes.push(income);
+              totalIncome += income.amount;
             }            
           }
         }
@@ -67,6 +72,7 @@ export class IncomeReportComponent implements OnInit
           if(this.filter2.length <= 0)
           {
             incomes.push(income);
+            totalIncome += income.amount;
           }
           else
           {
@@ -74,6 +80,7 @@ export class IncomeReportComponent implements OnInit
             if(date === this.filter2)
             {
               incomes.push(income);
+              totalIncome += income.amount;
             }            
           }
         }
@@ -85,6 +92,7 @@ export class IncomeReportComponent implements OnInit
           if(this.filter2.length <= 0)
           {
             incomes.push(income);
+            totalIncome += income.amount;
           }
           else
           {
@@ -92,6 +100,7 @@ export class IncomeReportComponent implements OnInit
             if(date === this.filter2)
             {
               incomes.push(income);
+              totalIncome += income.amount;
             }            
           }
         }
@@ -103,6 +112,7 @@ export class IncomeReportComponent implements OnInit
           if(this.filter2.length <= 0)
           {
             incomes.push(income);
+            totalIncome += income.amount;
           }
           else
           {
@@ -110,11 +120,13 @@ export class IncomeReportComponent implements OnInit
             if(date === this.filter2)
             {
               incomes.push(income);
+              totalIncome += income.amount;
             }            
           }
         }
       }
       this.allIncomes = incomes;
+      this.totalIncome = totalIncome;
       this.dtTrigger1.next(null);
     },(error)=>{
 

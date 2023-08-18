@@ -26,6 +26,8 @@ export class IncomeComponent implements OnInit
   allInternIncomes:any = [];
   allRentIncomes:any = [];
 
+  totalAmounts:any = {project:0,course:0,rent:0,intern:0}; 
+
   isLoading:boolean = false;
 
   dtOptions: DataTables.Settings = {};
@@ -130,6 +132,7 @@ export class IncomeComponent implements OnInit
       this.allCourseIncomes = res.incomesWithCourses;
       this.allInternIncomes = res.incomesWithInterns;
       this.allRentIncomes = res.incomesWithRents;
+      this.CalculateMonthlyIncome();
       this.dtTrigger.next(null);
       this.isLoading = false;
     },(error)=>{
@@ -183,6 +186,57 @@ export class IncomeComponent implements OnInit
     },(error)=>{
       this.isLoading = false;
     });
+  }
+
+  CalculateMonthlyIncome()
+  {
+    let projectTotal = 0;
+    let courseTotal = 0;
+    let rentTotal = 0;
+    let internTotal = 0;
+    for(const projectIncome of this.allProjectIncomes)
+    {
+      if(this.areMonthsEqual(projectIncome.date,new Date()))
+      {
+        projectTotal += projectIncome.amount;
+      }
+    }
+    for(const courseIncome of this.allCourseIncomes)
+    {
+      if(this.areMonthsEqual(courseIncome.date,new Date()))
+      {
+        courseTotal += courseIncome.amount;
+      }
+    }
+    for(const rentIncome of this.allRentIncomes)
+    {
+      if(this.areMonthsEqual(rentIncome.date,new Date()))
+      {
+        rentTotal += rentIncome.amount;
+      }
+    }
+    for(const incomeIncome of this.allInternIncomes)
+    {
+      if(this.areMonthsEqual(incomeIncome.date,new Date()))
+      {
+        internTotal += incomeIncome.amount;
+      }
+    }
+    this.totalAmounts.project = projectTotal;
+    this.totalAmounts.course = courseTotal;
+    this.totalAmounts.rent = rentTotal;
+    this.totalAmounts.intern = internTotal;
+  }
+
+  areMonthsEqual(dateString1: any, dateString2: any) {
+    const date1 = new Date(dateString1);
+    const date2 = new Date(dateString2);
+  
+    const month1 = date1.getMonth();
+
+    const month2 = date2.getMonth();
+  
+    return month1 === month2;
   }
 
   isInvalidField(control: any) {

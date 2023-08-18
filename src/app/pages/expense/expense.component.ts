@@ -18,6 +18,8 @@ export class ExpenseComponent implements OnInit
   expenseId:any;
   isLoading:boolean = false;
 
+  filter:String = "NA";
+
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<any> = new Subject<any>();
 
@@ -37,6 +39,12 @@ export class ExpenseComponent implements OnInit
     this.dtOptions = {
       pagingType: 'full_numbers',
       pageLength: 10,
+      dom: "<'row'<'col-sm-6'l<'float-left'B>><'col-sm-6'f>>" +
+      "<'row'<'col-sm-12'tr>>" +
+      "<'row'<'col-sm-6'i><'col-sm-6'<'float-right'p>>>",
+      buttons: [
+        'csv', 'excel', 'pdf', 'print'
+      ],
       columnDefs :[
         {
           targets:[0],
@@ -49,7 +57,7 @@ export class ExpenseComponent implements OnInit
           searchable: false,
         },
       ]
-    };  
+    }  as DataTables.Settings;  
     this.GetAllTypes();
     this.GetAllExpenses();
   }
@@ -90,7 +98,22 @@ export class ExpenseComponent implements OnInit
     this.isLoading = true;
     $('#datatable').DataTable().destroy();
     this.expenseService.GetExpenses().subscribe((res:any)=>{
-      this.allExpenses = res;
+      const expenses:any = [];
+      for(const expense of res)
+      {
+        if(this.filter === "NA")
+        {
+          expenses.push(expense);
+        }
+        else
+        {
+          if(this.filter === expense.type._id)
+          {
+            expenses.push(expense);
+          }
+        }
+        this.allExpenses = expenses;
+      }
       this.dtTrigger.next(null);
       this.isLoading = false;
     },(error)=>{

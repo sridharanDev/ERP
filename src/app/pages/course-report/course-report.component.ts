@@ -13,6 +13,7 @@ export class CourseReportComponent implements OnInit
   allStudents:any = [];
 
   selectFilter:String = "all_students";
+  filter2:String = "";
 
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<any> = new Subject<any>();
@@ -46,11 +47,33 @@ export class CourseReportComponent implements OnInit
       {
         if(student.status === this.selectFilter && this.selectFilter !== "all_students")
         {
-          students.push(student);
+          if(this.filter2.length <= 0)
+          {
+            students.push(student);
+          }
+          else
+          {
+            const date = student.createdAt.split("T")[0].slice(0, -3);
+            if(date === this.filter2)
+            {
+              students.push(student);
+            }
+          }
         }
         else if(this.selectFilter === "all_students")
         {
-          students.push(student);
+          if(this.filter2.length <= 0)
+          {
+            students.push(student);
+          }
+          else
+          {
+            const date = student.createdAt.split("T")[0].slice(0, -3);
+            if(date === this.filter2)
+            {
+              students.push(student);
+            }
+          }
         }
       }
 

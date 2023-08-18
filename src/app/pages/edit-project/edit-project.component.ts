@@ -24,12 +24,8 @@ export class EditProjectComponent implements OnInit
     mobile :new FormControl('',Validators.required),
     platform :new FormControl('',Validators.required),
     project_name :new FormControl('',Validators.required),
-    reference :new FormControl('',Validators.required),
-    note :new FormControl('',Validators.required),
-    // start_date :new FormControl('',Validators.required),
-    // end_date :new FormControl('',Validators.required),
-    // staffs :new FormControl('',Validators.required),
-    // status :new FormControl('Y',Validators.required),
+    reference :new FormControl(''),
+    note :new FormControl(''),
   });
 
   constructor(private projectService:ProjectService ,private toastr: ToastrService,

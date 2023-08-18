@@ -4,6 +4,25 @@
             <h5 class="card-title">Incomes</h5>
             <button type="button" class="btn btn-success btn-sm" (click)="openLgModal(createModel,null)">Add income</button>
         </div>
+        <hr>
+        <div class="row">
+            <div class="col-3 text-center">
+                <h4>Project</h4>
+                <strong>{{totalAmounts.project | currency: 'INR' : 'symbol-narrow': '1.0-0'}}</strong>
+            </div>
+            <div class="col-3 text-center">
+                <h4>Course</h4>
+                <strong>{{totalAmounts.course | currency: 'INR' : 'symbol-narrow': '1.0-0'}}</strong>
+            </div>
+            <div class="col-3 text-center">
+                <h4>Rent</h4>
+                <strong>{{totalAmounts.rent | currency: 'INR' : 'symbol-narrow': '1.0-0'}}</strong>
+            </div>
+            <div class="col-3 text-center">
+                <h4>Intern</h4>
+                <strong>{{totalAmounts.intern | currency: 'INR' : 'symbol-narrow': '1.0-0'}}</strong>
+            </div>
+        </div>
     </div>
 </div>
 
