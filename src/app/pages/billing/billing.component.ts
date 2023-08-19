@@ -9,6 +9,7 @@ import { ProjectService } from 'src/app/services/project.service';
 import { AssetService } from 'src/app/services/asset.service';
 import { IncomeService } from 'src/app/services/income.service';
 import { ToastrService } from 'ngx-toastr';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-billing',
@@ -34,6 +35,12 @@ export class BillingComponent implements OnInit
 
   invoiceDetails:any = null;
   oldTotalPaid:any = 0;
+
+  allClients:any = [];
+
+  searchResult:any = [];
+  showSearchResult:boolean = false;
+  hideSearchResult: boolean = false;
 
   ngOnInit(): void 
   {
@@ -65,6 +72,7 @@ export class BillingComponent implements OnInit
     this.GetAllProjects();
     this.GetAssetsType();
     this.GetOldInvoices();
+    this.GetCustomerList();
   }
   
   GetInvoiceNumber()
@@ -458,12 +466,46 @@ export class BillingComponent implements OnInit
     });
   }
 
-  GetCustomerByNumber(event:any)
+  GetCustomerList()
   {
-    const mobileNo = event.target.value;
-    this.studentService.GetStudents().subscribe((res:any)=>{
-      
-    });    
+    const studentObserver = this.studentService.GetStudents();
+    const projectObserver = this.projectService.GetProjects("");
+
+    forkJoin([studentObserver,projectObserver]).subscribe(([studentRes,projectRes])=>{
+      this.allClients = [...studentRes,...projectRes];
+    });
   }
+
+  GetCustomerByNumber(event: any) {
+    const searchTerm = event.target.value;
+    const searchedClients = this.allClients.filter((client: any) => {
+        return client.mobile.toString().includes(searchTerm);
+    });
+    this.searchResult = searchedClients;
+  }
+
+  OnSelectSearchResult(_id:any)
+  {
+    const selectedClient = this.searchResult.find((client: any) => client._id === _id);
+    this.form1.get("customer_name")?.setValue(selectedClient.name ?? selectedClient.client_name);    
+    this.form1.get("customer_mobile")?.setValue(selectedClient.mobile);    
+    this.form1.get("customer_email")?.setValue(selectedClient.email); 
+    this.searchResult = [];   
+    this.showSearchResult = false;
+  }
+
+  prepareToHideSearchResult() {
+    this.hideSearchResult = true;
+    setTimeout(() => {
+        if (this.hideSearchResult) {
+            this.showSearchResult = false;
+        }
+    }, 200);
+}
+
+toggleSearchResult(show: boolean) {
+    this.hideSearchResult = false;
+    this.showSearchResult = show;
+}
 
 }

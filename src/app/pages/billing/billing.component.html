@@ -25,14 +25,23 @@
                 </div>
                 <div class="col-4">
                     <div class="form-group">
-                        <label for="">Customer email</label>
-                        <input type="email" class="form-control" formControlName="customer_email">
+                        <label for="">Customer mobile</label>
+                        <input type="number" class="form-control" formControlName="customer_mobile"
+                               (keyup)="GetCustomerByNumber($event)" (change)="GetCustomerByNumber($event)"
+                               (focus)="toggleSearchResult(true)" (blur)="prepareToHideSearchResult()">
+                        <div class="search-result" *ngIf="showSearchResult">
+                            <ul>
+                                <a *ngFor="let item of searchResult" (click)="OnSelectSearchResult(item._id)">
+                                    <li>{{item.name ?? item.client_name}} - {{item.mobile}}</li>
+                                </a>
+                            </ul>
+                        </div>
                     </div>
                 </div>
                 <div class="col-4">
                     <div class="form-group">
-                        <label for="">Customer mobile</label>
-                        <input type="number" class="form-control" formControlName="customer_mobile" (keyup)="GetCustomerByNumber($event)">
+                        <label for="">Customer email</label>
+                        <input type="email" class="form-control" formControlName="customer_email">
                     </div>
                 </div>
     
