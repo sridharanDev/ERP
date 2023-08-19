@@ -71,6 +71,8 @@ import { ProjectStaffAssignComponent } from './pages/project-staff-assign/projec
 import { ProjectReportComponent } from './pages/project-report/project-report.component';
 import { CourseReportComponent } from './pages/course-report/course-report.component';
 import { IncomeReportComponent } from './pages/income-report/income-report.component';
+import { ProjectPipelineComponent } from './pages/project-pipeline/project-pipeline.component';
+import { ProjectScheduleComponent } from './pages/project-schedule/project-schedule.component';
 
 @NgModule({
   declarations: [
@@ -133,6 +135,8 @@ import { IncomeReportComponent } from './pages/income-report/income-report.compo
     ProjectReportComponent,
     CourseReportComponent,
     IncomeReportComponent,
+    ProjectPipelineComponent,
+    ProjectScheduleComponent,
   ],
   imports: [
     BrowserModule,

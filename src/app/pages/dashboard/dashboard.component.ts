@@ -4,6 +4,7 @@ import { StaffService } from 'src/app/services/staff.service';
 import { StudentService } from 'src/app/services/student.service';
 import { AssetService } from 'src/app/services/asset.service';
 import { AttendanceService } from 'src/app/services/attendance.service';
+import { ProjectScheduleService } from 'src/app/services/project-schedule.service';
 import { IncomeService } from 'src/app/services/income.service';
 import { forkJoin } from 'rxjs';
 import { ChartConfiguration, ChartDataset, Chart } from 'chart.js';
@@ -20,14 +21,23 @@ export class DashboardComponent implements OnInit,AfterViewInit
   staffs:any = {total:0,present:0,leave:0};
   students:any = {total:0,studying:0,completed:0};
   assets:any = {laptop:0,desktop:0,scanner:0};
-  courses:any = {total:0,monthly:0,followups:0};
+  courses:any = {total:0,monthly:0,followups:0,today_callbacks:0,converted:0};
   pieChartData:any = [0,0,0];  
+
+  projectSchedules:any = [];
 
   attendaceFilter:any = "monthly";
   attendanceChart :any;
 
-  constructor(private projectService:ProjectService,private staffService:StaffService,private incomeService:IncomeService,
-    private studentService:StudentService,private assetService:AssetService,private attendanceService:AttendanceService){}
+  constructor(
+    private projectService:ProjectService,
+    private staffService:StaffService,
+    private incomeService:IncomeService,
+    private studentService:StudentService,
+    private assetService:AssetService,
+    private attendanceService:AttendanceService,
+    private projectScheduleService:ProjectScheduleService,
+    ){}
 
   ngOnInit(): void 
   {
@@ -41,6 +51,7 @@ export class DashboardComponent implements OnInit,AfterViewInit
     this.GetAssetDetails();
     this.GetAttendanceReport();
     this.GetOverallReport();
+    this.GetProjectSchedules();
   }
 
 
@@ -90,6 +101,7 @@ export class DashboardComponent implements OnInit,AfterViewInit
         if(student.status === "converted")
         {
           this.students.studying++;
+          this.courses.converted++;
         }
         else if(student.status === "completed")
         {
@@ -106,6 +118,10 @@ export class DashboardComponent implements OnInit,AfterViewInit
         else if(student.status === "call back")
         {
           this.courses.followups++;
+          if(this.areDatesEqual(student.call_back_date,new Date()))
+          {
+            this.courses.today_callbacks++;
+          }
         }
       } 
       
@@ -402,6 +418,23 @@ export class DashboardComponent implements OnInit,AfterViewInit
     });
   }
 
+  GetProjectSchedules()
+  {
+    this.projectScheduleService.GetSchedules().subscribe((res:any)=>{
+      const schedules :any = [];
+      for(const schedule of res)
+      {
+        if(this.areDatesEqual(schedule.date,new Date()))
+        {
+          schedules.push(schedule);
+        }
+      }
+      this.projectSchedules = schedules;
+    },(error)=>{
+
+    });
+  }
+
   calculateWeeksInMonth() {
     const currentDate = new Date();
     const year = currentDate.getFullYear();
@@ -449,6 +482,21 @@ export class DashboardComponent implements OnInit,AfterViewInit
       currentDate.getFullYear() === inputDate.getFullYear() &&
       currentDate.getMonth() === inputDate.getMonth()
     );
+  }
+
+  areDatesEqual(dateString1: any, dateString2: any) {
+    const date1 = new Date(dateString1);
+    const date2 = new Date(dateString2);
+  
+    const year1 = date1.getFullYear();
+    const month1 = date1.getMonth();
+    const day1 = date1.getDate();
+  
+    const year2 = date2.getFullYear();
+    const month2 = date2.getMonth();
+    const day2 = date2.getDate();
+  
+    return year1 === year2 && month1 === month2 && day1 === day2;
   }
 
   formatDate(dateString:any) {

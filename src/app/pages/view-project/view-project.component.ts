@@ -42,5 +42,13 @@ export class ViewProjectComponent implements OnInit
     {
       return "bg-warning"
     }
+    else if(status == "pipeline")
+    {
+      return "bg-secondary"
+    }
+    else if(status == "call back")
+    {
+      return "bg-primary"
+    }
   }
 }

@@ -45,6 +45,7 @@ const EditProjectController = async (req,res,next)=>
             note,
             start_date,
             end_date,
+            call_back_date,
             staffs,
             status,
         } = req.body;
@@ -62,6 +63,7 @@ const EditProjectController = async (req,res,next)=>
         if (note) project.note = note;
         if (start_date) project.start_date = start_date;
         if (end_date) project.end_date = end_date;
+        if (call_back_date) project.call_back_date = call_back_date;
         if (staffs) project.staffs = staffs;
         if (status) project.status = status;
         

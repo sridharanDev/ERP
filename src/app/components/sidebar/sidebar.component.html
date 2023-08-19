@@ -43,9 +43,11 @@
             <span class="badge text-bg-danger align-end" *ngIf="taskCount > 0 || worklogCount > 0">{{(taskCount + worklogCount) < 99 ? (taskCount + worklogCount) : "+99"}}</span>
          </a>
          <ul class="sidebar-submenu">
+           <li routerLinkActive="active"><a href="#" routerLink="/admin/pipeline-projects"><i class="fa-solid fa-ellipsis-vertical"></i> Pipeline</a></li>
            <li routerLinkActive="active"><a href="#" routerLink="/admin/upcomming-projects"><i class="fa-solid fa-ellipsis-vertical"></i> Upcomming</a></li>
            <li routerLinkActive="active"><a href="#" routerLink="/admin/ongoing-projects"><i class="fa-solid fa-ellipsis-vertical"></i> Ongoing</a></li>
            <li routerLinkActive="active"><a href="#" routerLink="/admin/completed-projects"><i class="fa-solid fa-ellipsis-vertical"></i> Completed</a></li>
+           <li routerLinkActive="active"><a href="#" routerLink="/admin/project-schedule"><i class="fa-solid fa-ellipsis-vertical"></i> Schedule</a></li>
            <li routerLinkActive="active"><a href="#" routerLink="/admin/manage-tasks"><i class="fa-solid fa-ellipsis-vertical"></i> Tasks 
             <span class="badge text-bg-danger align-end" *ngIf="taskCount > 0">{{taskCount < 99 ? taskCount : "+99"}}</span>
             </a></li>

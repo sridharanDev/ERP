@@ -53,6 +53,8 @@ import { ProjectStaffAssignComponent } from './pages/project-staff-assign/projec
 import { ProjectReportComponent } from './pages/project-report/project-report.component';
 import { CourseReportComponent } from './pages/course-report/course-report.component';
 import { IncomeReportComponent } from './pages/income-report/income-report.component';
+import { ProjectPipelineComponent } from './pages/project-pipeline/project-pipeline.component';
+import { ProjectScheduleComponent } from './pages/project-schedule/project-schedule.component';
 
 
 
@@ -66,6 +68,7 @@ const routes: Routes = [
       { path: 'schedule', component: ScheduleComponent ,canActivate: [AuthGuardService],data: { module: ['staff']}},
       { path: 'add-project', component: AddProjectComponent ,canActivate: [AuthGuardService],data: { module: ['staff']}},
       { path: 'edit-project/:id', component: EditProjectComponent ,canActivate: [AuthGuardService],data: { module: ['staff']}},
+      { path: 'pipeline-projects', component: ProjectPipelineComponent ,canActivate: [AuthGuardService],data: { module: ['staff']}},
       { path: 'upcomming-projects', component: UpcommingProjectsComponent ,canActivate: [AuthGuardService],data: { module: ['staff']}},
       { path: 'ongoing-projects', component: OngoingProjectsComponent ,canActivate: [AuthGuardService],data: { module: ['project']}},
       { path: 'completed-projects', component: CompletedProjectsComponent ,canActivate: [AuthGuardService],data: { module: ['project']}},
@@ -88,6 +91,7 @@ const routes: Routes = [
       { path: 'report/project', component: ProjectReportComponent ,canActivate: [AuthGuardService],data: { module: ['expenses']}},
       { path: 'report/course', component: CourseReportComponent ,canActivate: [AuthGuardService],data: { module: ['expenses']}},
       { path: 'report/income', component: IncomeReportComponent ,canActivate: [AuthGuardService],data: { module: ['expenses']}},
+      { path: 'project-schedule', component: ProjectScheduleComponent ,canActivate: [AuthGuardService],data: { module: ['project']}},
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       {
         path: 'staff-list',

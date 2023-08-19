@@ -29,10 +29,13 @@ const projectSchema = new mongoose.Schema({
     end_date:{
         type:String,
     },
+    call_back_date:{
+        type:String,
+    },
     staffs: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Staff'}],
     status: { type: String, 
-        enum: ['upcomming','ongoing','inprogress','completed'],
-        default:'upcomming', 
+        enum: ['pipeline','call back','upcomming','ongoing','inprogress','completed'],
+        default:'pipeline', 
         required: true 
     },
 },{

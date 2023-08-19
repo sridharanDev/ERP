@@ -64,8 +64,11 @@
                 <!-- <input type="text" class="form-control"  placeholder="Role name" formControlName="status" [ngClass]="{'is-invalid': isInvalidField(statusForm.get('status'))}"> -->
                 <select class="form-select" formControlName="status" [ngClass]="{'is-invalid': isInvalidField(statusForm.get('status'))}">
                     <option value="">Select Status</option>
-                    <option value="ongoing">Ongoing</option>
+                    <option value="">Select Status</option>
+                    <option value="pipeline">Pipeline</option>
+                    <option value="call back">Call back</option>
                     <option value="upcomming">Upcomming</option>
+                    <option value="ongoing">Ongoing</option>
                     <option value="completed">Completed</option>
                   </select>
             </div>

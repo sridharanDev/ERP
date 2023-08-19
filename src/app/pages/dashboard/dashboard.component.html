@@ -167,10 +167,11 @@
             <div class="card-body">
                 <table class="borderless-table">
                     <tbody>
-                        <tr>
-                            <td><span class="text-muted">Project Name</span></td>
+                        <tr *ngFor="let schedule of projectSchedules;index as i;">
+                            <td>{{i+1}}.</td>
+                            <td><span class="text-muted">{{schedule.project.project_name}}</span></td>
                             <td>:</td>
-                            <td><span class="text-primary"> Clientn name</span></td>
+                            <td><span class="text-primary">{{schedule.project.client_name}}</span></td>
                         </tr>
                     </tbody>
                 </table>
@@ -199,6 +200,16 @@
                             <td><span class="text-muted" style="font-size: 15px;">Follow Up's</span></td>
                             <td style="font-size: 15px;">:</td>
                             <td><span class="text-primary" style="font-size: 15px;"> {{courses.followups}} </span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="text-muted" style="font-size: 15px;">Today callbacks</span></td>
+                            <td style="font-size: 15px;">:</td>
+                            <td><span class="text-primary" style="font-size: 15px;"> {{courses.today_callbacks}} </span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="text-muted" style="font-size: 15px;">Converted</span></td>
+                            <td style="font-size: 15px;">:</td>
+                            <td><span class="text-primary" style="font-size: 15px;"> {{courses.converted}}</span></td>
                         </tr>
                     </tbody>
                 </table>
