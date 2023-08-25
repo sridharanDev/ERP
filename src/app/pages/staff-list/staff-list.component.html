@@ -20,11 +20,13 @@
                         <td>{{staff.staff_id}}</td>
                         <td>{{staff.name}}</td>
                         <td>{{staff.role.name}}</td>
-                        <td>{{staff.status}}</td>
+                        <td><span class="badge " [ngClass]="GetStatusColor(staff.status)">{{staff.status | titlecase}}</span></td>
                         <td style="width: 50px; text-align: center;">
                             <button type="button" class="btn btn-primary btn-sm me-2" data-bs-toggle="dropdown">Action</button>     
                             <div class="dropdown">
                                 <div class="dropdown-menu dropdown-menu-end">
+                                    <a class="dropdown-item"  routerLink="/admin/staff-list/profile/{{staff.staff_id}}">Profile</a>
+                                    <a class="dropdown-item"  (click)="openModal(statusModel,staff._id)">Status</a>
                                     <a class="dropdown-item"  (click)="openModal(changePassModel,staff._id)">Password</a>
                                     <a class="dropdown-item" href="#" routerLink="/admin/staff-list/edit-staff/{{staff.staff_id}}">Edit</a>
                                     <a class="dropdown-item"  (click)="openModal(deleteStaffModel,staff._id)">Delete</a>
@@ -57,6 +59,31 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary " (click)="modal.dismiss()" >Cancel</button>
           <button type="button" class="btn btn-warning " (click)="ChangePassSubmit()">Update</button>
+
+        </div>
+</ng-template>
+
+<ng-template #statusModel let-modal>
+    <div class="modal-header">
+        <h3 class="modal-title">Change Status</h3>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+        <div class="modal-body">
+            <div class="form-input">
+                <label for="">Status</label>
+                <select class="form-select" name="statusInput" [(ngModel)]="statusInput">
+                    <option value="active">Active</option>
+                    <option value="inactive">InActive</option>
+                    <option value="relived">Relived</option>
+                    <option value="closed">Closed</option>
+                </select>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary " (click)="modal.dismiss()" >Cancel</button>
+          <button type="button" class="btn btn-warning " (click)="ChangeStatusSubmit()">Update</button>
 
         </div>
 </ng-template>

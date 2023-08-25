@@ -7,6 +7,7 @@ import { FormControl, FormGroup,Validators } from '@angular/forms';
 import { FormValidatorService } from '../../utils/form-validator.service';
 import { CustomValidatorService } from '../../utils/custom-validator.service';
 import { Location } from '@angular/common';
+import { environment } from 'src/environments/environment';
 
 
 @Component({
@@ -21,6 +22,8 @@ export class AddStaffComponent implements OnInit
   staffRoles:any = [];
   staffSchedules:any = [];
   isLoading:boolean = false;
+
+  selectedFiles: File[] = [];
 
   staffForm = new FormGroup({
     staff_id :new FormControl('',Validators.required),
@@ -82,7 +85,10 @@ export class AddStaffComponent implements OnInit
   {
     if(this.staffForm.valid)
     {
-      const formData = this.staffForm.value;
+      const formData = this.convertFormGroupToFormData(this.staffForm);
+      for (const file of this.selectedFiles) {
+        formData.append('attachments', file);
+      }
       this.isLoading=true;
       this.staffService.CreateStaff(formData).subscribe((res)=>{
         this.toastr.success('New staff added successfully.', 'Add new staff',{timeOut: 3000,closeButton: true,progressBar: true,},);
@@ -98,6 +104,41 @@ export class AddStaffComponent implements OnInit
       this.formValidatorService.markFormGroupTouched(this.staffForm);
     }
     
+  }
+
+  convertFormGroupToFormData(formGroup: FormGroup): FormData {
+    const formData = new FormData();
+  
+    for (const controlName in formGroup.controls) {
+      if (formGroup.controls.hasOwnProperty(controlName)) {
+        const control = formGroup.controls[controlName];
+  
+        if (control.value instanceof File) {
+          formData.append(controlName, control.value, control.value.name);
+        } else {
+          formData.append(controlName, control.value);
+        }
+      }
+    }
+  
+    return formData;
+  }
+
+  onFileChange(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+
+    if (inputElement.files) {
+      const filesArray = Array.from(inputElement.files);
+
+      this.selectedFiles = filesArray;
+    }
+  }
+
+  removeFile(file: File) {
+    const index = this.selectedFiles.indexOf(file);
+    if (index !== -1) {
+      this.selectedFiles.splice(index, 1);
+    }
   }
 
   formatTimeTo12Hour(time: string): string {
@@ -118,7 +159,57 @@ export class AddStaffComponent implements OnInit
     return formattedTime;
   }
 
+  formatFileSize(size: number): string {
+    const units = ['B', 'KB', 'MB', 'GB'];
+    let index = 0;
+    while (size >= 1024 && index < units.length - 1) {
+      size /= 1024;
+      index++;
+    }
+    return `${size.toFixed(2)} ${units[index]}`;
+  }
+
   isInvalidField(control: any) {
     return control.invalid && control.touched;
+  }
+
+  GetFileType(fileName:string)
+  {
+    let image = "assets/img/";
+    const lastDotIndex = fileName.lastIndexOf('.');
+    const fileExtension = fileName.substring(lastDotIndex + 1);
+    if(fileExtension == 'pdf')
+    {
+      image += "pdf.png";
+    }
+    else if(fileExtension == 'csv')
+    {
+      image += "csv.png";
+    }
+    else if(fileExtension == 'docx')
+    {
+      image += "doc.png";
+    }
+    else if(fileExtension == 'zip')
+    {
+      image += "zip.png";
+    }
+    else if(fileExtension == 'rar')
+    {
+      image += "rar.png";
+    }
+    else if(fileExtension == 'txt')
+    {
+      image += "txt.png";
+    }
+    else if(fileExtension == 'png' || fileExtension == 'jpg' || fileExtension == 'jpeg')
+    {
+      image = fileName;
+    }
+    else
+    {
+      image += "unknown-file.png";
+    }
+    return image;
   }
 }

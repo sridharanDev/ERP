@@ -26,6 +26,8 @@ export class SalaryComponent implements OnInit
     actual_salary :new FormControl(0,Validators.required),
     paid :new FormControl(0,Validators.required),
     status :new FormControl('NA',[Validators.required,this.CustomValidators.isEqual('NA')]),
+    note :new FormControl(''),
+    staff_status :new FormControl('NA',[Validators.required,this.CustomValidators.isEqual('NA')]),
   });
 
   salaries:any = [];
@@ -137,6 +139,7 @@ export class SalaryComponent implements OnInit
     this.staffService.GetStaff(staff_id).subscribe((res:any)=>{
       this.salaryForm.get("staff_name")?.setValue(res.name);
       this.salaryForm.get("actual_salary")?.setValue(res.role.salery);
+      this.salaryForm.get("staff_status")?.setValue(res.status);
     },(error)=>{
       this.salaryForm.get("staff_name")?.setValue(null);
       this.salaryForm.get("actual_salary")?.setValue(0);

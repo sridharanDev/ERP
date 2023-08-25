@@ -1,0 +1,27 @@
+.file
+{
+    border-bottom: 1px #ddd solid;
+    padding: 10px 0;
+    margin: 10px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.file a
+{
+    background: red;
+    padding: 0 5px;
+    color: #fff;
+    border-radius: 50px;
+}
+
+.file-lable
+{
+    padding: 5px 10px;
+    background: #4280dd;
+    color: #fff;
+    text-align: center;
+    border-radius: 3px;
+    cursor: pointer;
+}

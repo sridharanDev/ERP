@@ -421,18 +421,54 @@ export class DashboardComponent implements OnInit,AfterViewInit
   GetProjectSchedules()
   {
     this.projectScheduleService.GetSchedules().subscribe((res:any)=>{
-      const schedules :any = [];
-      for(const schedule of res)
-      {
-        if(this.areDatesEqual(schedule.date,new Date()))
-        {
-          schedules.push(schedule);
-        }
-      }
+      
+      const schedules:any = this.GetRecentRemiders(res);
+      // for(const schedule of res)
+      // {
+      //   if(this.areDatesEqual(schedule.date,new Date()))
+      //   {
+      //     schedules.push(schedule);
+      //   }
+      // }
       this.projectSchedules = schedules;
     },(error)=>{
 
     });
+  }
+
+  GetRecentRemiders(schadule:any)
+  {
+    const worklogs:any = [];
+    for(const log of schadule)
+    {
+      const currentDate = new Date();
+      currentDate.setDate(currentDate.getDate() + 1);
+      const nextDate = currentDate.toISOString();
+      console.log(log.date,nextDate);
+      
+      if(this.isDateLessThanOrEqual(log.date,nextDate))
+      {
+        worklogs.push(log);
+      }
+    }    
+    return worklogs;
+  }
+
+  combineDatetime(date: string, time: string): string {
+    const dateObj = new Date(date);
+    const timeObj = new Date(`2000-01-01T${time}:00`);
+    dateObj.setHours(timeObj.getHours(), timeObj.getMinutes());
+    return dateObj.toISOString();
+  }
+
+  isDateLessThanOrEqual(dateString1: any, dateString2: any) {
+    const date1 = new Date(dateString1);
+    const date2 = new Date(dateString2);
+  
+    date1.setHours(0, 0, 0, 0);
+    date2.setHours(0, 0, 0, 0);
+  
+    return date1.getTime() <= date2.getTime();
   }
 
   calculateWeeksInMonth() {
@@ -497,6 +533,24 @@ export class DashboardComponent implements OnInit,AfterViewInit
     const day2 = date2.getDate();
   
     return year1 === year2 && month1 === month2 && day1 === day2;
+  }
+
+  formatTimeTo12Hour(time: string): string {
+    const [hours, minutes] = time.split(':');
+    let formattedTime = '';
+  
+    const numericHours = Number(hours);
+    if (numericHours === 0) {
+      formattedTime = `12:${minutes} AM`;
+    } else if (numericHours < 12) {
+      formattedTime = `${numericHours}:${minutes} AM`;
+    } else if (numericHours === 12) {
+      formattedTime = `12:${minutes} PM`;
+    } else {
+      formattedTime = `${numericHours - 12}:${minutes} PM`;
+    }
+  
+    return formattedTime;
   }
 
   formatDate(dateString:any) {

@@ -55,6 +55,7 @@ import { CourseReportComponent } from './pages/course-report/course-report.compo
 import { IncomeReportComponent } from './pages/income-report/income-report.component';
 import { ProjectPipelineComponent } from './pages/project-pipeline/project-pipeline.component';
 import { ProjectScheduleComponent } from './pages/project-schedule/project-schedule.component';
+import { StaffProfileComponent } from './pages/staff-profile/staff-profile.component';
 
 
 
@@ -99,6 +100,7 @@ const routes: Routes = [
           { path: '', component: StaffListComponent },
           { path: 'add-staff', component: AddStaffComponent },
           { path: 'edit-staff/:id', component: EditStaffComponent },
+          { path: 'profile/:id', component: StaffProfileComponent },
         ]
         ,canActivate: [AuthGuardService],data: { module: ['staff']}
       },

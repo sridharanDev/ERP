@@ -100,6 +100,22 @@
                         </select>
                     </div>
                 </div>
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label for="" class="form-label">Attachments</label><br>
+                        <label for="attachments" class="file-lable"><i class="fa-solid fa-paperclip"></i> Attach files</label>
+                        <input type="file" style="display: none;" id="attachments" multiple (change)="onFileChange($event)">
+                        <div class="selected-files">
+                            <div *ngFor="let file of selectedFiles" class="file">
+                                <div>
+                                    <img src="{{GetFileType(file.name)}}" alt="icon" width="20" height="20">
+                                    <span>{{ file.name }} ({{ formatFileSize(file.size) }})</span>
+                                </div>
+                                <a (click)="removeFile(file)"><i class="fa-solid fa-xmark"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <button class="btn btn-success" type="submit">Submit</button>
         </form>

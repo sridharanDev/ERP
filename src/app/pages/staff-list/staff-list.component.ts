@@ -19,6 +19,7 @@ export class StaffListComponent implements OnInit
   isLoading:boolean = false;
 
   passwordInput:any;
+  statusInput:any;
 
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<any> = new Subject<any>();
@@ -61,6 +62,13 @@ export class StaffListComponent implements OnInit
       keyboard: false,
     });
     this.passwordInput = null;
+    this.statusInput = "active";
+    if(this.staffId)
+    {
+      this.staffService.GetProfile(this.staffId).subscribe((res:any)=>{
+        this.statusInput = res.status;
+      });
+    }
   }
   
   GetAllStaffs()
@@ -95,6 +103,25 @@ export class StaffListComponent implements OnInit
     });
   }
 
+  ChangeStatusSubmit()
+  {
+    if(!this.staffId)
+    {
+      return;
+    }
+    const formData = {status:this.statusInput};
+    this.isLoading = true;
+    this.staffService.EditStaff(this.staffId,formData).subscribe((res)=>{
+      this.isLoading = false;
+      this.GetAllStaffs();
+      this.modalService.dismissAll();
+      this.toastr.info('Status updated successfully.', 'Status password',{timeOut: 3000,closeButton: true,progressBar: true,},);
+    },(error)=>{
+      this.toastr.error(error.message, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
+      this.isLoading = false;
+    });
+  }
+
   DeleteSubmit()
   {
     if(!this.staffId)
@@ -111,5 +138,25 @@ export class StaffListComponent implements OnInit
       this.toastr.error(error.message, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
       this.isLoading = false;
     });
+  }
+
+  GetStatusColor(status:String):any
+  {
+    if(status == "active")
+    {
+      return "bg-success"
+    }
+    else if(status == "inactive")
+    {
+      return "bg-warning"
+    }
+    else if(status == "relived")
+    {
+      return "bg-danger"
+    }
+    else
+    {
+      return "bg-secondary"
+    }
   }
 }

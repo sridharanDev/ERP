@@ -67,6 +67,9 @@ const staffSchema = new mongoose.Schema({
     status:{
         type:String,
     },
+    attachments:[{
+        type:String,
+    }],
 },{
     timestamps:true,
 });

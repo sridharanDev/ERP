@@ -86,7 +86,7 @@ export class ScheduleComponent implements OnInit
   
     OnCreateSumbit()
     {
-      if(this.scheduleForm.invalid)
+      if(this.scheduleForm.invalid || this.scheduleForm.value.in_time === this.scheduleForm.value.out_time)
       {
         this.formValidatorService.markFormGroupTouched(this.scheduleForm);
         return;
@@ -106,7 +106,7 @@ export class ScheduleComponent implements OnInit
   
     OnEditSumbit()
     {
-      if(this.scheduleForm.invalid)
+      if(this.scheduleForm.invalid || this.scheduleForm.value.in_time === this.scheduleForm.value.out_time)
       {
         this.formValidatorService.markFormGroupTouched(this.scheduleForm);
         return;

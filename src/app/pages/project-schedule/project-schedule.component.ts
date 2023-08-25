@@ -29,6 +29,7 @@ export class ProjectScheduleComponent implements OnInit
     description :new FormControl(''),
     project :new FormControl('NA',[Validators.required,this.CustomValidators.isEqual('NA')]),
     date :new FormControl('',Validators.required),
+    time :new FormControl('',Validators.required),
   });
 
   constructor(private scheduleService:ProjectScheduleService,private modalService: NgbModal,private projectService:ProjectService,
@@ -46,7 +47,7 @@ export class ProjectScheduleComponent implements OnInit
         },
         {
           targets:[4],
-          width:'60px'
+          width:'100px'
         },
         {
           targets:[5],

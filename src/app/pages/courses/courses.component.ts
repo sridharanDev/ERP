@@ -19,7 +19,7 @@ export class CoursesComponent implements OnInit
 
   courseForm = new FormGroup({
     title :new FormControl('',Validators.required),
-    description :new FormControl('',Validators.required),
+    description :new FormControl(''),
     duration :new FormControl('',Validators.required),
     fees :new FormControl('',Validators.required),
   });

@@ -35,7 +35,7 @@ export class InvoiceComponent implements OnInit
     this.billingData.tax_amount = this.CalculateTax();
     this.billingData.net_total = this.CalculateNetTotal();
     this.billingData.balance = this.CalculateBalace();
-    // this.form3.get("discount")?.setValue(this.CalaculateDiscount());
+    this.billingData.discount = this.CalaculateDiscount();
   }
 
   CaculateSubtotal()
@@ -143,5 +143,7 @@ export class InvoiceComponent implements OnInit
 
   printInvoice() {
     window.print();
+    window.close();
   }
+  
 }

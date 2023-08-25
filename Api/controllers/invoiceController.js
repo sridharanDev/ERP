@@ -57,7 +57,7 @@ const EditInvoiceController = async (req,res,next)=>
     try
     {
         const invoice_no = req.params.id;
-        const {type,
+        const {
             refrenece,
             date,
             customer_name,
@@ -76,7 +76,6 @@ const EditInvoiceController = async (req,res,next)=>
         {
             return res.status(404).json({message:"invoice not found"});
         }
-        if(type) invoice.type = type;
         if(refrenece) invoice.refrenece = refrenece;
         if(date) invoice.date = date;
         if(customer_name) invoice.customer_name = customer_name;

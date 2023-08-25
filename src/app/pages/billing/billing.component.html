@@ -164,10 +164,10 @@
                         <div class="col-8">
                             <div class="row g-2">
                                 <div class="col-3">
-                                    <input type="number" class="form-control" formControlName="discount_percent" (change)="OnChange()">
+                                    <input type="number" class="form-control" formControlName="discount_percent" (change)="OnChange();ToggleDiscount()">
                                 </div>
                                 <div class="col-4">
-                                    <input type="number" class="form-control" formControlName="discount_amount" (change)="OnChange()">
+                                    <input type="number" class="form-control" formControlName="discount_amount" (change)="OnChange();ToggleDiscount()">
                                 </div>
                                 <div class="col-5">
                                     <input type="text" class="form-control" formControlName="discount" readonly>

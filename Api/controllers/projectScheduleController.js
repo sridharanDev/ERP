@@ -8,12 +8,14 @@ const CreateScheduleController = async (req,res,next) =>{
             description,
             project,
             date,
+            time,
         } = req.body;
         const schedule = new Schedule({
             title,
             description,
             project,
             date,
+            time,
         });
         const newSchedule = await schedule.save();
         res.status(200).json(newSchedule);
@@ -32,6 +34,7 @@ const EditScheduleController = async (req,res,next) =>{
             description,
             project,
             date,
+            time,
         } = req.body;
         const schedule = await Schedule.findById(req.params.id);
         if(!schedule)
@@ -42,6 +45,7 @@ const EditScheduleController = async (req,res,next) =>{
         if(description) schedule.description = description;
         if(project) schedule.project = project;
         if(date) schedule.date = date;
+        if(time) schedule.time = time;
         const updatedSchedule = await schedule.save();
         res.status(200).json(updatedSchedule);
     }

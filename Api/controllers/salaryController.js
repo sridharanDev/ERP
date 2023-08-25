@@ -10,7 +10,9 @@ const CreateSaleryController = async (req,res,next)=>{
             credited_date,
             actual_salary,
             paid,
-            status
+            status,
+            note,
+            staff_status
         } = req.body;
         const salary = new Salary({
             staff_id,
@@ -19,7 +21,9 @@ const CreateSaleryController = async (req,res,next)=>{
             credited_date,
             actual_salary,
             paid,
-            status
+            status,
+            note,
+            staff_status
         });
         const newSalary = await salary.save();
         res.status(200).json(newSalary);
@@ -39,7 +43,9 @@ const EditSaleryController = async (req,res,next)=>{
             credited_date,
             actual_salary,
             paid,
-            status
+            status,
+            note,
+            staff_status
         } = req.body;
         
         const salary = await Salary.findById(req.params.id);
@@ -54,7 +60,8 @@ const EditSaleryController = async (req,res,next)=>{
         if(actual_salary) salary.actual_salary = actual_salary;
         if(paid) salary.paid = paid;
         if(status) salary.status = status;
-
+        if(note) salary.note = note;
+        if(staff_status) salary.staff_status = staff_status;
         const editedSalary = await salary.save();
         res.status(200).json(editedSalary);
     }

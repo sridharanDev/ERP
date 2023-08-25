@@ -1,0 +1,65 @@
+<div class="row">
+    <div class="col-4">
+        <div class="card mb-3">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Profile Details</h5>
+            </div>
+            <div class="card-body text-center">
+                <img src="assets/img/avatars/user.png" alt="Christina Mason" class="img-fluid rounded-circle mb-2" width="128" height="128">
+                <div class="text-muted mb-2">{{staffProfile.staff_id}}</div>
+                <h5 class="card-title mb-0">{{staffProfile.name}}</h5>
+                <div class="text-muted mb-2">{{staffProfile.role.name}}</div>
+                <span class="badge" [ngClass]="GetStatusColor(staffProfile.status)">{{staffProfile.status}}</span>
+            </div>
+            <hr class="my-0">
+            <div class="card-body">
+                <h5 class="h6 card-title">Qualification</h5>
+                <div>{{staffProfile.qualification}}</div>
+            </div> 
+        </div>
+    </div>
+    <div class="col-8">
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="h6 card-title">About</h5>
+                <table class="borderless-table">
+                    <tbody>
+                        <tr>
+                            <td>Email</td>
+                            <td>:</td>
+                            <td>{{staffProfile.email}}</td>
+                        </tr>
+                        <tr>
+                            <td>Mobile</td>
+                            <td>:</td>
+                            <td>{{staffProfile.mobile}}</td>
+                        </tr>
+                        <tr>
+                            <td>DOB</td>
+                            <td>:</td>
+                            <td>{{staffProfile.dob}}</td>
+                        </tr>
+                        <tr>
+                            <td>Interview Date</td>
+                            <td>:</td>
+                            <td>{{staffProfile.interview_date}}</td>
+                        </tr>
+                        <tr>
+                            <td>Join Date</td>
+                            <td>:</td>
+                            <td>{{staffProfile.join_date}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <hr class="mb-2">
+                <h5 class="h6 card-title">Attachments</h5>
+                <div class="row">
+                    <a href="{{envUri}}/{{filename}}" target="_blank" class="col-2 file" *ngFor="let filename of staffProfile.attachments">
+                        <img src="{{GetFileType(filename)}}">
+                        <div class="">{{filename}}</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

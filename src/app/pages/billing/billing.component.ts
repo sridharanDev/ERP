@@ -10,6 +10,7 @@ import { AssetService } from 'src/app/services/asset.service';
 import { IncomeService } from 'src/app/services/income.service';
 import { ToastrService } from 'ngx-toastr';
 import { forkJoin } from 'rxjs';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-billing',
@@ -18,7 +19,7 @@ import { forkJoin } from 'rxjs';
 })
 export class BillingComponent implements OnInit
 {
-  constructor(private route:ActivatedRoute,private studentService:StudentService,private incomeService:IncomeService,
+  constructor(private route:ActivatedRoute,private studentService:StudentService,private incomeService:IncomeService,private location: Location,
     private invoiceService:InvoiceService,private toastr: ToastrService,private projectService:ProjectService,
     private courseService:CourseService,private assetService:AssetService,private router: Router){}
 
@@ -251,7 +252,7 @@ export class BillingComponent implements OnInit
     var amount = 0;
     var discount:any = this.form3.value.discount_percent;
     amount = (this.CaculateSubtotal() * discount) / 100;
-    return amount;
+    return amount > 0 ? amount : Number(this.form3.value.discount_amount);
   }
   
   CalculateNetTotal()
@@ -298,6 +299,27 @@ export class BillingComponent implements OnInit
     this.invoiceType = type;
   }
 
+  ToggleDiscount()
+  {
+    if(this.form3.value.discount_percent! > 0)
+    {
+      this.form3.get("discount_amount")?.disable();
+      this.form3.get("discount_amount")?.setValue(0);
+    }
+    else
+    {
+      this.form3.get("discount_amount")?.enable();
+    }
+    if(this.form3.value.discount_amount! > 0)
+    {
+      this.form3.get("discount_percent")?.disable();
+      this.form3.get("discount_percent")?.setValue(0);
+    }
+    else
+    {
+      this.form3.get("discount_percent")?.enable();
+    }
+  }
 
   AddItemSubmit()
   {
@@ -363,15 +385,29 @@ export class BillingComponent implements OnInit
     {
       return;
     }
-    const type = {type:this.invoiceType,student_id:this.studentId};
+    const type = {type:this.invoiceType,student_id:this.studentId??this.projectId};
     const items = {items:this.billList};
     const formData = Object.assign({},items,type,this.form1.value,this.form3.value);
-    
+    const incomeFormData = {
+      entityType:type,
+      entity:this.studentId??this.projectId,
+      name:this.form1.value.customer_name,
+      from:this.form1.value.customer_name,
+      to:"AAA",
+      amount:formData.net_total,
+      payment_type:this.form3.value.pay_type,
+      date:this.form1.value.date
+    }   
     if(!this.invoiceDetails)
     {
       this.invoiceService.CreateInvoice(formData).subscribe((res:any)=>{
+        if((this.studentId || this.projectId) && this.invoiceType !== "intern")
+        {
+          this.AddToIncome(incomeFormData);
+        }
         const routePath = '/invoice/'+res.invoice_no;
         window.open(this.router.createUrlTree([routePath]).toString(), '_blank');
+        this.location.back();
       },(error)=>{
         this.toastr.error(error.error, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
       });
@@ -381,6 +417,7 @@ export class BillingComponent implements OnInit
       this.invoiceService.EditInvoice(this.invoiceDetails.invoice_no,formData).subscribe((res:any)=>{
         const routePath = '/invoice/'+res.invoice_no;
         window.open(this.router.createUrlTree([routePath]).toString(), '_blank');
+        this.location.back();
       },(error)=>{
         this.toastr.error(error.error, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
       });
@@ -395,28 +432,29 @@ export class BillingComponent implements OnInit
       return;
     }
 
-    const type = {type:this.invoiceType,student_id:this.studentId};
+    const type = {type:this.invoiceType,student_id:this.studentId??this.projectId};
     const items = {items:this.billList};
     const formData = Object.assign({},items,type,this.form1.value,this.form3.value);
     const incomeFormData = {
-      entityType:"Student",
-      entity:this.studentId,
+      entityType:this.GetIncomeType(this.invoiceType),
+      entity:this.studentId??this.projectId,
       name:this.form1.value.customer_name,
       from:this.form1.value.customer_name,
       to:"AAA",
       amount:formData.net_total,
       payment_type:this.form3.value.pay_type,
       date:this.form1.value.date
-    }    
+    }        
     if(!this.invoiceDetails)
     {
 
       this.invoiceService.CreateInvoice(formData).subscribe((res:any)=>{
         this.GetInvoice(res.invoice_no);
-        if(this.studentId && this.invoiceType === "course")
+        if((this.studentId || this.projectId) && this.invoiceType !== "intern")
         {
           this.AddToIncome(incomeFormData);
         }
+        this.location.back();
         this.toastr.success('Invoice saved successfully.', 'Save Invoice',{timeOut: 3000,closeButton: true,progressBar: true,},);
       },(error)=>{
         this.toastr.error(error.error, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
@@ -426,6 +464,7 @@ export class BillingComponent implements OnInit
     {
       this.invoiceService.EditInvoice(this.invoiceDetails.invoice_no,formData).subscribe((res:any)=>{
         this.toastr.warning('Invoice updated successfully.', 'Update Invoice',{timeOut: 3000,closeButton: true,progressBar: true,},);
+        this.location.back();
       },(error)=>{
         this.toastr.error(error.error, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
       });
@@ -487,6 +526,7 @@ export class BillingComponent implements OnInit
   OnSelectSearchResult(_id:any)
   {
     const selectedClient = this.searchResult.find((client: any) => client._id === _id);
+    this.studentId = selectedClient._id;
     this.form1.get("customer_name")?.setValue(selectedClient.name ?? selectedClient.client_name);    
     this.form1.get("customer_mobile")?.setValue(selectedClient.mobile);    
     this.form1.get("customer_email")?.setValue(selectedClient.email); 
@@ -501,6 +541,23 @@ export class BillingComponent implements OnInit
             this.showSearchResult = false;
         }
     }, 200);
+}
+
+GetIncomeType(type:String)
+{
+  if(type === 'project')
+  {
+    return "Project";
+  }
+  else if(type === 'course')
+  {
+    return "Student";
+  }
+  else if(type === 'rent')
+  {
+    return "Rent";
+  }
+  return "NA";
 }
 
 toggleSearchResult(show: boolean) {

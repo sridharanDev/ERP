@@ -152,33 +152,34 @@
     <div class="col-4">
         <div class="card">
             <div class="card-header">
-                <h5 class="card-title">Overall progress</h5>
+                <h5 class="card-title">Overall Progress</h5>
             </div>
             <div class="card-body">
                 <canvas class="container" style="display: block;" id="progress-pie-chart"></canvas>
             </div>
         </div>
     </div>
-    <div class="col-4 pb-4">
+    <div class="col-5 pb-4">
         <div class="card  h-100">
             <div class="card-header">
-                <h5 class="card-title">Project reminders</h5>
+                <h5 class="card-title">Project Reminders</h5>
             </div>
             <div class="card-body">
                 <table class="borderless-table">
                     <tbody>
-                        <tr *ngFor="let schedule of projectSchedules;index as i;">
-                            <td>{{i+1}}.</td>
+                        <tr *ngFor="let schedule of projectSchedules.slice(0,7);index as i;">
                             <td><span class="text-muted">{{schedule.project.project_name}}</span></td>
-                            <td>:</td>
-                            <td><span class="text-primary">{{schedule.project.client_name}}</span></td>
+                            <td>-</td>
+                            <td><span class="text-primary">{{schedule.title}}</span></td>
+                            <td>-</td>
+                            <td><span>{{schedule.date | date:'yyyy-MM-dd'}} {{formatTimeTo12Hour(schedule.time)}}</span></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
-    <div class="col-4 pb-4">
+    <div class="col-3 pb-4">
         <div class="card h-100">
             <div class="card-header">
                 <h5 class="card-title">Courses</h5>
@@ -238,7 +239,7 @@
     <div class="col-6">
         <div class="card">
             <div class="card-header">
-                <h5 class="card-title">Overall progress</h5>
+                <h5 class="card-title">Yearly progress</h5>
             </div>
             <div class="card-body">
                 <canvas class="container" style="height: 300px;" id="allprogress-bar-chart"></canvas>

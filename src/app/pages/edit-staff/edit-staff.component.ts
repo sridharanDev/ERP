@@ -22,6 +22,8 @@ export class EditStaffComponent implements OnInit
   staffSchedules:any = [];
   isLoading:boolean = false;
 
+  selectedFiles: File[] = [];
+
   staffForm = new FormGroup({
     staff_id :new FormControl('',Validators.required),
     name :new FormControl('',Validators.required),
@@ -100,7 +102,10 @@ export class EditStaffComponent implements OnInit
   {
     if(this.staffForm.valid && this.actual_staff_id)
     {
-      const formData = this.staffForm.value;
+      const formData = this.convertFormGroupToFormData(this.staffForm);
+      for (const file of this.selectedFiles) {
+        formData.append('attachments', file);
+      }
       
       this.isLoading=true;
       this.staffService.EditStaff(this.actual_staff_id,formData).subscribe((res)=>{
@@ -117,6 +122,51 @@ export class EditStaffComponent implements OnInit
       this.formValidatorService.markFormGroupTouched(this.staffForm);
     }
     
+  }
+
+  convertFormGroupToFormData(formGroup: FormGroup): FormData {
+    const formData = new FormData();
+  
+    for (const controlName in formGroup.controls) {
+      if (formGroup.controls.hasOwnProperty(controlName)) {
+        const control = formGroup.controls[controlName];
+  
+        if (control.value instanceof File) {
+          formData.append(controlName, control.value, control.value.name);
+        } else {
+          formData.append(controlName, control.value);
+        }
+      }
+    }
+  
+    return formData;
+  }
+
+  onFileChange(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+
+    if (inputElement.files) {
+      const filesArray = Array.from(inputElement.files);
+
+      this.selectedFiles = filesArray;
+    }
+  }
+
+  removeFile(file: File) {
+    const index = this.selectedFiles.indexOf(file);
+    if (index !== -1) {
+      this.selectedFiles.splice(index, 1);
+    }
+  }
+  
+  formatFileSize(size: number): string {
+    const units = ['B', 'KB', 'MB', 'GB'];
+    let index = 0;
+    while (size >= 1024 && index < units.length - 1) {
+      size /= 1024;
+      index++;
+    }
+    return `${size.toFixed(2)} ${units[index]}`;
   }
 
   formatTimeTo12Hour(time: string): string {
@@ -139,5 +189,45 @@ export class EditStaffComponent implements OnInit
 
   isInvalidField(control: any) {
     return control.invalid && control.touched;
+  }
+
+  GetFileType(fileName:string)
+  {
+    let image = "assets/img/";
+    const lastDotIndex = fileName.lastIndexOf('.');
+    const fileExtension = fileName.substring(lastDotIndex + 1);
+    if(fileExtension == 'pdf')
+    {
+      image += "pdf.png";
+    }
+    else if(fileExtension == 'csv')
+    {
+      image += "csv.png";
+    }
+    else if(fileExtension == 'docx')
+    {
+      image += "doc.png";
+    }
+    else if(fileExtension == 'zip')
+    {
+      image += "zip.png";
+    }
+    else if(fileExtension == 'rar')
+    {
+      image += "rar.png";
+    }
+    else if(fileExtension == 'txt')
+    {
+      image += "txt.png";
+    }
+    else if(fileExtension == 'png' || fileExtension == 'jpg' || fileExtension == 'jpeg')
+    {
+      image = fileName;
+    }
+    else
+    {
+      image += "unknown-file.png";
+    }
+    return image;
   }
 }

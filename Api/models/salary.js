@@ -28,6 +28,12 @@ const courseSchema  = new mongoose.Schema({
     status: {
         type: String,
     },
+    note: {
+        type: String,
+    },
+    staff_status: {
+        type: String,
+    },
 },{
     timestamps:true,
 });

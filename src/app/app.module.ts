@@ -73,6 +73,7 @@ import { CourseReportComponent } from './pages/course-report/course-report.compo
 import { IncomeReportComponent } from './pages/income-report/income-report.component';
 import { ProjectPipelineComponent } from './pages/project-pipeline/project-pipeline.component';
 import { ProjectScheduleComponent } from './pages/project-schedule/project-schedule.component';
+import { StaffProfileComponent } from './pages/staff-profile/staff-profile.component';
 
 @NgModule({
   declarations: [
@@ -137,6 +138,7 @@ import { ProjectScheduleComponent } from './pages/project-schedule/project-sched
     IncomeReportComponent,
     ProjectPipelineComponent,
     ProjectScheduleComponent,
+    StaffProfileComponent,
   ],
   imports: [
     BrowserModule,

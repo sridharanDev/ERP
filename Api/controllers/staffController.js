@@ -1,6 +1,7 @@
 const Staff = require("../models/staff");
 const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt');
+const fs = require('fs');
 
 const CreateStaffController = async (req,res,next) =>{
     try 
@@ -22,6 +23,15 @@ const CreateStaffController = async (req,res,next) =>{
         } = req.body;
         const password = generatePassword(name,dob);
         const HashedPassword = await bcrypt.hash(password,10);
+
+        const attachments = [];
+        if(req.files)
+        {
+            for (const file of req.files) {
+                attachments.push(file.filename);
+            }
+        }
+
         const staff = new Staff({
             staff_id,
             name,
@@ -38,6 +48,7 @@ const CreateStaffController = async (req,res,next) =>{
             schedule,
             password : HashedPassword,
             status,
+            attachments,
         });
         const newStaff = await staff.save();
         res.json(newStaff);
@@ -45,6 +56,12 @@ const CreateStaffController = async (req,res,next) =>{
     } 
     catch (error) 
     {
+        if (req.files)
+        {
+            for (const file of req.files) {
+                fs.unlinkSync(`uploads/${file.filename}`);
+            }
+        }
         if(error.code == 11000)
         {
             if(error.keyValue.email)
@@ -80,7 +97,9 @@ const EditStaffController = async (req,res,next) =>{
             password,
             status,
         } = req.body;
-        const HashedPassword = await bcrypt.hash(password,10);
+        let HashedPassword = null;
+        if(HashedPassword)
+            HashedPassword = await bcrypt.hash(password,10);
         const staff = await Staff.findById(req.params.id)
         if (!staff) {
             return res.status(404).json({ error: 'Staff member not found' });
@@ -130,6 +149,18 @@ const EditStaffController = async (req,res,next) =>{
         if (status) {
             staff.status = status;
         }
+        if (req.files)
+        {
+            const oldFiles = staff.attachments;
+            staff.attachments = [];
+            for (const file of oldFiles) {
+                fs.unlinkSync(`uploads/${file}`);
+            }
+            for (const file of req.files) {
+                staff.attachments.push(file.filename);
+            }
+
+        }
         const editedStaff = await staff.save();
         res.json(editedStaff);
         next();
@@ -148,21 +179,31 @@ const EditStaffController = async (req,res,next) =>{
             }
             
         }
-      res.status(500).json(error);  
+      res.status(500).json(error.message);  
     }
 };
 
 const DeleteStaffController = async (req, res, next) => {
-    try {
-      const staffId = req.params.id;
-      const staff = await Staff.findById(staffId);
-      if (!staff) {
-        return res.status(404).json({ error: 'Staff not found' });
-      }
-      await staff.deleteOne();
-      res.json({ message: 'Staff deleted successfully' });
-      next();
-    } catch (error) {
+    try 
+    {
+        const staffId = req.params.id;
+        const staff = await Staff.findById(staffId);
+        if (!staff) {
+            return res.status(404).json({ error: 'Staff not found' });
+        }
+        await staff.deleteOne();
+        if (staff.attachments)
+        {
+            for (const file of staff.attachments) 
+            {
+                fs.unlinkSync(`uploads/${file}`);
+            }
+        }
+        res.json({ message: 'Staff deleted successfully' });
+        next();
+    } 
+    catch (error) 
+    {
         res.status(500).json(error.message);  
     }
 };
