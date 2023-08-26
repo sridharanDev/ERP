@@ -18,6 +18,8 @@ export class InvoicesComponent implements OnInit
   invoiceType:any;
   invoiceId:any;
 
+  selectedRow:any;
+
   isLoading:boolean = false;
 
   dtOptions: DataTables.Settings = {};
@@ -62,7 +64,7 @@ export class InvoicesComponent implements OnInit
     }
     
   }
-  openModal(component:any,invoiceId:any)
+  openModal(component:any,invoiceId:any,invoice_no:any)
   {
     this.invoiceId = invoiceId;
     const modalRef = this.modalService.open(component,{
@@ -72,6 +74,12 @@ export class InvoicesComponent implements OnInit
       backdrop: 'static',
       keyboard: false,
     });
+    if(invoice_no)
+    {
+      this.invoiceService.GetInvoice(invoice_no).subscribe((res:any)=>{
+        this.selectedRow = res;
+      });
+    }
   }
 
   GetAllInvoices()

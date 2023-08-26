@@ -24,6 +24,8 @@ export class EnquiryComponent implements OnInit
   ];
   isLoading:boolean = false;
 
+  selectedRow:any;
+
   statsuField:any = 'NA';
   staffField:any = 'NA';
   callBackDateField:any = '';
@@ -96,6 +98,7 @@ export class EnquiryComponent implements OnInit
         this.statsuField = res.status;
         this.staffField = res.staffs[0]._id;
         this.callBackDateField = res.call_back_date;
+        this.selectedRow = res;
       });
     }
   }

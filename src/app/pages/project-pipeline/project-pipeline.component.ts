@@ -19,6 +19,7 @@ export class ProjectPipelineComponent implements OnInit
   allProjects:any = [];
   allStaffs:any = [];
   isLoading:boolean = false;
+  selectedRow:any;
 
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<any> = new Subject<any>();
@@ -103,6 +104,12 @@ export class ProjectPipelineComponent implements OnInit
       backdrop: 'static',
       keyboard: false,
     });
+    if(this.projectId)
+    {
+      this.projectService.GetProject(this.projectId).subscribe((res:any)=>{
+        this.selectedRow = res;
+      });
+    }
   }
 
   GetAllProjects()

@@ -16,6 +16,7 @@ export class StaffListComponent implements OnInit
   
   staffId:any = null;
   allStaffs:any = [];
+  selectedRow:any;
   isLoading:boolean = false;
 
   passwordInput:any;
@@ -67,6 +68,7 @@ export class StaffListComponent implements OnInit
     {
       this.staffService.GetProfile(this.staffId).subscribe((res:any)=>{
         this.statusInput = res.status;
+        this.selectedRow = res;
       });
     }
   }

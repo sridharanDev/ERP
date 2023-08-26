@@ -18,6 +18,7 @@ export class AdminUsersComponent implements OnInit
   allUsers:any = [];
   allRoles:any = [];
   userId:any = null;
+  selectedRow:any;
   isLoading:boolean = false;
 
   dtOptions: DataTables.Settings = {};
@@ -44,7 +45,7 @@ export class AdminUsersComponent implements OnInit
           width:'10px'
         },
         {
-          targets:[3],
+          targets:[4],
           width:'10px',
           orderable: false,
           searchable: false,
@@ -72,6 +73,8 @@ export class AdminUsersComponent implements OnInit
     {
       this.adminService.GetUser(this.userId).subscribe((res:any)=>{
         this.userForm.patchValue(res);
+        this.userForm.get("role")?.setValue(res.role._id);
+        this.selectedRow = res;
       },(error)=>{
         this.toastr.error(error.message, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
       });

@@ -17,6 +17,7 @@ export class AssetsComponent implements OnInit
   allAssets:any = [];
   expenseId:any;
   isLoading:boolean = false;
+  selectedRow:any;
 
   filter:String = "NA";
 
@@ -83,6 +84,7 @@ export class AssetsComponent implements OnInit
     {
       this.assetService.GetAsset(this.expenseId).subscribe((res:any)=>{
         this.assetForm.patchValue(res);
+        this.selectedRow = res;
       },(error)=>{
         this.toastr.error(error.message, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
       });

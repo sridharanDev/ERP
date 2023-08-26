@@ -17,7 +17,7 @@ export class LeaveApplicationComponent
 
   allApplications:any = [];
   isLoading:boolean = false;
-
+  selectedRow:any;
   applicationID:any;
 
   statusField:any = "pending";
@@ -76,6 +76,7 @@ export class LeaveApplicationComponent
     {
       this.leaveApplicationService.GetApplication(this.applicationID).subscribe((res:any)=>{
        this.statusField = res.status;
+       this.selectedRow = res;
       },(error)=>{
         this.toastr.error(error.error, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
       });

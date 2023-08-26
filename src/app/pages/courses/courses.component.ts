@@ -24,6 +24,7 @@ export class CoursesComponent implements OnInit
     fees :new FormControl('',Validators.required),
   });
 
+  selectedRow:any;
   allCourses:any = [];
   courseId:any = null;
 
@@ -77,6 +78,7 @@ export class CoursesComponent implements OnInit
     {
       this.courseService.GetCourse(this.courseId).subscribe((res:any)=>{
         this.courseForm.patchValue(res);
+        this.selectedRow = res;
       },(error)=>{
         this.toastr.error(error.message, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
       });

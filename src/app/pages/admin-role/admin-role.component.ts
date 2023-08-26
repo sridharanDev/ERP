@@ -15,6 +15,7 @@ export class AdminRoleComponent implements OnInit
   allRoles:any = [];
   isLoading:boolean = false;
   roleId:any = null;
+  selectedRow:any;
 
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<any> = new Subject<any>();
@@ -54,6 +55,12 @@ export class AdminRoleComponent implements OnInit
       backdrop: 'static',
       keyboard: false,
     });
+    if(roleId)
+    {
+      this.adminService.GetRole(this.roleId).subscribe((res:any)=>{
+        this.selectedRow = res;
+      });
+    }
   }
 
   GetAllRoles()

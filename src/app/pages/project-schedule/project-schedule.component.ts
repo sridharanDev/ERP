@@ -19,6 +19,8 @@ export class ProjectScheduleComponent implements OnInit
   scheduleId:any;
   isLoading:boolean = false;
 
+  selectedRow:any;
+
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<any> = new Subject<any>();
 
@@ -78,6 +80,7 @@ export class ProjectScheduleComponent implements OnInit
           this.scheduleForm.patchValue(res);
           this.scheduleForm.get("project")?.setValue(res.project._id);
           this.scheduleForm.get("date")?.setValue(res.date.split("T")[0]);
+          this.selectedRow = res;
         },(error)=>{
           this.toastr.error(error.message, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
         });

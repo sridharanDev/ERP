@@ -108,7 +108,8 @@ const DeleteAdminUserController = async (req,res,next) =>{
 const GetAdminUsersController = async (req,res,next) =>{
     try
     {
-        const users = await Admin.find({},{ password: 0 });
+        const users = await Admin.find({},{ password: 0 })
+        .populate('role');
         res.status(200).json(users);
         next();
     }
@@ -121,7 +122,8 @@ const GetAdminUsersController = async (req,res,next) =>{
 const GetAdminUserController = async (req,res,next) =>{
     try
     {
-        const admin = await Admin.findById(req.params.id,{ password: 0 });
+        const admin = await Admin.findById(req.params.id,{ password: 0 })
+        .populate('role');
         if(!admin)
         {
             return res.status(404).json({message:"admin user not found."});

@@ -20,6 +20,8 @@ export class StudentsComponent implements OnInit
   statsuField:any = 'NA';
   staffField:any = 'NA';
 
+  selectedRow:any;
+
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<any> = new Subject<any>();
 
@@ -67,6 +69,7 @@ export class StudentsComponent implements OnInit
       this.studentService.GetStudent(this.studentId).subscribe((res:any)=>{
         this.statsuField = res.status;
         this.staffField = res.staffs[0]._id;
+        this.selectedRow = res;
       });
     }
   }

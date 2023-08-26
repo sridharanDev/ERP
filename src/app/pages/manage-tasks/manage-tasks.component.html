@@ -135,6 +135,7 @@
         </button>
       </div>
         <div class="modal-body">
+            <strong>Title: </strong>{{selectedRow.title}}
             <p>Do you want to delete this task.</p>
         </div>
         <div class="modal-footer">
@@ -153,7 +154,6 @@
       </div>
         <div class="modal-body">
             <div class="comments mb-3">
-
                 <ng-container *ngFor="let comment of allComments">
                     <div class="commnet-item" [class.left]="comment.staff" [class.right]="comment.admin">
                         <div class="header">

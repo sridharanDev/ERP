@@ -17,6 +17,7 @@ export class ExpenseComponent implements OnInit
   allExpenses:any = [];
   expenseId:any;
   isLoading:boolean = false;
+  selectedRow:any;
 
   filter:String = "NA";
 
@@ -80,7 +81,8 @@ export class ExpenseComponent implements OnInit
     {
       this.expenseService.GetExpense(this.expenseId).subscribe((res:any)=>{
         this.expenseForm.patchValue(res);
-        this.expenseForm.get("date")?.setValue(new Date(res.date).toISOString().substring(0, 10));        
+        this.expenseForm.get("date")?.setValue(new Date(res.date).toISOString().substring(0, 10));  
+        this.selectedRow = res;      
       },(error)=>{
         this.toastr.error(error.message, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
       });

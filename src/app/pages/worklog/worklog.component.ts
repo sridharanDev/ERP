@@ -18,6 +18,7 @@ export class WorklogComponent implements OnInit
   userId:String = ""
   worklogID:any;
   isLoading:boolean = false;
+  selectedRow:any;
 
   filterInput:any = "recent";
 
@@ -72,6 +73,7 @@ export class WorklogComponent implements OnInit
     {
       this.worklogService.GetWorklog(this.worklogID).subscribe((res:any)=>{
         this.worklogForm.patchValue(res);
+        this.selectedRow = res;
       },(error)=>{
         this.toastr.error(error.error, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
       });

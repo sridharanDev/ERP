@@ -16,6 +16,7 @@ export class OngoingProjectsComponent {
   projectId:any = null;
   allProjects:any = [];
   isLoading:boolean = false;
+  selectedRow:any;
 
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<any> = new Subject<any>();
@@ -68,16 +69,12 @@ export class OngoingProjectsComponent {
       keyboard: false,
     });
 
-    // if(this.projectId)
-    // {
-    //   this.projectService.GetProject(this.projectId).subscribe((res)=>{
-    //     const data:any = res;
-    //     this.prForm.get("name")?.setValue(data.name);
-    //     this.roleForm.get("salery")?.setValue(data.salery);
-    //   },(error)=>{
-    //     this.toastr.error(error.message, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
-    //   });
-    // }   
+    if(this.projectId)
+    {
+      this.projectService.GetProject(this.projectId).subscribe((res:any)=>{
+        this.selectedRow = res;
+      });
+    }  
   }
 
   GetAllProjects()

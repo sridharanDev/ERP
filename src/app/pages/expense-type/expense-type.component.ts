@@ -16,6 +16,7 @@ export class ExpenseTypeComponent implements OnInit
   types:any = [];
   typeId:any;
   isLoading:boolean = false;
+  selectedRow:any;
 
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<any> = new Subject<any>();
@@ -63,6 +64,7 @@ export class ExpenseTypeComponent implements OnInit
     {
       this.expenseService.GetType(this.typeId).subscribe((res:any)=>{
         this.typeForm.patchValue(res);
+        this.selectedRow = res;
       },(error)=>{
         this.toastr.error(error.message, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
       });

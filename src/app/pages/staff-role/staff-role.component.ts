@@ -22,6 +22,8 @@ export class StaffRoleComponent implements OnInit
     salery :new FormControl('',Validators.required),
   });
 
+  selectedRow:any;
+
   allRoles:any = [];
   roleId:any = null;
 
@@ -73,6 +75,7 @@ export class StaffRoleComponent implements OnInit
         const data:any = res;
         this.roleForm.get("name")?.setValue(data.name);
         this.roleForm.get("salery")?.setValue(data.salery);
+        this.selectedRow = res;
       },(error)=>{
         this.toastr.error(error.message, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
       });

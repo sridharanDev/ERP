@@ -16,6 +16,7 @@ export class CompletedProjectsComponent {
   projectId:any = null;
   allProjects:any = [];
   isLoading:boolean = false;
+  selectedRow:any;
 
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<any> = new Subject<any>();
@@ -66,6 +67,12 @@ export class CompletedProjectsComponent {
       backdrop: 'static',
       keyboard: false,
     });
+    if(this.projectId)
+    {
+      this.projectService.GetProject(this.projectId).subscribe((res:any)=>{
+        this.selectedRow = res;
+      });
+    }  
   }
 
   GetAllProjects()

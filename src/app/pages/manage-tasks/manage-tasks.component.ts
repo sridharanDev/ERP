@@ -31,6 +31,7 @@ export class ManageTasksComponent implements OnInit
   commentIntervalId: any;
 
   userId:any;
+  selectedRow:any;
 
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<any> = new Subject<any>();
@@ -108,7 +109,8 @@ export class ManageTasksComponent implements OnInit
       this.taskService.GetTask(this.taskId).subscribe((res:any)=>{
         this.taskForm.patchValue(res);
         this.taskForm.get("project")?.setValue(res.project?res.project._id:"NA");        
-        this.taskForm.get("staff")?.setValue(res.staff._id);       
+        this.taskForm.get("staff")?.setValue(res.staff._id); 
+        this.selectedRow = res;      
         this.commentIntervalId = setInterval(() => {
           this.GetAllComments(this.taskId);
         }, 1000);

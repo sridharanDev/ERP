@@ -14,6 +14,7 @@ export class StaffAttendanceComponent implements OnInit
 
   allAttendances:any = [];
   attendanceId:any;
+  selectedRow:any;
   isLoading:boolean = false;
 
   dtOptions: DataTables.Settings = {};
@@ -58,6 +59,9 @@ export class StaffAttendanceComponent implements OnInit
       backdrop: 'static',
       keyboard: false,
     });
+    if(attendanceId)
+    {
+    }
   }
 
   GetAllAttendances()

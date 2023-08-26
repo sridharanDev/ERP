@@ -47,7 +47,7 @@
         </button>
       </div>
       <div class="modal-body">
-          
+        <strong>Name: </strong>{{selectedRow.staff.staff_id}} - {{selectedRow.staff.name}}
           <div class="form-input">
               <label for="">Status</label>
               <select class="form-select" name="statusField" [(ngModel)]="statusField">
@@ -75,6 +75,7 @@
       </div>
       <form>
           <div class="modal-body">
+            <strong>Name: </strong>{{selectedRow.staff.staff_id}} - {{selectedRow.staff.name}}
             <p>Do you want to delete this application.</p>
           </div>
           <div class="modal-footer">

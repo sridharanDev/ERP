@@ -35,6 +35,8 @@ export class SalaryComponent implements OnInit
   salaryDetailId:any = null;
   isLoading:boolean = false;
 
+  selectedRow:any;
+
   selectedCSV:File | null = null;
 
   dtOptions: DataTables.Settings = {};
@@ -109,6 +111,14 @@ export class SalaryComponent implements OnInit
     {
       this.selectedCSV = null;
     }
+    if(this.salaryDetailId != null)
+    {
+      this.salaryService.GetSalary(this.salaryDetailId).subscribe((res:any)=>{
+          this.selectedRow = res;        
+      },(error)=>{
+        this.toastr.error(error.error, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
+      });
+    }
   }
 
   GetAllStaffs()
@@ -140,6 +150,7 @@ export class SalaryComponent implements OnInit
       this.salaryForm.get("staff_name")?.setValue(res.name);
       this.salaryForm.get("actual_salary")?.setValue(res.role.salery);
       this.salaryForm.get("staff_status")?.setValue(res.status);
+      
     },(error)=>{
       this.salaryForm.get("staff_name")?.setValue(null);
       this.salaryForm.get("actual_salary")?.setValue(0);

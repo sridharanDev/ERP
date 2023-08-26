@@ -26,6 +26,8 @@ export class IncomeComponent implements OnInit
   allInternIncomes:any = [];
   allRentIncomes:any = [];
 
+  selectedRow:any;
+
   totalAmounts:any = {project:0,course:0,rent:0,intern:0}; 
 
   isLoading:boolean = false;
@@ -108,7 +110,15 @@ export class IncomeComponent implements OnInit
       backdrop: 'static',
       keyboard: false,
     });
-  
+    if(incomeId)
+    {
+      this.incomeService.GetIncome(this.incomeId).subscribe((res:any)=>{
+        this.incomeForm.patchValue(res);
+        this.selectedRow = res;
+      },(error)=>{
+
+      });
+    }
   }
 
   GetAllProjects()

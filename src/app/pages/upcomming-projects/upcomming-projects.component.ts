@@ -17,6 +17,7 @@ export class UpcommingProjectsComponent implements OnInit
   projectId:any = null;
   allProjects:any = [];
   allStaffs:any = [];
+  selectedRow:any;
   isLoading:boolean = false;
 
   dtOptions: DataTables.Settings = {};
@@ -98,6 +99,13 @@ export class UpcommingProjectsComponent implements OnInit
       backdrop: 'static',
       keyboard: false,
     });
+
+    if(this.projectId)
+    {
+      this.projectService.GetProject(this.projectId).subscribe((res:any)=>{
+        this.selectedRow = res;
+      });
+    }
   }
 
   GetAllProjects()
