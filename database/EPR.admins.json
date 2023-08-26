@@ -1,0 +1,17 @@
+[{
+  "_id": {
+    "$oid": "64c89acdfb57156e845cca30"
+  },
+  "username": "admin",
+  "password": "$2b$10$.8ViiiZ/gdmrTvePBySFe.u7TK6jJmzNwSV1pmkfYqoZfwm88pj4q",
+  "role": {
+    "$oid": "64c79178064b88d7dd5b7088"
+  },
+  "createdAt": {
+    "$date": "2023-08-01T05:40:29.769Z"
+  },
+  "updatedAt": {
+    "$date": "2023-08-01T07:02:14.145Z"
+  },
+  "__v": 0
+}]

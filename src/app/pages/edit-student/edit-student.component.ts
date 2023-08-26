@@ -75,6 +75,7 @@ export class EditStudentComponent implements OnInit
       this.studentForm.patchValue(res);      
       this.studentForm.get("current_status")?.setValue(res.current_status);
       this.studentForm.get("courses")?.setValue(res.courses);
+      this.selectedCourses = res.courses;
       this.isLoading = false;
       this.GetFees();
     },(error)=>{

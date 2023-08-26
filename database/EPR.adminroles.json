@@ -1,0 +1,117 @@
+[{
+  "_id": {
+    "$oid": "64c79178064b88d7dd5b7088"
+  },
+  "name": "Admin",
+  "modules": [
+    {
+      "name": "dashboard",
+      "permissions": [
+        "read",
+        "write",
+        "edit",
+        "delete"
+      ],
+      "_id": {
+        "$oid": "64d5dea398c54b44dbabb66e"
+      }
+    },
+    {
+      "name": "admin",
+      "permissions": [
+        "read",
+        "write",
+        "edit",
+        "delete"
+      ],
+      "_id": {
+        "$oid": "64d5dea398c54b44dbabb66f"
+      }
+    },
+    {
+      "name": "staff",
+      "permissions": [
+        "read",
+        "write",
+        "edit",
+        "delete"
+      ],
+      "_id": {
+        "$oid": "64d5dea398c54b44dbabb670"
+      }
+    },
+    {
+      "name": "project",
+      "permissions": [
+        "read",
+        "write",
+        "edit",
+        "delete"
+      ],
+      "_id": {
+        "$oid": "64d5dea398c54b44dbabb671"
+      }
+    },
+    {
+      "name": "course",
+      "permissions": [
+        "read",
+        "write",
+        "edit",
+        "delete"
+      ],
+      "_id": {
+        "$oid": "64d5dea398c54b44dbabb672"
+      }
+    },
+    {
+      "name": "billing",
+      "permissions": [
+        "read",
+        "write",
+        "edit",
+        "delete"
+      ],
+      "_id": {
+        "$oid": "64d5dea398c54b44dbabb673"
+      }
+    },
+    {
+      "name": "assets",
+      "permissions": [
+        "read",
+        "write",
+        "edit",
+        "delete"
+      ],
+      "_id": {
+        "$oid": "64d5dea398c54b44dbabb674"
+      }
+    },
+    {
+      "name": "expenses",
+      "permissions": [
+        "read",
+        "write",
+        "edit",
+        "delete"
+      ],
+      "_id": {
+        "$oid": "64d5dea398c54b44dbabb675"
+      }
+    },
+    {
+      "name": "others",
+      "permissions": [
+        "read",
+        "write",
+        "edit",
+        "delete"
+      ],
+      "_id": {
+        "$oid": "64d5dea398c54b44dbabb676"
+      }
+    }
+  ],
+  "__v": 9
+}]
