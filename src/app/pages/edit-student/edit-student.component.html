@@ -84,6 +84,7 @@
                 <div class="col-6">
                     <div class="row">
                         <div class="col-12">
+                            <label for="">Courses</label>
                             <ng-multiselect-dropdown
                             placeholder="Select courses"
                             [data]="allCourses"
@@ -93,12 +94,25 @@
                             formControlName="courses"
                             >
                             </ng-multiselect-dropdown>
+
                         </div>
                         <div class="col-12">
                             <div class="mb-3">
                                 <label for="" class="form-label">Fees</label>
                                 <input type="text" class="form-control" placeholder="fees" name="totalFees" [value]="totalFees" disabled>
                             </div>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <label for="">Staffs</label>
+                            <ng-multiselect-dropdown
+                            placeholder="Select Staffs"
+                            [data]="allStaffs"
+                            [settings]="dropdownSettings"
+                            (onSelect)="onItemSelect2($event)"
+                            (onDeSelect)="onItemDeSelect2($event)"
+                            formControlName="staffs"
+                            >
+                            </ng-multiselect-dropdown>
                         </div>
                     </div>
                 </div>

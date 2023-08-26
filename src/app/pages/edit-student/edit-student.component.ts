@@ -7,6 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { BreadcrumbService } from '../../services/breadcrumb.service';
 import { CourseService } from '../../services/course.service';
 import { StudentService } from 'src/app/services/student.service';
+import { StaffService } from 'src/app/services/staff.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 
 interface DropdownItem {
@@ -24,11 +25,14 @@ export class EditStudentComponent implements OnInit
 
   studentId:any = null;
   allCourses:any = [];
+  allStaffs:any = [];
   isLoading:boolean = false;
 
   totalFees:string = "₹0";
   selectedCourses:DropdownItem[] = [];
   dropdownSettings = {};
+
+  selectedStaffs:DropdownItem[] = [];
 
   studentForm = new FormGroup({
     name :new FormControl('',Validators.required),
@@ -41,6 +45,7 @@ export class EditStudentComponent implements OnInit
     current_status :new FormControl('NA',[Validators.required,this.CustomValidators.isEqual('NA')]),
     institute_or_company :new FormControl(''),
     courses:new FormControl([Validators.required,this.CustomValidators.isEqual('NA')]),
+    staffs:new FormControl([Validators.required,this.CustomValidators.isEqual('NA')]),
     note :new FormControl(''),
 
   });
@@ -49,7 +54,9 @@ export class EditStudentComponent implements OnInit
     private breadcrumbService: BreadcrumbService,private formValidatorService:FormValidatorService,
     private courseService:CourseService,private studentService:StudentService,
     private CustomValidators:CustomValidatorService,private location: Location,
-    private route: ActivatedRoute){      
+    private route: ActivatedRoute,
+    private staffService:StaffService
+    ){      
       this.dropdownSettings = {
         singleSelection: false,
         idField: '_id',
@@ -65,6 +72,7 @@ export class EditStudentComponent implements OnInit
       { label: 'Edit student', url: '#' },
     ]);
     this.GetAllCourses();
+    this.GetAllStaffs();
     this.GetStudentData();
   }
 
@@ -75,6 +83,14 @@ export class EditStudentComponent implements OnInit
       this.studentForm.patchValue(res);      
       this.studentForm.get("current_status")?.setValue(res.current_status);
       this.studentForm.get("courses")?.setValue(res.courses);
+      const tempStaffs:any = [];
+      for(const staff of res.staffs)
+      {
+        tempStaffs.push({_id:staff._id,title:staff.staff_id + " - " + staff.name});
+      }
+      
+      this.studentForm.get("staffs")?.setValue(tempStaffs);
+      this.selectedStaffs = tempStaffs;
       this.selectedCourses = res.courses;
       this.isLoading = false;
       this.GetFees();
@@ -92,6 +108,20 @@ export class EditStudentComponent implements OnInit
 
     });
   }
+  GetAllStaffs()
+  {
+    this.staffService.GetStaffs().subscribe((res:any)=>{
+      const allStaffs = [];
+      for(const staff of res)
+      {
+        allStaffs.push({_id:staff._id,title:staff.staff_id + " - " + staff.name});
+      }
+      this.allStaffs = allStaffs;
+      
+    },(error)=>{
+      console.log(error);
+    });
+  }
 
   onItemSelect(item:any)
   {
@@ -104,6 +134,20 @@ export class EditStudentComponent implements OnInit
     const index = this.selectedCourses.findIndex(course => course._id === item._id);
     if (index !== -1) {
       this.selectedCourses.splice(index, 1);
+    }
+    this.GetFees();
+  }
+  onItemSelect2(item:any)
+  {
+    this.selectedStaffs.push(item);
+    this.GetFees();
+  }
+  
+  onItemDeSelect2(item: any) {
+    
+    const index = this.selectedStaffs.findIndex(course => course._id === item._id);
+    if (index !== -1) {
+      this.selectedStaffs.splice(index, 1);
     }
     this.GetFees();
   }

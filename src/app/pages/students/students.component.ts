@@ -66,7 +66,7 @@ export class StudentsComponent implements OnInit
       this.staffField = "NA";
       this.studentService.GetStudent(this.studentId).subscribe((res:any)=>{
         this.statsuField = res.status;
-        this.staffField = res.staff._id;
+        this.staffField = res.staffs[0]._id;
       });
     }
   }
@@ -99,10 +99,10 @@ export class StudentsComponent implements OnInit
     }
     var formData = {};
     if(this.staffField != 'NA'){ 
-      formData = {status:this.statsuField , staff:this.staffField};
+      formData = {status:this.statsuField , staffs:[this.staffField]};
     }
     else{
-      status:this.statsuField
+      formData = {status:this.statsuField}
     }
 
     this.isLoading = true;

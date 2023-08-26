@@ -94,7 +94,7 @@ export class EnquiryComponent implements OnInit
 
       this.studentService.GetStudent(this.studentId).subscribe((res:any)=>{
         this.statsuField = res.status;
-        this.staffField = res.staff._id;
+        this.staffField = res.staffs[0]._id;
         this.callBackDateField = res.call_back_date;
       });
     }
@@ -150,10 +150,10 @@ export class EnquiryComponent implements OnInit
     }
     var formData = {};
     if(this.staffField != 'NA'){ 
-      formData = {status:this.statsuField , staff:this.staffField, call_back_date:this.callBackDateField};
+      formData = {status:this.statsuField , staffs:[this.staffField], call_back_date:this.callBackDateField};
     }
     else{
-      status:this.statsuField
+      formData = {status:this.statsuField};
     }
 
     this.isLoading = true;

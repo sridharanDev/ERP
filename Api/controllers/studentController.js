@@ -15,7 +15,7 @@ const CreateStudetCotroller = async (req,res,next)=>{
             courses,
             note,
             paid,
-            staff,
+            staffs,
             status,
             call_back_date,
             join_date,
@@ -34,7 +34,7 @@ const CreateStudetCotroller = async (req,res,next)=>{
             courses,
             note,
             paid,
-            staff,
+            staffs,
             status,
             call_back_date,
             join_date,
@@ -64,7 +64,7 @@ const EditStudetCotroller = async (req,res,next)=>{
             courses,
             note,
             paid,
-            staff,
+            staffs,
             status,
             call_back_date,
             join_date,
@@ -86,7 +86,7 @@ const EditStudetCotroller = async (req,res,next)=>{
         if(courses) student.courses = courses;
         if(note) student.note = note;
         if(paid) student.paid = paid;
-        if(staff) student.staff = staff;
+        if(staffs) student.staffs = staffs;
         if(status) student.status = status;
         if(call_back_date) student.call_back_date = call_back_date;
         if(join_date) student.join_date = join_date;
@@ -130,7 +130,7 @@ const GetStudetsCotroller = async (req,res,next)=>{
         }
         const students = await Student.find(filter)
         .populate({path:"courses"})
-        .populate({path:"staff",select : "name"});
+        .populate({path:"staffs",select : "name staff_id"});
         const updatedStudents = students.map((student) => {
             const totalFees = student.courses.reduce((acc, course) => acc + course.fees, 0);
             const balanceFees = totalFees - student.paid;
@@ -149,7 +149,7 @@ const GetStudetCotroller = async (req,res,next)=>{
     {
         const student = await Student.findById(req.params.id)
         .populate({path:"courses"})
-        .populate({path:"staff",select : "name"});
+        .populate({path:"staffs",select : "name staff_id"});
         if(!student)
         {
             return res.status(404).json({message:"student not found."});

@@ -78,7 +78,7 @@
                 <label>Staff</label>
                 <select name="" class="form-select"  [(ngModel)]="staffField">
                     <option value="NA">-- Select Staff --</option>
-                    <option value="{{staff._id}}" *ngFor="let staff of allStaffs;">{{staff.name}}</option>
+                    <option value="{{staff._id}}" *ngFor="let staff of allStaffs;">{{staff.staff_id}} - {{staff.name}}</option>
                 </select>
             </div>
         </div>

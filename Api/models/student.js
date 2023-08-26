@@ -47,9 +47,9 @@ const staudentSchema  = new mongoose.Schema({
         type: Number,
         default:0,
     },
-    staff: {
+    staffs: [{
         type: mongoose.Schema.Types.ObjectId, ref: 'Staff',
-    },
+    }],
     status: {
         type: String,
         enum:["call back","intrested","not intrested","not answer","converted"],
