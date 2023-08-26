@@ -18,7 +18,10 @@
                     <tr>
                         <th>S.No</th>
                         <th>Type</th>
+                        <th>From</th>
+                        <th>To</th>
                         <th>Amount</th>
+                        <th>Payment Type</th>
                         <th>Date</th>
                         <th>Note</th>
                         <th>Action</th>
@@ -28,7 +31,10 @@
                     <tr *ngFor="let expense of allExpenses;index as i;">
                         <td>{{i + 1}}</td>
                         <td>{{expense.type.name}}</td>
+                        <td>{{expense.from}}</td>
+                        <td>{{expense.to}}</td>
                         <td>{{expense.amount | currency: 'INR' : 'symbol-narrow': '1.0-0'}}</td>
+                        <td>{{expense.payment_type}}</td>
                         <td>{{expense.date | date:'yyyy-MM-dd'}}</td>
                         <td>{{expense.note}}</td>
                         <td style="width: 50px; text-align: center;">
@@ -69,6 +75,25 @@
                   <label for="">Amount</label>
                   <input type="number" class="form-control" formControlName="amount" [ngClass]="{'is-invalid': isInvalidField(expenseForm.get('amount'))}">
               </div>
+              <div class="row g-2">
+                  <div class="form-input col-6">
+                      <label for="">From</label>
+                      <input type="text" class="form-control" formControlName="from" [ngClass]="{'is-invalid': isInvalidField(expenseForm.get('from'))}">
+                  </div>
+                  <div class="form-input col-6">
+                      <label for="">To</label>
+                      <input type="text" class="form-control" formControlName="to" [ngClass]="{'is-invalid': isInvalidField(expenseForm.get('to'))}">
+                  </div>
+              </div>
+              <div class="from-input">
+                <label>Payment type</label>
+                <select class="form-select" formControlName="payment_type" [ngClass]="{'is-invalid': isInvalidField(expenseForm.get('payment_type'))}">
+                    <option value="NA">-- Select Type --</option>
+                    <option value="cash">Cash</option>
+                    <option value="upi">UPI</option>
+                    <option value="bank">Bank</option>
+                </select>
+              </div>
               <div class="form-input">
                   <label for="">Date</label>
                   <input type="date" class="form-control" formControlName="date" [ngClass]="{'is-invalid': isInvalidField(expenseForm.get('date'))}">
@@ -104,6 +129,25 @@
                   <label for="">Amount</label>
                   <input type="number" class="form-control" formControlName="amount" [ngClass]="{'is-invalid': isInvalidField(expenseForm.get('amount'))}">
               </div>
+              <div class="row g-2">
+                <div class="form-input col-6">
+                    <label for="">From</label>
+                    <input type="text" class="form-control" formControlName="from" [ngClass]="{'is-invalid': isInvalidField(expenseForm.get('from'))}">
+                </div>
+                <div class="form-input col-6">
+                    <label for="">To</label>
+                    <input type="text" class="form-control" formControlName="to" [ngClass]="{'is-invalid': isInvalidField(expenseForm.get('to'))}">
+                </div>
+            </div>
+            <div class="from-input">
+                <label>Payment type</label>
+                <select class="form-select" formControlName="payment_type" [ngClass]="{'is-invalid': isInvalidField(expenseForm.get('payment_type'))}">
+                    <option value="NA">-- Select Type --</option>
+                    <option value="cash">Cash</option>
+                    <option value="upi">UPI</option>
+                    <option value="bank">Bank</option>
+                </select>
+            </div>
               <div class="form-input">
                   <label for="">Date</label>
                   <input type="date" class="form-control" formControlName="date" [ngClass]="{'is-invalid': isInvalidField(expenseForm.get('date'))}">

@@ -11,12 +11,24 @@ const expenseSchema  = new mongoose.Schema({
         type: Date,
         required: true,
     },
+    from: {
+        type: String,
+        required: true,
+    },
+    to: {
+        type: String,
+        required: true,
+    },
     amount: {
         type: Number,
         required: true,
     },
     note: {
         type: String,
+    },
+    payment_type: {
+        type: String,
+        required: true,
     },
 },{
     timestamps:true,

@@ -34,7 +34,7 @@
                         <td>{{asset.asset_id}}</td>
                         <td>{{asset.to}}</td>
                         <td>{{asset.note}}</td>
-                        <td>{{asset.status}}</td>
+                        <td><span class="badge " [ngClass]="GetStatusColor(asset.status)">{{asset.status}}</span></td>
                         <td style="width: 50px; text-align: center;">
                             <button type="button" class="btn btn-primary btn-sm me-2" data-bs-toggle="dropdown">Action</button>     
                             <div class="dropdown">
@@ -94,8 +94,8 @@
             <div class="form-input">
               <label for="">Type</label>
               <select class="form-select" formControlName="status" [ngClass]="{'is-invalid': isInvalidField(assetForm.get('status'))}">
-                  <option value="Y">Y</option>
-                  <option value="Y">N</option>
+                  <option value="working">Working</option>
+                  <option value="not working">Not Working</option>
               </select>
           </div>
           </div>
@@ -146,8 +146,8 @@
               <div class="form-input">
                 <label for="">Type</label>
                 <select class="form-select" formControlName="status" [ngClass]="{'is-invalid': isInvalidField(assetForm.get('status'))}">
-                    <option value="Y">Y</option>
-                    <option value="Y">N</option>
+                    <option value="working">Working</option>
+                    <option value="not working">Not Working</option>
                 </select>
             </div>
           </div>

@@ -28,7 +28,7 @@ export class AssetsComponent implements OnInit
     type :new FormControl('',Validators.required),
     name :new FormControl('',Validators.required),
     asset_id :new FormControl('',Validators.required),
-    to :new FormControl('',Validators.required),
+    to :new FormControl(''),
     note :new FormControl(''),
     status :new FormControl('',Validators.required),
   });
@@ -183,5 +183,18 @@ export class AssetsComponent implements OnInit
 
   isInvalidField(control: any) {
     return control.invalid && control.touched;
+  }
+
+  GetStatusColor(status:String):any
+  {
+    if(status == "not working")
+    {
+      return "bg-danger"
+    }
+
+    else if(status == "working")
+    {
+      return "bg-success"
+    }
   }
 }

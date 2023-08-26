@@ -78,12 +78,15 @@ const GetTypeController = async (req,res,next)=>{
 const CreateExpenseController = async (req,res,next)=>{
     try
     {
-        const {type,date,amount,note}=req.body;
+        const {type,date,amount,note,from,to,payment_type}=req.body;
         const expense = new Expense({
             type,
             date,
             amount,
-            note
+            note,
+            from,
+            to,
+            payment_type
         });
         const newExpense = await expense.save();
         res.status(200).json(newExpense);
@@ -97,7 +100,7 @@ const CreateExpenseController = async (req,res,next)=>{
 const EditExpenseController = async (req,res,next)=>{
     try
     {
-        const {type,date,amount,note}=req.body;
+        const {type,date,amount,note,from,to,payment_type}=req.body;
         const expense = await Expense.findById(req.params.id);
         if(!expense)
         {
@@ -107,6 +110,9 @@ const EditExpenseController = async (req,res,next)=>{
         if(date) expense.date = date;
         if(amount) expense.amount = amount;
         if(note) expense.note = note;
+        if(from) expense.from = from;
+        if(to) expense.to = to;
+        if(payment_type) expense.payment_type = payment_type;
         const updatedExpense = await expense.save();
         res.status(200).json(updatedExpense);
     }

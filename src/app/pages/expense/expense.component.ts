@@ -29,6 +29,9 @@ export class ExpenseComponent implements OnInit
     date :new FormControl('',Validators.required),
     amount :new FormControl(0,Validators.required),
     note :new FormControl(''),
+    from :new FormControl('',Validators.required),
+    to :new FormControl('',Validators.required),
+    payment_type :new FormControl('',Validators.required),
   });
 
   constructor(private expenseService:ExpenseService,private modalService: NgbModal,
@@ -51,7 +54,7 @@ export class ExpenseComponent implements OnInit
           width:'10px'
         },
         {
-          targets:[5],
+          targets:[7],
           width:'10px',
           orderable: false,
           searchable: false,

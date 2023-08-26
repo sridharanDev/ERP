@@ -441,7 +441,7 @@ export class BillingComponent implements OnInit
       name:this.form1.value.customer_name,
       from:this.form1.value.customer_name,
       to:"AAA",
-      amount:formData.net_total,
+      amount:formData.paid,
       payment_type:this.form3.value.pay_type,
       date:this.form1.value.date
     }        
