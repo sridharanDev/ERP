@@ -74,6 +74,7 @@ import { IncomeReportComponent } from './pages/income-report/income-report.compo
 import { ProjectPipelineComponent } from './pages/project-pipeline/project-pipeline.component';
 import { ProjectScheduleComponent } from './pages/project-schedule/project-schedule.component';
 import { StaffProfileComponent } from './pages/staff-profile/staff-profile.component';
+import { DocumentViewerComponent } from './components/document-viewer/document-viewer.component';
 
 @NgModule({
   declarations: [
@@ -139,6 +140,7 @@ import { StaffProfileComponent } from './pages/staff-profile/staff-profile.compo
     ProjectPipelineComponent,
     ProjectScheduleComponent,
     StaffProfileComponent,
+    DocumentViewerComponent,
   ],
   imports: [
     BrowserModule,

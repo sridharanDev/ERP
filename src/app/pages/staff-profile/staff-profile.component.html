@@ -54,7 +54,7 @@
                 <hr class="mb-2">
                 <h5 class="h6 card-title">Attachments</h5>
                 <div class="row">
-                    <a href="{{envUri}}/{{filename}}" target="_blank" class="col-2 file" *ngFor="let filename of staffProfile.attachments">
+                    <a (click)="ViewFile(envUri + filename,filename)" target="_blank" class="col-2 file" *ngFor="let filename of staffProfile.attachments">
                         <img src="{{GetFileType(filename)}}">
                         <div class="">{{filename}}</div>
                     </a>
@@ -62,4 +62,18 @@
             </div>
         </div>
     </div>
+</div>
+
+
+<div class="overlay" [ngClass]="!show ? 'hide':''">
+    <button (click)="CloseSubmit()"><i class="fa-solid fa-xmark"></i></button>
+    <iframe
+        [src]="pdfUrl"
+        frameborder="0"
+        *ngIf="pdfUrl && !imageUrl"
+      ></iframe>
+      <img [src]="imageUrl" alt="" *ngIf="imageUrl && !pdfUrl">
+      <div class="error" *ngIf="!pdfUrl && !imageUrl">
+        <h3>unable to read this file</h3>
+      </div>
 </div>

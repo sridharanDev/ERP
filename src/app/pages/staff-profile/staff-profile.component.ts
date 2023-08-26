@@ -2,6 +2,8 @@ import { Component,OnInit } from '@angular/core';
 import { StaffService } from 'src/app/services/staff.service';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+
 
 @Component({
   selector: 'app-staff-profile',
@@ -15,14 +17,21 @@ export class StaffProfileComponent implements OnInit
   staffId:any = null;
   staffProfile:any;
 
-  constructor(private staffService:StaffService,private route: ActivatedRoute){}
+  pdfUrl:any;
+  imageUrl:any;
 
+
+  constructor(private staffService:StaffService,private route: ActivatedRoute,private sanitizer: DomSanitizer)
+  {
+    
+  }
+  
   ngOnInit(): void 
   {
     this.staffId = this.route.snapshot.paramMap.get('id');
     this.GetStaffProfile();
   }
-
+  
   GetStaffProfile()
   {
     this.staffService.GetStaff(this.staffId).subscribe((res:any)=>{
@@ -31,7 +40,7 @@ export class StaffProfileComponent implements OnInit
       console.log(error);
     });
   }
-
+  
   GetFileType(fileName:string)
   {
     let image = "assets/img/";
@@ -71,7 +80,7 @@ export class StaffProfileComponent implements OnInit
     }
     return image;
   }
-
+  
   GetStatusColor(status:String):any
   {
     if(status == "active")
@@ -89,6 +98,42 @@ export class StaffProfileComponent implements OnInit
     else
     {
       return "bg-secondary"
+    }
+  }
+  
+  public show:boolean = false;
+  
+  ViewFile(url:any,fileName:string)
+  {
+    const lastDotIndex = fileName.lastIndexOf('.');
+    const fileExtension = fileName.substring(lastDotIndex + 1);
+    if(fileExtension == 'pdf')
+    {
+      this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+      this.imageUrl = null;
+    }
+    else if(fileExtension == 'png' || fileExtension == 'jpg' || fileExtension == 'jpeg')
+    {
+      this.imageUrl = environment.uploadsUrl + fileName;
+      this.pdfUrl = null;
+    }
+    else
+    {
+      this.pdfUrl = null;
+      this.imageUrl = null;
+    }
+    
+    if(!this.show)
+    {
+      this.show = true;
+    }
+  }
+  
+  CloseSubmit()
+  {
+    if(this.show)
+    {
+      this.show = false;
     }
   }
 }
