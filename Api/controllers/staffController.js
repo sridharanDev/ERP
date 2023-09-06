@@ -14,6 +14,7 @@ const CreateStaffController = async (req,res,next) =>{
             mobile,
             address,
             qualification,
+            skills,
             interview_date,
             join_date,
             designation,
@@ -41,6 +42,7 @@ const CreateStaffController = async (req,res,next) =>{
             mobile,
             address,
             qualification,
+            skills,
             interview_date,
             join_date,
             designation,
@@ -89,6 +91,7 @@ const EditStaffController = async (req,res,next) =>{
             mobile,
             address,
             qualification,
+            skills,
             interview_date,
             join_date,
             designation,
@@ -98,7 +101,7 @@ const EditStaffController = async (req,res,next) =>{
             status,
         } = req.body;
         let HashedPassword = null;
-        if(HashedPassword)
+        if(password)
             HashedPassword = await bcrypt.hash(password,10);
         const staff = await Staff.findById(req.params.id)
         if (!staff) {
@@ -127,6 +130,9 @@ const EditStaffController = async (req,res,next) =>{
         }
         if (qualification) {
             staff.qualification = qualification;
+        }
+        if (skills) {
+            staff.skills = skills;
         }
         if (interview_date) {
             staff.interview_date = interview_date;

@@ -33,12 +33,13 @@ export class EditStaffComponent implements OnInit
     dob :new FormControl('',Validators.required),
     address :new FormControl('',Validators.required),
     qualification :new FormControl('',Validators.required),
+    skills :new FormControl('',Validators.required),
     interview_date :new FormControl('',Validators.required),
     join_date :new FormControl('',Validators.required),
     designation :new FormControl('',Validators.required),
     role :new FormControl('NA',[Validators.required,this.CustomValidators.isEqual('NA')]),
     schedule :new FormControl('NA',[Validators.required,this.CustomValidators.isEqual('NA')]),
-    status :new FormControl('Y',Validators.required),
+    status :new FormControl('active',Validators.required),
   });
 
   constructor(private staffService:StaffService,private toastr: ToastrService,

@@ -17,7 +17,7 @@ import { ChartConfiguration, ChartDataset, Chart } from 'chart.js';
 export class DashboardComponent implements OnInit,AfterViewInit 
 {
 
-  projects:any = {upcomming:0,ongoing:0,completed:0};
+  projects:any = {upcomming:0,ongoing:0,completed:0,callbacks:0};
   staffs:any = {total:0,present:0,leave:0};
   students:any = {total:0,studying:0,completed:0};
   assets:any = {laptop:0,desktop:0,scanner:0};
@@ -60,6 +60,7 @@ export class DashboardComponent implements OnInit,AfterViewInit
     this.projectService.GetProjects("").subscribe((res:any)=>{
       for(let project of res)
       {
+        
         if(project.status === "upcomming")
         {
           this.projects.upcomming++;
@@ -71,6 +72,17 @@ export class DashboardComponent implements OnInit,AfterViewInit
         else if(project.status === "completed")
         {
           this.projects.completed++;
+        }
+        else if(project.status === "call back")
+        {
+          const currentDate = new Date();
+          const projectDate = new Date(project.call_back_date);
+          if(projectDate.getDate() == currentDate.getDate() && 
+          projectDate.getMonth() == currentDate.getMonth() &&
+          projectDate.getFullYear() == currentDate.getFullYear())
+          {
+            this.projects.callbacks++;
+          }
         }
       }      
     },(error)=>{
@@ -200,7 +212,7 @@ export class DashboardComponent implements OnInit,AfterViewInit
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        aspectRatio: 1.5,
+        aspectRatio: 1.3,
       }
     };
   
@@ -442,7 +454,6 @@ export class DashboardComponent implements OnInit,AfterViewInit
     for(const log of schadule)
     {
       const currentDate = new Date();
-      currentDate.setDate(currentDate.getDate() + 1);
       const nextDate = currentDate.toISOString();
       console.log(log.date,nextDate);
       
@@ -464,11 +475,12 @@ export class DashboardComponent implements OnInit,AfterViewInit
   isDateLessThanOrEqual(dateString1: any, dateString2: any) {
     const date1 = new Date(dateString1);
     const date2 = new Date(dateString2);
-  
+    let nextDate = new Date().getDate()+1;
     date1.setHours(0, 0, 0, 0);
     date2.setHours(0, 0, 0, 0);
-  
-    return date1.getTime() <= date2.getTime();
+    
+    
+    return ((date1.getDate() == date2.getDate() || date1.getDate() == nextDate) && date1.getMonth() == date2.getMonth() && date1.getFullYear() == date2.getFullYear());
   }
 
   calculateWeeksInMonth() {

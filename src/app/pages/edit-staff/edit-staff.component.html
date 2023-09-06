@@ -1,4 +1,3 @@
-<app-breadcrumb></app-breadcrumb>
 <div class="card">
     <div class="card-header">
         <h5 class="card-title mb-0">Edit staff</h5>
@@ -80,6 +79,12 @@
                     <div class="mb-3">
                         <label for="" class="form-label">Designation</label>
                         <input type="text" class="form-control" placeholder="Designation" formControlName="designation" [ngClass]="{'is-invalid': isInvalidField(staffForm.get('designation'))}">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label for="" class="form-label">Skils</label>
+                        <textarea rows="3" class="form-control" placeholder="Skills" formControlName="skills" [ngClass]="{'is-invalid': isInvalidField(staffForm.get('skills'))}"></textarea>
                     </div>
                 </div>
                 <div class="col-6">

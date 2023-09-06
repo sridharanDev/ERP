@@ -38,6 +38,9 @@ const staffSchema = new mongoose.Schema({
         type:String,
         required:true,
     },
+    skills:{
+        type:String,
+    },
     interview_date:{
         type:String,
         required:true,

@@ -179,12 +179,12 @@
             </div>
         </div>
     </div>
-    <div class="col-3 pb-4">
-        <div class="card h-100">
-            <div class="card-header">
+    <div class="col-3">
+        <div class="card mb-2">
+            <div class="card-header pb-0">
                 <h5 class="card-title">Courses</h5>
             </div>
-            <div class="card-body">
+            <div class="card-body pt-0">
                 <table class="borderless-table">
                     <tbody>
                         <tr>
@@ -211,6 +211,22 @@
                             <td><span class="text-muted" style="font-size: 15px;">Converted</span></td>
                             <td style="font-size: 15px;">:</td>
                             <td><span class="text-primary" style="font-size: 15px;"> {{courses.converted}}</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header pb-0">
+                <h5 class="card-title">Project Pipeline</h5>
+            </div>
+            <div class="card-body pt-0">
+                <table class="borderless-table">
+                    <tbody>
+                        <tr>
+                            <td><span class="text-muted" style="font-size: 15px;">Total Callback</span></td>
+                            <td style="font-size: 15px;">:</td>
+                            <td><span class="text-primary" style="font-size: 15px;"> {{projects.callbacks}} </span></td>
                         </tr>
                     </tbody>
                 </table>
