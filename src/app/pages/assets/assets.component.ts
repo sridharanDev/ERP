@@ -19,6 +19,8 @@ export class AssetsComponent implements OnInit
   isLoading:boolean = false;
   selectedRow:any;
 
+  selectedCSV:File | null = null;
+
   filter:String = "NA";
 
   dtOptions: DataTables.Settings = {};
@@ -176,6 +178,33 @@ export class AssetsComponent implements OnInit
       this.GetAllAssets();
       this.modalService.dismissAll();
       this.toastr.error('Asset deleted successfully.', 'Delete asset',{timeOut: 3000,closeButton: true,progressBar: true,},);
+      this.isLoading = false;
+    },(error)=>{
+      this.toastr.error(error.message, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);
+      this.isLoading = false;
+    });
+  }
+
+  onFileSelected(event: any) {
+    this.selectedCSV = event.target.files[0] as File;
+  }
+
+  UploadCSVSubmit()
+  {
+    const formData = new FormData();
+
+    if(!this.selectedCSV)
+    {
+      return;
+    }
+
+    formData.append('csvFile', this.selectedCSV, this.selectedCSV.name);
+
+    this.isLoading = true;
+    this.assetService.UploadAssets(formData).subscribe((res:any)=>{
+      this.GetAllAssets();
+      this.modalService.dismissAll();
+      this.toastr.info('Assets detail uploaded successfully.', 'Upload assets detail',{timeOut: 3000,closeButton: true,progressBar: true,},);
       this.isLoading = false;
     },(error)=>{
       this.toastr.error(error.message, 'Something went wrong.',{timeOut: 3000,closeButton: true,progressBar: true,},);

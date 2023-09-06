@@ -55,4 +55,8 @@ export class AssetService {
   DeleteAsset(_id:any): Observable<any> {
     return this.http.delete(environment.apiBaseUrl + 'assets/'+_id); 
   }
+
+  UploadAssets(formData:any): Observable<any> {
+    return this.http.post(environment.apiBaseUrl + 'assets/upload',formData); 
+  }
 }

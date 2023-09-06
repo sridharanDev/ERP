@@ -160,6 +160,29 @@ const GetAssetController = async (req,res,next)=>{
     }
 };
 
+const UploadAssetsController = async (req,res,next)=>{
+    try
+    {  
+        const csvData = req.csvData;
+        const assets = [];  
+        for (let data of csvData) {
+            const type = await AssetType.findOne({name:data.type});
+            if(type)
+            {
+                data.type = type._id;
+                const asset = new Asset(data);
+                const newAsset = await asset.save();
+                assets.push(newAsset);
+            }
+        }
+        res.status(200).json({assets});
+    }
+    catch(error)
+    {
+        res.status(500).json(error.message);
+    }
+};
+
 module.exports = {
     CreateTypeController,
     EditTypeController,
@@ -171,4 +194,5 @@ module.exports = {
     DeleteAssetController,
     GetAssetsController,
     GetAssetController,
+    UploadAssetsController,
 }

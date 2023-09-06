@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const csvUploadMiddleware = require('../middlewares/csvUpload');
 const assetController = require("../controllers/assetController");
 
 router.post("/types/",assetController.CreateTypeController);
@@ -12,5 +13,6 @@ router.put("/:id",assetController.EditAssetController);
 router.delete("/:id",assetController.DeleteAssetController);
 router.get("/",assetController.GetAssetsController);
 router.get("/:id",assetController.GetAssetController);
+router.post("/upload",csvUploadMiddleware,assetController.UploadAssetsController);
 
 module.exports = router;
